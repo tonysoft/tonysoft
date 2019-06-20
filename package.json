@@ -1,6 +1,6 @@
 {
   "name": "tonysoft",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A repository of common components used in tonysoft demos",
   "main": "generic-container.js",
   "bundleDependencies": false,
@@ -14,6 +14,7 @@
     "web-components",
     "polymer",
     "container",
+    "digit-cell",
     "generic-container"
   ],
   "author": "Tony Sukiennik",

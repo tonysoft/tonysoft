@@ -30,7 +30,8 @@ class GenericContainer extends PolymerElement {
     static get properties() {
       return {
         bestFit: {
-          type: Boolean
+          type: Boolean,
+          observer: '_bestFitChanged'
         }
       }
     }
@@ -39,16 +40,29 @@ class GenericContainer extends PolymerElement {
       super();
     }
 
-    scaleContent(widthWindow, heightWindow) {
-      var width = widthWindow;
-      var height = heightWindow;
+    _bestFitChanged(newValue) {
       var context = this;
-      var parent = context.parentNode;
-      if (parent && (parent.offsetWidth || parent.offsetHeight)) {
-        width = parent.offsetWidth || width;
-        height = parent.offsetHeight || height;
+      if (newValue) {
+        context.style.position = "absolute";
+        context.style.left = "0px";
+        context.style.top = "0px";
+      } else {
+        context.style.position = "";
+        context.style.left = "";
+        context.style.top = "";
       }
+    }
+
+    scaleContent(widthWindow, heightWindow) {
+      var context = this;
       if (context.bestFit) {
+        var width = widthWindow;
+        var height = heightWindow;
+        var parent = context.parentNode;
+        if (parent && (parent.offsetWidth || parent.offsetHeight)) {
+          width = parent.offsetWidth || width;
+          height = parent.offsetHeight || height;
+        }
         var main = this.shadowRoot.querySelector(".main");
         // var main = this.querySelector("div[slot='content']");
         var mainWidth = main.offsetWidth;
