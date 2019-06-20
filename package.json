@@ -1,0 +1,25 @@
+{
+  "name": "tonysoft",
+  "version": "1.0.9",
+  "description": "A repository of common components used in tonysoft demos",
+  "main": "generic-container.js",
+  "bundleDependencies": false,
+  "dependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tonysoft/tonysoft.git"
+  },
+  "keywords": [
+    "web-components",
+    "polymer",
+    "container",
+    "generic-container"
+  ],
+  "author": "Tony Sukiennik",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/tonysoft/tonysoft/issues"
+  },
+  "homepage": "https://github.com/tonysoft/tonysoft#readme"
+}
