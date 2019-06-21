@@ -22,16 +22,23 @@
               break;
           }
         })
-        setTimeout(function() {
-          changeSize();
-          windowResize();
-          clockMode(null, true);
-          var element = document.querySelector('generic-container');
-          // var element = document.querySelector('time-piece');
-          panzoom(element, {
-            zoomDoubleClickSpeed: 1, 
-          });
-        }, 1000)
+        var timeToInit = 0;
+        var startupInterval = setTimeout(function() {
+          var timerComponent = document.querySelector("#timerComponent");
+          if (timerComponent && timerComponent.pause) {
+            timeToInit += 100;
+            changeSize();
+            windowResize();
+            clockMode(null, true);
+            var element = document.querySelector('generic-container');
+            // var element = document.querySelector('time-piece');
+            panzoom(element, {
+              zoomDoubleClickSpeed: 1, 
+            });
+            clearInterval(startupInterval);
+            console.log(timeToInit);
+          }
+        }, 50)
       }
 
       function workoutStatus() {
