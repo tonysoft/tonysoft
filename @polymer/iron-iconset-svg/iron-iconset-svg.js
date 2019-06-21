@@ -8,11 +8,11 @@ found at http://polymer.github.io/CONTRIBUTORS.txt Code distributed by Google as
 part of the polymer project is also subject to an additional IP rights grant
 found at http://polymer.github.io/PATENTS.txt
 */
-import 'https://unpkg.com/tonysoft/@polymer/polymer/polymer-legacy.js';
+import 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/polymer-legacy.js';
 
-import {IronMeta} from 'https://unpkg.com/tonysoft/@polymer/iron-meta/iron-meta.js';
-import {Polymer} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {dom} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/polymer.dom.js';
+import {IronMeta} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/iron-meta/iron-meta.js';
+import {Polymer} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {dom} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/legacy/polymer.dom.js';
 /**
  * The `iron-iconset-svg` element allows users to define their own icon sets
  * that contain svg icons. The svg icon elements should be children of the

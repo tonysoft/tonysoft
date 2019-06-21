@@ -19,7 +19,7 @@ npm install --save @polymer/font-roboto
 <html>
   <head>
     <script type="module">
-      import 'https://unpkg.com/tonysoft/@polymer/font-roboto/roboto.js';
+      import 'https://unpkg.com/tonysoft@1.2.4/@polymer/font-roboto/roboto.js';
     </script>
   </head>
   <style>
@@ -35,8 +35,8 @@ npm install --save @polymer/font-roboto
 
 ### In a Polymer 3 element
 ```js
-import {PolymerElement, html} from 'https://unpkg.com/tonysoft/@polymer/polymer';
-import 'https://unpkg.com/tonysoft/@polymer/font-roboto/roboto.js';
+import {PolymerElement, html} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer';
+import 'https://unpkg.com/tonysoft@1.2.4/@polymer/font-roboto/roboto.js';
 
 class SampleElement extends PolymerElement {
   static get template() {

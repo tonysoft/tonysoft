@@ -8,4 +8,4 @@
  *   prism-theme-default.js
  */
 
-import {html} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/html-tag.js';
+import {html} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/utils/html-tag.js';

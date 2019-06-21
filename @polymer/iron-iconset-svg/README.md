@@ -24,8 +24,8 @@ npm install --save @polymer/iron-iconset-svg
 <html>
   <head>
     <script type="module">
-      import 'https://unpkg.com/tonysoft/@polymer/iron-iconset-svg/iron-iconset-svg.js';
-      import 'https://unpkg.com/tonysoft/@polymer/iron-icon/iron-icon.js';
+      import 'https://unpkg.com/tonysoft@1.2.4/@polymer/iron-iconset-svg/iron-iconset-svg.js';
+      import 'https://unpkg.com/tonysoft@1.2.4/@polymer/iron-icon/iron-icon.js';
     </script>
   </head>
   <body>
@@ -56,11 +56,11 @@ instance of that component. See the demo (and specifically
 `demo/svg-sample-icons.js`) for an example.
 
 ```js
-import {PolymerElement} from 'https://unpkg.com/tonysoft/@polymer/polymer/polymer-element.js';
-import {html} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/html-tag.js';
+import {PolymerElement} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/polymer-element.js';
+import {html} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/utils/html-tag.js';
 
-import 'https://unpkg.com/tonysoft/@polymer/iron-iconset-svg/iron-iconset-svg.js';
-import 'https://unpkg.com/tonysoft/@polymer/iron-icon/iron-icon.js';
+import 'https://unpkg.com/tonysoft@1.2.4/@polymer/iron-iconset-svg/iron-iconset-svg.js';
+import 'https://unpkg.com/tonysoft@1.2.4/@polymer/iron-icon/iron-icon.js';
 
 class ExampleElement extends PolymerElement {
   static get template() {

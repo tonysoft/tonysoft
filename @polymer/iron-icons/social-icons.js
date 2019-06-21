@@ -8,10 +8,10 @@ found at http://polymer.github.io/CONTRIBUTORS.txt Code distributed by Google as
 part of the polymer project is also subject to an additional IP rights grant
 found at http://polymer.github.io/PATENTS.txt
 */
-import 'https://unpkg.com/tonysoft/@polymer/iron-icon/iron-icon.js';
-import 'https://unpkg.com/tonysoft/@polymer/iron-iconset-svg/iron-iconset-svg.js';
+import 'https://unpkg.com/tonysoft@1.2.4/@polymer/iron-icon/iron-icon.js';
+import 'https://unpkg.com/tonysoft@1.2.4/@polymer/iron-iconset-svg/iron-iconset-svg.js';
 
-import {html} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/html-tag.js';
+import {html} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/utils/html-tag.js';
 
 const template = html`<iron-iconset-svg name="social" size="24">
 <svg><defs>

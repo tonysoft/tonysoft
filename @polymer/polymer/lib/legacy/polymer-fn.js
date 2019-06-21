@@ -17,7 +17,7 @@ import '../utils/boot.js';
  *
  * This method is equivalent to
  *
- *     import {Class} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/class.js';
+ *     import {Class} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/legacy/class.js';
  *     customElements.define(info.is, Class(info));
  *
  * See `Class` for details on valid legacy metadata format for `info`.

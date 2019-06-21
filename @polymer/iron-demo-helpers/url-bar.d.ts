@@ -8,11 +8,11 @@
  *   url-bar.js
  */
 
-import {Polymer} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {Polymer} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/legacy/polymer-fn.js';
 
-import {html} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/html-tag.js';
+import {html} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/utils/html-tag.js';
 
-import {LegacyElementMixin} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
+import {LegacyElementMixin} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
 
 /**
  * `url-bar` is a helper element that displays a simple read-only URL bar if

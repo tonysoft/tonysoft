@@ -1,6 +1,6 @@
 {
   "name": "tonysoft",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A repository of common components used in tonysoft demos",
   "main": "generic-container.js",
   "bundleDependencies": false,
@@ -8,7 +8,7 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tonysoft/tonysoft.git"
+    "url": "git+https://github.com/tonysoft@1.2.4/tonysoft.git"
   },
   "keywords": [
     "web-components",
@@ -20,7 +20,7 @@
   "author": "Tony Sukiennik",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/tonysoft/tonysoft/issues"
+    "url": "https://github.com/tonysoft@1.2.4/tonysoft/issues"
   },
-  "homepage": "https://github.com/tonysoft/tonysoft#readme"
+  "homepage": "https://github.com/tonysoft@1.2.4/tonysoft#readme"
 }

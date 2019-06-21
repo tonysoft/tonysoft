@@ -68,7 +68,7 @@ Web Components are now implemented natively on Safari and Chrome (~70% of instal
 ```html
   <script src="node_modules/@webcomponents/webcomponents-loader.js"></script>
   <script type="module">
-    import {PolymerElement, html} from 'https://unpkg.com/tonysoft/@polymer/polymer';
+    import {PolymerElement, html} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer';
 
     class MyElement extends PolymerElement {
       static get properties() { return { mood: String }}

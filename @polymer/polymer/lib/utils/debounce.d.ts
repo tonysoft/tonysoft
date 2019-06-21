@@ -25,8 +25,8 @@ declare class Debouncer {
    * called once. Add this method to a custom element:
    *
    * ```js
-   * import {microTask} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/async.js';
-   * import {Debouncer} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/debounce.js';
+   * import {microTask} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/utils/async.js';
+   * import {Debouncer} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/utils/debounce.js';
    * // ...
    *
    * _debounceWork() {
