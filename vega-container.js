@@ -1,5 +1,5 @@
-import {html, PolymerElement} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/polymer-element.js';
-import {GenericContainer} from 'https://unpkg.com/tonysoft@latest/generic-container.js';
+import {html, PolymerElement} from 'https://unpkg.com/tonysoft/@polymer/polymer/polymer-element.js';
+import {GenericContainer} from 'https://unpkg.com/tonysoft/generic-container.js';
 
 /**
  * `vega-container`

@@ -27,7 +27,7 @@ npm install --save @polymer/marked-element
 <html>
   <head>
     <script type="module">
-      import 'https://unpkg.com/tonysoft@latest/@polymer/marked-element/marked-element.js';
+      import 'https://unpkg.com/tonysoft/@polymer/marked-element/marked-element.js';
     </script>
     <style>
       [slot="markdown-html"] p {
@@ -56,8 +56,8 @@ npm install --save @polymer/marked-element
 ```
 ### In a Polymer 3 element
 ```js
-import {PolymerElement, html} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer';
-import 'https://unpkg.com/tonysoft@latest/@polymer/marked-element/marked-element.js';
+import {PolymerElement, html} from 'https://unpkg.com/tonysoft/@polymer/polymer';
+import 'https://unpkg.com/tonysoft/@polymer/marked-element/marked-element.js';
 
 class SampleElement extends PolymerElement {
   static get template() {

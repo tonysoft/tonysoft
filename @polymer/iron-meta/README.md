@@ -24,7 +24,7 @@ npm install --save @polymer/iron-meta
 <html>
   <head>
     <script type="module">
-      import 'https://unpkg.com/tonysoft@latest/@polymer/iron-meta/iron-meta.js';
+      import 'https://unpkg.com/tonysoft/@polymer/iron-meta/iron-meta.js';
     </script>
   </head>
   <body>
@@ -37,10 +37,10 @@ npm install --save @polymer/iron-meta
 ### In a Polymer 3 element
 
 ```js
-import {PolymerElement} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/polymer-element.js';
-import {html} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/utils/html-tag.js';
+import {PolymerElement} from 'https://unpkg.com/tonysoft/@polymer/polymer/polymer-element.js';
+import {html} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/html-tag.js';
 
-import 'https://unpkg.com/tonysoft@latest/@polymer/iron-meta/iron-meta.js';
+import 'https://unpkg.com/tonysoft/@polymer/iron-meta/iron-meta.js';
 
 class ExampleElement extends PolymerElement {
   static get properties() {

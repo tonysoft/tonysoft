@@ -368,8 +368,8 @@ let baseArraySelector = ArraySelectorMixin(PolymerElement);
  * Example:
  *
  * ```js
- * import {PolymerElement} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer';
- * import 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/elements/array-selector.js';
+ * import {PolymerElement} from 'https://unpkg.com/tonysoft/@polymer/polymer';
+ * import 'https://unpkg.com/tonysoft/@polymer/polymer/lib/elements/array-selector.js';
  *
  * class EmployeeList extends PolymerElement {
  *   static get _template() {

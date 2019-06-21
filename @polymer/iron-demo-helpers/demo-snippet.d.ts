@@ -8,13 +8,13 @@
  *   demo-snippet.js
  */
 
-import {Polymer} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {Polymer} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/polymer-fn.js';
 
-import {dom} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/legacy/polymer.dom.js';
+import {dom} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/polymer.dom.js';
 
-import {html} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/utils/html-tag.js';
+import {html} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/html-tag.js';
 
-import {LegacyElementMixin} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
+import {LegacyElementMixin} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
 
 /**
  * `demo-snippet` is a helper element that displays the source of a code snippet

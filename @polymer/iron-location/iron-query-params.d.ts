@@ -8,9 +8,9 @@
  *   iron-query-params.js
  */
 
-import {Polymer} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {Polymer} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/polymer-fn.js';
 
-import {LegacyElementMixin} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
+import {LegacyElementMixin} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
 
 interface IronQueryParamsElement extends LegacyElementMixin, HTMLElement {
   paramsString: string|undefined;

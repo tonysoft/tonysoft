@@ -11,7 +11,7 @@ found at http://polymer.github.io/PATENTS.txt
 
 import '../iron-iconset-svg.js';
 
-import {html} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/utils/html-tag.js';
+import {html} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/html-tag.js';
 
 const template = html`<iron-iconset-svg name="svg-sample-icons" size="100">
   <svg>

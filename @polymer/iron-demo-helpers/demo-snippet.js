@@ -9,14 +9,14 @@ part of the polymer project is also subject to an additional IP rights grant
 found at http://polymer.github.io/PATENTS.txt
 */
 
-import 'https://unpkg.com/tonysoft@latest/@polymer/polymer/polymer-legacy.js';
-import 'https://unpkg.com/tonysoft@latest/@polymer/marked-element/marked-element.js';
-import 'https://unpkg.com/tonysoft@latest/@polymer/prism-element/prism-highlighter.js';
-import 'https://unpkg.com/tonysoft@latest/@polymer/prism-element/prism-theme-default.js';
+import 'https://unpkg.com/tonysoft/@polymer/polymer/polymer-legacy.js';
+import 'https://unpkg.com/tonysoft/@polymer/marked-element/marked-element.js';
+import 'https://unpkg.com/tonysoft/@polymer/prism-element/prism-highlighter.js';
+import 'https://unpkg.com/tonysoft/@polymer/prism-element/prism-theme-default.js';
 
-import {Polymer} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {dom} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/legacy/polymer.dom.js';
-import {html} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/utils/html-tag.js';
+import {Polymer} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {dom} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/polymer.dom.js';
+import {html} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/html-tag.js';
 
 /**
 `demo-snippet` is a helper element that displays the source of a code snippet

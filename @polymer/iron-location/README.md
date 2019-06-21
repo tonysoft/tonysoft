@@ -32,7 +32,7 @@ npm install --save @polymer/iron-location
 <html>
   <head>
     <script type="module">
-      import 'https://unpkg.com/tonysoft@latest/@polymer/iron-location/iron-location.js';
+      import 'https://unpkg.com/tonysoft/@polymer/iron-location/iron-location.js';
     </script>
   </head>
   <body>
@@ -51,9 +51,9 @@ npm install --save @polymer/iron-location
 <html>
   <head>
     <script type="module">
-      import 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/elements/dom-bind.js';
-      import 'https://unpkg.com/tonysoft@latest/@polymer/iron-location/iron-location.js';
-      import 'https://unpkg.com/tonysoft@latest/@polymer/iron-location/iron-query-params.js';
+      import 'https://unpkg.com/tonysoft/@polymer/polymer/lib/elements/dom-bind.js';
+      import 'https://unpkg.com/tonysoft/@polymer/iron-location/iron-location.js';
+      import 'https://unpkg.com/tonysoft/@polymer/iron-location/iron-query-params.js';
     </script>
   </head>
   <body>
@@ -80,8 +80,8 @@ npm install --save @polymer/iron-location
 
 ##### &lt;iron-location&gt;
 ```js
-import {PolymerElement, html} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer';
-import 'https://unpkg.com/tonysoft@latest/@polymer/iron-location/iron-location.js';
+import {PolymerElement, html} from 'https://unpkg.com/tonysoft/@polymer/polymer';
+import 'https://unpkg.com/tonysoft/@polymer/iron-location/iron-location.js';
 
 class SampleElement extends PolymerElement {
   static get template() {
@@ -100,9 +100,9 @@ customElements.define('sample-element', SampleElement);
 
 #### &lt;iron-query-params&gt;
 ```js
-import {PolymerElement, html} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer';
-import 'https://unpkg.com/tonysoft@latest/@polymer/iron-location/iron-location.js';
-import 'https://unpkg.com/tonysoft@latest/@polymer/iron-location/iron-query-params.js';
+import {PolymerElement, html} from 'https://unpkg.com/tonysoft/@polymer/polymer';
+import 'https://unpkg.com/tonysoft/@polymer/iron-location/iron-location.js';
+import 'https://unpkg.com/tonysoft/@polymer/iron-location/iron-query-params.js';
 
 class SampleElement extends PolymerElement {
   static get template() {

@@ -8,10 +8,10 @@ found at http://polymer.github.io/CONTRIBUTORS.txt Code distributed by Google as
 part of the polymer project is also subject to an additional IP rights grant
 found at http://polymer.github.io/PATENTS.txt
 */
-import 'https://unpkg.com/tonysoft@latest/@polymer/iron-icon/iron-icon.js';
-import 'https://unpkg.com/tonysoft@latest/@polymer/iron-iconset-svg/iron-iconset-svg.js';
+import 'https://unpkg.com/tonysoft/@polymer/iron-icon/iron-icon.js';
+import 'https://unpkg.com/tonysoft/@polymer/iron-iconset-svg/iron-iconset-svg.js';
 
-import {html} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/utils/html-tag.js';
+import {html} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/html-tag.js';
 
 /**
 
@@ -25,7 +25,7 @@ can be loaded into your project.
 Example loading icon set:
 
     <script type="module">
-      import 'https://unpkg.com/tonysoft@latest/@polymer/iron-icons/maps-icons.js';
+      import 'https://unpkg.com/tonysoft/@polymer/iron-icons/maps-icons.js';
     </script>
 
 To use an icon from one of these sets, first prefix your `iron-icon` with the

@@ -7,12 +7,12 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 */
-import 'https://unpkg.com/tonysoft@latest/@polymer/polymer/polymer-legacy.js';
+import 'https://unpkg.com/tonysoft/@polymer/polymer/polymer-legacy.js';
 import './marked-import.js';
 
-import {Polymer} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {dom} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/legacy/polymer.dom.js';
-import {html} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/lib/utils/html-tag.js';
+import {Polymer} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {dom} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/legacy/polymer.dom.js';
+import {html} from 'https://unpkg.com/tonysoft/@polymer/polymer/lib/utils/html-tag.js';
 
 /**
 Element wrapper for the [marked](https://github.com/chjj/marked) library.
