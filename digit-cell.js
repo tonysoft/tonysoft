@@ -1,4 +1,4 @@
-import {html, PolymerElement} from 'https://unpkg.com/@polymer/polymer/polymer-element.js';
+import {html, PolymerElement} from 'https://unpkg.com/tonysoft@latest/@polymer/polymer/polymer-element.js';
 
 /**
  * `digit-cell`
