@@ -8,9 +8,9 @@ found at http://polymer.github.io/CONTRIBUTORS.txt Code distributed by Google as
 part of the polymer project is also subject to an additional IP rights grant
 found at http://polymer.github.io/PATENTS.txt
 */
-import 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/polymer-legacy.js';
+import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/polymer-legacy.js';
 
-import {Polymer} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {Polymer} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/polymer-fn.js';
 
 export class IronMeta {
   /**

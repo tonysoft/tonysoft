@@ -1,4 +1,4 @@
-import {html, PolymerElement} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/polymer-element.js';
+import {html, PolymerElement} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/polymer-element.js';
 
 /**
  * `generic-container`

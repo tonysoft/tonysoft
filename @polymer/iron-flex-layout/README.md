@@ -32,8 +32,8 @@ npm install --save @polymer/iron-flex-layout
 
 ### In a Polymer 3 element
 ```js
-import {PolymerElement, html} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer';
-import 'https://unpkg.com/tonysoft@1.2.4/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import {PolymerElement, html} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer';
+import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 
 class SampleElement extends PolymerElement {
   static get template() {

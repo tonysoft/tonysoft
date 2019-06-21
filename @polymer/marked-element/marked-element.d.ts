@@ -8,13 +8,13 @@
  *   marked-element.js
  */
 
-import {Polymer} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {Polymer} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/polymer-fn.js';
 
-import {dom} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/legacy/polymer.dom.js';
+import {dom} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/polymer.dom.js';
 
-import {html} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/utils/html-tag.js';
+import {html} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/utils/html-tag.js';
 
-import {LegacyElementMixin} from 'https://unpkg.com/tonysoft@1.2.4/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
+import {LegacyElementMixin} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
 
 /**
  * Element wrapper for the [marked](https://github.com/chjj/marked) library.
