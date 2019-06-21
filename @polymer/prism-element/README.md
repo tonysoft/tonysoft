@@ -36,10 +36,10 @@ npm install --save @polymer/prism-element
     </div>
   </body>
   <script type="module">
-      import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/prism-element/prism-highlighter.js';
-      import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/prism-element/prism-theme-default.js';
-      import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/elements/custom-style.js';
-      import {html} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/utils/html-tag.js';
+      import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/prism-element/prism-highlighter.js';
+      import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/prism-element/prism-theme-default.js';
+      import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/elements/custom-style.js';
+      import {html} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/utils/html-tag.js';
 
       // import prism theme styles
       const template = html`
@@ -68,10 +68,10 @@ npm install --save @polymer/prism-element
 ```
 ### In a Polymer 3 element
 ```js
-import {PolymerElement, html} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer';
-import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/prism-element/prism-element.js';
-import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/prism-element/prism-highlighter.js';
-import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/prism-element/prism-theme-default.js';
+import {PolymerElement, html} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer';
+import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/prism-element/prism-element.js';
+import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/prism-element/prism-highlighter.js';
+import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/prism-element/prism-theme-default.js';
 
 class SampleElement extends PolymerElement {
   static get template() {

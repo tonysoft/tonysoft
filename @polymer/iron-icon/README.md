@@ -24,7 +24,7 @@ npm install --save @polymer/iron-icon
 <html>
   <head>
     <script type="module">
-      import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/iron-icon/iron-icon.js';
+      import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/iron-icon/iron-icon.js';
     </script>
   </head>
   <body>
@@ -32,7 +32,7 @@ npm install --save @polymer/iron-icon
 
     <!-- You can use an icon from an imported iconset. -->
     <script type="module">
-      import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/iron-icons/iron-icons.js';
+      import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/iron-icons/iron-icons.js';
     </script>
     <iron-icon icon="search"></iron-icon>
   </body>
@@ -42,10 +42,10 @@ npm install --save @polymer/iron-icon
 ### In a Polymer 3 element
 
 ```js
-import {PolymerElement} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/polymer-element.js';
-import {html} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/utils/html-tag.js';
+import {PolymerElement} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/polymer-element.js';
+import {html} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/utils/html-tag.js';
 
-import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/iron-icon/iron-icon.js';
+import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/iron-icon/iron-icon.js';
 
 class ExampleElement extends PolymerElement {
   static get template() {

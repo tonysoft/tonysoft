@@ -33,7 +33,7 @@ let TemplatizerUser; // eslint-disable-line
  *
  * Example:
  *
- *     import {dom} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/polymer.dom.js';
+ *     import {dom} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/legacy/polymer.dom.js';
  *     // Get a template from somewhere, e.g. light DOM
  *     let template = this.querySelector('template');
  *     // Prepare the template

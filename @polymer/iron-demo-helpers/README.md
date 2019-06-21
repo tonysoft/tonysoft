@@ -37,8 +37,8 @@ npm install --save @polymer/iron-demo-helpers
 <html>
   <head>
     <script type="module">
-      import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/iron-demo-helpers/demo-snippet.js';
-      import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/paper-checkbox/paper-checkbox.js';
+      import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/iron-demo-helpers/demo-snippet.js';
+      import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/paper-checkbox/paper-checkbox.js';
     </script>
   </head>
   <body>
@@ -54,9 +54,9 @@ npm install --save @polymer/iron-demo-helpers
 
 ### In a Polymer 3 element
 ```js
-import {PolymerElement, html} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer';
-import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/iron-demo-helpers/demo-snippet.js';
-import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/paper-checkbox/paper-checkbox.js';
+import {PolymerElement, html} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer';
+import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/iron-demo-helpers/demo-snippet.js';
+import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/paper-checkbox/paper-checkbox.js';
 
 class SampleElement extends PolymerElement {
   static get template() {

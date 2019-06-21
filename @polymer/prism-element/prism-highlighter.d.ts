@@ -8,9 +8,9 @@
  *   prism-highlighter.js
  */
 
-import {Polymer} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {Polymer} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/legacy/polymer-fn.js';
 
-import {LegacyElementMixin} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
+import {LegacyElementMixin} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
 
 /**
  * Syntax highlighting via [Prism](http://prismjs.com/).

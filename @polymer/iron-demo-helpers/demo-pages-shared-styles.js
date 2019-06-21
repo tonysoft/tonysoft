@@ -9,10 +9,10 @@ part of the polymer project is also subject to an additional IP rights grant
 found at http://polymer.github.io/PATENTS.txt
 */
 
-import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/polymer-legacy.js';
-import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/iron-flex-layout/iron-flex-layout.js';
-import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/font-roboto/roboto.js';
-import {html} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/utils/html-tag.js';
+import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/polymer-legacy.js';
+import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/iron-flex-layout/iron-flex-layout.js';
+import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/font-roboto/roboto.js';
+import {html} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/utils/html-tag.js';
 
 const template = html`
 <dom-module id="demo-pages-shared-styles">

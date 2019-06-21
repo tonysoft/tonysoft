@@ -8,11 +8,11 @@
  *   iron-location.js
  */
 
-import {Polymer} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {Polymer} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/legacy/polymer-fn.js';
 
-import {dom} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/polymer.dom.js';
+import {dom} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/legacy/polymer.dom.js';
 
-import {LegacyElementMixin} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
+import {LegacyElementMixin} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/legacy/legacy-element-mixin.js';
 
 /**
  * The `iron-location` element manages binding to and from the current URL.

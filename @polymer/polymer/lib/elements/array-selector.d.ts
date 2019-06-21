@@ -160,8 +160,8 @@ export {ArraySelectorMixin};
  * Example:
  *
  * ```js
- * import {PolymerElement} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer';
- * import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/elements/array-selector.js';
+ * import {PolymerElement} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer';
+ * import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/elements/array-selector.js';
  *
  * class EmployeeList extends PolymerElement {
  *   static get _template() {

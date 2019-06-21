@@ -8,8 +8,8 @@ found at http://polymer.github.io/CONTRIBUTORS.txt Code distributed by Google as
 part of the polymer project is also subject to an additional IP rights grant
 found at http://polymer.github.io/PATENTS.txt
 */
-import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/polymer-legacy.js';
-import {html} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/utils/html-tag.js';
+import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/polymer-legacy.js';
+import {html} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/utils/html-tag.js';
 
 /*
 A set of layout classes that let you specify layout properties directly in
@@ -17,7 +17,7 @@ markup. You must include this file in every element that needs to use them.
 
 Sample use:
 
-    import 'https://unpkg.com/tonysoft@^1.2.5/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+    import 'https://unpkg.com/tonysoft@^1.2.6/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 
     const template = html`
       <style is="custom-style" include="iron-flex iron-flex-alignment"></style>

@@ -10,8 +10,8 @@ found at http://polymer.github.io/PATENTS.txt
 */
 import './prism-import.js';
 
-import {Polymer} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {Base} from 'https://unpkg.com/tonysoft@^1.2.5/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {Base} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/polymer-legacy.js';
 
 var HIGHLIGHT_EVENT = 'syntax-highlight';
 
