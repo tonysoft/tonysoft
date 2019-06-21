@@ -1,6 +1,6 @@
 {
   "name": "tonysoft",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "A repository of common components used in tonysoft demos",
   "main": "generic-container.js",
   "bundleDependencies": false,
@@ -20,7 +20,7 @@
   "author": "Tony Sukiennik",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/tonysoft@^1.2.6/tonysoft/issues"
+    "url": "https://github.com/tonysoft/tonysoft/issues"
   },
-  "homepage": "https://github.com/tonysoft@^1.2.6/tonysoft#readme"
+  "homepage": "https://github.com/tonysoft/tonysoft#readme"
 }

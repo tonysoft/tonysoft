@@ -124,7 +124,7 @@ class digitalTimePiece extends PolymerElement {
             d = new Date();
             context.clockSeconds = d.getSeconds()
             context.clockMinutes = d.getMinutes()
-            context.clockHours = d.getHours()%12;
+            context.clockHours = d.getHours();
           }
           context.dispatchEvent(new CustomEvent('update', { detail: { rawDate: d, hours: d.getHours(), minutes: context.clockMinutes, seconds: context.clockSeconds }}));
         }

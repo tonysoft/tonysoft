@@ -345,7 +345,7 @@ class TimePiece extends PolymerElement {
         if (digitalDisplay) {
           digitalDisplay.clockSeconds = context.clockSeconds;
           digitalDisplay.clockMinutes = context.clockMinutes;
-          digitalDisplay.clockHours = context.clockHours;
+          digitalDisplay.clockHours = context.clockMode ? d.getHours() : context.clockHours;
         }
         context.dispatchEvent(new CustomEvent('update', { detail: { rawDate: d, hours: d.getHours(), minutes: context.clockMinutes, seconds: context.clockSeconds }}));
       }
