@@ -23,7 +23,7 @@
           }
         })
         var timeToInit = 0;
-        var startupInterval = setTimeout(function() {
+        var startupInterval = setInterval(function() {
           var timerComponent = document.querySelector("#timerComponent");
           if (timerComponent && timerComponent.pause) {
             timeToInit += 100;
