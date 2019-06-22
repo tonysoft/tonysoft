@@ -131,7 +131,7 @@ class digitalTimePiece extends PolymerElement {
     }
     _dispatchHours() {
         var value = this.clockHours;
-        var valueTens = value > 9 ? 1 : -1;
+        var valueTens = parseInt(value / 10);
         var valueOnes = value % 10;
         var tens = this.shadowRoot.querySelector("#hourTens");
         tens.value = valueTens;
