@@ -1,5 +1,5 @@
 import {html, PolymerElement} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/polymer-element.js';
-import {GenericContainer} from 'https://unpkg.com/tonysoft@^1.2.6/generic-container.js';
+import {GenericContainer} from 'https://unpkg.com/tonysoft/generic-container.js';
 
 /**
  * `vega-container`
@@ -35,6 +35,12 @@ class VegaContainer extends GenericContainer {
           type: Object
         },
         vegaView: {
+          type: Object
+        },
+        items: {
+          type: Object
+        },
+        itemsMap: {
           type: Object
         },
         vegaDataSetName: {
@@ -105,6 +111,36 @@ class VegaContainer extends GenericContainer {
       }
     }
 
+    _buildItemsMap() {
+      var context = this;
+      context.itemsMap = {};
+      context.items.forEach(function(item) {
+        var itemId = item.datum.id;
+        if (itemId) {
+          context.itemsMap[itemId] = item;
+        }
+      })
+    }
+
+    highlightTreePath(itemId) {
+      var context = this;
+      if (context.itemsMap) {
+        for (var id in context.itemsMap) {
+          var opacity = itemId ? .25 : 1.0;
+          var item = context.itemsMap[id];
+          item._svg.style.opacity = opacity;
+        }
+        if (itemId) {
+          var targetItem = context.itemsMap[itemId];
+          while (targetItem) {
+            targetItem._svg.style.opacity = 1.0;
+            var parentId = targetItem.datum.parent;
+            targetItem = parentId ? context.itemsMap[parentId] : null;
+          }
+        }
+      }
+    }
+
     vegaRender(spec, vegaTarget, callback) {
       var context = this;
       if (!callback) {
@@ -119,10 +155,15 @@ class VegaContainer extends GenericContainer {
         hover:     true       // enable hover processing
       });
       context.vegaView = view;
+      context.items = null;
       if (callback) {
         callback(context, view);
       }
       setTimeout(function() {
+        try {
+          context.items = context.vegaView.info()._scenegraph.root.items[0].items[0].items
+          context._buildItemsMap();
+        } catch(e) {};
         window.windowResize();
       }, 500);
       context.vegaEvents(view);
@@ -151,7 +192,8 @@ class VegaContainer extends GenericContainer {
             event: event,
             container: context,
             view: context.vegaView,
-            item: item
+            item: item,
+            items: context.items
           }
         }));
       }

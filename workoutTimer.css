@@ -95,7 +95,14 @@
         flex-wrap: wrap; 
         justify-content: space-evenly;
         align-items: center;
-        widthx: 200px;
+      }
+
+      .flex-menu-left { 
+        display: flex; 
+        flex-direction: row; 
+        flex-wrap: wrap; 
+        justify-content: flex-start;
+        align-items: center;
       }
 
       .digital-clock { 
