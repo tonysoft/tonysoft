@@ -30,11 +30,12 @@
             changeSize();
             windowResize();
             clockMode(null, true);
-            var element = document.querySelector('generic-container');
-            // var element = document.querySelector('time-piece');
-            panzoom(element, {
-              zoomDoubleClickSpeed: 1, 
-            });
+            if (!mobilecheck()) {
+              var element = document.querySelector('generic-container');
+              panzoom(element, {
+                zoomDoubleClickSpeed: 1, 
+              });
+            }
             clearInterval(startupInterval);
             console.log(timeToInit);
           }
