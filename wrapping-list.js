@@ -105,11 +105,13 @@ class WrappingList extends PolymerElement {
       }
       var context = this;
       context.dataMap = {};
+      var isHierarchy = false;
       if (context.sort) {
         context.data.forEach(function(item) {
           if (item.id) {
             item.sortField = context.sort;
           }
+          isHierarchy = isHierarchy || (item.parent);
         })
         context._sortData();
       }
@@ -136,7 +138,7 @@ class WrappingList extends PolymerElement {
               itemMarkup = itemMarkup.replace(substitution, item[field]);
             }
           }
-          if (!item.parent) {
+          if (!item.parent && isHierarchy) {
             itemMarkup = itemMarkup.replace('class="', 'class="rootWrappingListItem ');
           }
           markup += itemMarkup;

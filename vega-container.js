@@ -19,6 +19,9 @@ class VegaContainer extends GenericContainer {
         category: {
           type: String
         },
+        backgroundOpacity: {
+          type: Number
+        },
         vegaSpec: {
           type: String,
           reflectToAttribute: true,
@@ -113,10 +116,13 @@ class VegaContainer extends GenericContainer {
 
     highlightTreePath(itemId) {
       var context = this;
+      if (!context.backgroundOpacity) {
+        return;
+      }
       if (context.itemsMap) {
         context.itemsMap.forEach(function(itemsMap) {
           for (var id in itemsMap) {
-            var opacity = itemId ? .1 : 1.0;
+            var opacity = itemId ? context.backgroundOpacity : 1.0;
             var item = itemsMap[id];
             item._svg.style.opacity = opacity;
           }
