@@ -111,33 +111,24 @@ class VegaContainer extends GenericContainer {
       }
     }
 
-    _buildItemsMap() {
-      var context = this;
-      context.itemsMap = {};
-      context.items.forEach(function(item) {
-        var itemId = item.datum.id;
-        if (itemId) {
-          context.itemsMap[itemId] = item;
-        }
-      })
-    }
-
     highlightTreePath(itemId) {
       var context = this;
       if (context.itemsMap) {
-        for (var id in context.itemsMap) {
-          var opacity = itemId ? .25 : 1.0;
-          var item = context.itemsMap[id];
-          item._svg.style.opacity = opacity;
-        }
-        if (itemId) {
-          var targetItem = context.itemsMap[itemId];
-          while (targetItem) {
-            targetItem._svg.style.opacity = 1.0;
-            var parentId = targetItem.datum.parent;
-            targetItem = parentId ? context.itemsMap[parentId] : null;
+        context.itemsMap.forEach(function(itemsMap) {
+          for (var id in itemsMap) {
+            var opacity = itemId ? .1 : 1.0;
+            var item = itemsMap[id];
+            item._svg.style.opacity = opacity;
           }
-        }
+          if (itemId) {
+            var targetItem = itemsMap[itemId];
+            while (targetItem) {
+              targetItem._svg.style.opacity = 1.0;
+              var parentId = targetItem.datum.parent;
+              targetItem = parentId ? itemsMap[parentId] : null;
+            }
+          }
+        })
       }
     }
 
@@ -161,13 +152,40 @@ class VegaContainer extends GenericContainer {
       }
       setTimeout(function() {
         try {
-          context.items = context.vegaView.info()._scenegraph.root.items[0].items[0].items
-          context._buildItemsMap();
+          context._getItemNodes(context.vegaView.info()._scenegraph.root.items[0].items); //context.vegaView.info()._scenegraph.root.items[0].items[0].items
         } catch(e) {};
         window.windowResize();
       }, 500);
       context.vegaEvents(view);
       return view.runAsync();
+    }
+
+    _getItemNodes(items) {
+      var context = this;
+      context.items = [];
+      items.forEach(function(marks) {
+        var testMark = marks.items[0];
+        if (testMark.datum.entity && testMark.datum.id) {
+          context.items.push(marks.items);
+        }
+      })
+      context._buildItemsMap();
+      //context.items = context.vegaView.info()._scenegraph.root.items[0].items[0].items;
+    }
+
+    _buildItemsMap() {
+      var context = this;
+      context.itemsMap = [];
+      context.items.forEach(function(items) {
+        var itemsMap = {};
+        items.forEach(function(item) {
+          var itemId = item.datum.id;
+          if (itemId) {
+            itemsMap[itemId] = item;
+          }
+        })
+        context.itemsMap.push(itemsMap);
+      })
     }
 
     vegaEvents(view) {
