@@ -1,5 +1,5 @@
-import {html, PolymerElement} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/polymer-element.js';
-import {digitCell} from 'https://unpkg.com/tonysoft@^1.2.6/digit-cell.js';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {digitCell} from 'tonysoft@^1.2.6/digit-cell.js';
 
 /**
  * `digital-time-piece`

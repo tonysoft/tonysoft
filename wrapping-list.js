@@ -1,4 +1,4 @@
-import {html, PolymerElement} from 'https://unpkg.com/tonysoft@^1.2.6/@polymer/polymer/polymer-element.js';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 
 /**
  * `wrapping-list`
