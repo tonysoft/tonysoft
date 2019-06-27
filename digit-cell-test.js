@@ -1,4 +1,4 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js?module';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 
 /**
  * `digit-cell`
