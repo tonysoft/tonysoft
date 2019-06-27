@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {digitCell} from 'tonysoft/digit-cell.js';
+import {digitCell} from 'digit-cell/digit-cell.js';
 
 /**
  * `digital-time-piece`
