@@ -261,6 +261,12 @@ class TimePiece extends PolymerElement {
       optionalDisplayScale: {
         type: Number
       },
+      passClicks: {
+        type: Boolean,
+        notify: true,
+        reflectToAttribute: true,
+        observer: '_passClicksChanged'
+      },
       clockMode: {
         type: Boolean,
         observer: '_clockModeChanged'
@@ -290,7 +296,8 @@ class TimePiece extends PolymerElement {
     this.clockMode = false;
     this.clockSeconds = 0;
     this.clockMinutes = 0;
-    this.clockHours = 0;  
+    this.clockHours = 0; 
+    this.passClicks = false; 
   }
   reset() {
     this.elapsedTime = 0;
@@ -382,8 +389,13 @@ class TimePiece extends PolymerElement {
     this.height = newValue + "px";
     // this.updateStyles({'--optional-display-scale': "scale(" + (newValue / this.standardSize) + ")"});
   }
+  _passClicksChanged(newValue) {
+    console.log(newValue);
+  }
   clickOnTimePiece(e) {
-    e.stopPropagation();
+    if (!this.passClicks) {
+      e.stopPropagation();
+    }
   }
 }
 
