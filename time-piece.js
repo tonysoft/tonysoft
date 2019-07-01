@@ -262,10 +262,10 @@ class TimePiece extends PolymerElement {
         type: Number
       },
       passClicks: {
-        type: Boolean,
-        notify: true,
-        reflectToAttribute: true,
-        observer: '_passClicksChanged'
+        type: Boolean
+      },
+      autoStart: {
+        type: Boolean
       },
       clockMode: {
         type: Boolean,
@@ -299,7 +299,14 @@ class TimePiece extends PolymerElement {
     this.clockHours = 0; 
     this.passClicks = false; 
   }
-  reset() {
+  ready() {
+    var context = this;
+    super.ready();
+    if (context.autoStart) {
+      context.start();
+    }
+  }
+reset() {
     this.elapsedTime = 0;
     var digitalDisplay = this.querySelector("digital-time-piece");
     if (digitalDisplay) {
@@ -388,9 +395,6 @@ class TimePiece extends PolymerElement {
     this.width = newValue + "px";
     this.height = newValue + "px";
     // this.updateStyles({'--optional-display-scale': "scale(" + (newValue / this.standardSize) + ")"});
-  }
-  _passClicksChanged(newValue) {
-    console.log(newValue);
   }
   clickOnTimePiece(e) {
     if (!this.passClicks) {
