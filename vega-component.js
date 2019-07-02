@@ -179,7 +179,6 @@ class VegaComponent extends PolymerElement {
         try {
           context._getItemNodes(context.vegaView.info()._scenegraph.root.items[0].items); //context.vegaView.info()._scenegraph.root.items[0].items[0].items
         } catch(e) {};
-        window.windowResize();
       }, 500);
       context.vegaEvents(view);
       return view.runAsync();
