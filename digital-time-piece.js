@@ -63,6 +63,9 @@ class digitalTimePiece extends PolymerElement {
             clockMode: {
              type: Boolean
             },
+            autoStart: {
+                type: Boolean
+              },
             elapsedTime: {
                 type: Number,
                 observer: '_elapsedTimeChanged'
@@ -93,6 +96,13 @@ class digitalTimePiece extends PolymerElement {
         this.clockSeconds = 0;
         this.clockMinutes = 0;
         this.clockHours = 0;  
+    }
+    ready() {
+        var context = this;
+        super.ready();
+        if (context.autoStart) {
+          context.start();
+        }
     }
     reset() {
         this.elapsedTime = 0;
