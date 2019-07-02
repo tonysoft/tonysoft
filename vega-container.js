@@ -1,4 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import 'https://cdn.jsdelivr.net/npm/vega@5';
 import {GenericContainer} from 'tonysoft/generic-container.js';
 
 /**
