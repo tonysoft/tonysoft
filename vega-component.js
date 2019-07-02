@@ -92,12 +92,6 @@ class VegaComponent extends PolymerElement {
       var context = this;
       var vegaTarget = context.shadowRoot.querySelector("#content");
       if (vegaTarget) {
-        if (context.width) {
-            newValue.width = context.width;
-        }
-        if (context.height) {
-            newValue.height = context.height;
-        }
         context.vegaRender(newValue, vegaTarget);
       } else {
         if (this.vegaRenderCallback) {
@@ -159,6 +153,12 @@ class VegaComponent extends PolymerElement {
 
     vegaRender(spec, vegaTarget, callback) {
       var context = this;
+      if (context.width) {
+        spec.width = context.width;
+      }
+      if (context.height) {
+        spec.height = context.height;
+      }
       if (!callback) {
         callback = context.vegaRenderCallback
       }
