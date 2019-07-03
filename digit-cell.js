@@ -32,13 +32,13 @@ class digitCell extends PolymerElement {
             }
             .inert {
                 cursor: default;
-                pointer-events: none
+                pointer-eventsx: none
             }
             .noSelect {
                 user-select: none;
             }
         </style>
-        <div class="relatively inert noSelect" style="width: [[width]]px; height: [[height]]px;">
+        <div class="relatively inert noSelect" style="width: [[width]]px; height: [[height]]px;" on-click="onClick">
             <span class="svg digit">
 <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" class="q" viewBox="4 1 12.613149 22.785754" version="1.1" id="svg3751" sodipodi:docname="digit.svg" inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
   <metadata id="metadata3757">
@@ -209,6 +209,13 @@ class digitCell extends PolymerElement {
     _sizeChanged(newValue, oldValue) {
         this.width = parseInt(newValue * .55);
         this.height = newValue;
+    }
+    onClick(e) {
+        var context = this;
+        e.stopPropagation();
+        context.dispatchEvent(new CustomEvent('click', { 
+            detail: context.value
+        }));
     }
 }
 
