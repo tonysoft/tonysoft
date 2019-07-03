@@ -55,9 +55,9 @@ class VegaComponent extends PolymerElement {
           type: String,
           observer: '_vegaSpecChanged'
         },
-        vegaSpecJSON: {
+        vegaSpecJson: {
           type: Object,
-          observer: '_vegaSpecJSONChanged'
+          observer: '_vegaSpecJsonChanged'
         },
         vegaRenderCallback: {
           type: Object
@@ -123,7 +123,7 @@ class VegaComponent extends PolymerElement {
         }
     }
     
-    _vegaSpecJSONChanged(newValue) {
+    _vegaSpecJsonChanged(newValue) {
       var context = this;
       var vegaTarget = context.shadowRoot.querySelector("#content");
       if (vegaTarget) {
@@ -166,9 +166,9 @@ class VegaComponent extends PolymerElement {
     vegaUpdate(dataSetName, data, bRender, callback) {
       var context = this;
       var handled = false;
-      if (context.vegaSpecJSON && context.vegaSpecJSON.data) {
+      if (context.vegaSpecJson && context.vegaSpecJson.data) {
         var dataSet = null;
-        context.vegaSpecJSON.data.forEach(function(set) {
+        context.vegaSpecJson.data.forEach(function(set) {
           if (set.name === dataSetName) {
             dataSet = set;
             delete dataSet.url;
@@ -176,7 +176,7 @@ class VegaComponent extends PolymerElement {
           }
         })
         if (dataSet && bRender) {
-          context.vegaRender(context.vegaSpecJSON, undefined, callback);
+          context.vegaRender(context.vegaSpecJson, undefined, callback);
         }
       }
     }
@@ -237,7 +237,7 @@ class VegaComponent extends PolymerElement {
 
     vegaRender(spec, vegaTarget, callback) {
       var context = this;
-      context.vegaSpecJSON = spec;
+      context.vegaSpecJson = spec;
       if (spec.internalInteractionMap) {
           context.internalInteractionMap = spec.internalInteractionMap;
       }
