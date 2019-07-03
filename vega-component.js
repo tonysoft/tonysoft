@@ -35,9 +35,24 @@ class VegaComponent extends PolymerElement {
         height: {
             type: Number
         },
+        internalInteractionMap: {
+            type: Object
+        },
+        updateDataMap: {
+            type: String,
+            observer: '_updateDataMapChanged'
+        },
+        updateDataMapJSON: {
+            type: Object
+        },
+        currentItemId: {
+            type: String
+        },
+        selectedItemId: {
+            type: String
+        },
         vegaSpec: {
           type: String,
-          reflectToAttribute: true,
           observer: '_vegaSpecChanged'
         },
         vegaSpecJSON: {
@@ -62,6 +77,9 @@ class VegaComponent extends PolymerElement {
         vegaDataSetName: {
           type: String,
           observer: '_vegaDataChanged'
+        },
+        dataSetName: {
+          type: String
         }
       }
     }
@@ -71,6 +89,11 @@ class VegaComponent extends PolymerElement {
       this.vegaRenderCallback = null;
       this.vegaData = null;
       this.vegaView = null;
+      this.currentItemId = "";
+      this.selectedItemId = "";
+      this.dataSetName = "";
+      this.internalInteractionMap = {};
+      this.updateDataMapJSON = {};
     }
 
     _vegaSpecChanged(newValue) {
@@ -88,10 +111,28 @@ class VegaComponent extends PolymerElement {
       }
     }
 
+    _updateDataMapChanged(newValue) {
+        var context = this;
+        fetch(newValue)
+        .then(res => res.json())
+        .then(spec => setUpdateDataMapJSON(spec))
+        .catch(err => console.error(err));
+
+        function setUpdateDataMapJSON(spec) {
+            context.updateDataMapJSON = spec
+        }
+    }
+    
     _vegaSpecJSONChanged(newValue) {
       var context = this;
       var vegaTarget = context.shadowRoot.querySelector("#content");
       if (vegaTarget) {
+        if (context.width) {
+            newValue.width = context.width;
+        }
+        if (context.height) {
+            newValue.height = context.height;
+        }
         context.vegaRender(newValue, vegaTarget);
       } else {
         if (this.vegaRenderCallback) {
@@ -110,8 +151,21 @@ class VegaComponent extends PolymerElement {
       }
     }
 
+    dataUpdate(itemId) {
+        var context = this;
+        var handled = false;
+        if (context.dataSetName && context.updateDataMapJSON[itemId]) {
+            context.vegaUpdate(context.dataSetName, context.updateDataMapJSON[itemId], true);
+            context.currentItemId = itemId;
+            context.selectedItemId = "";
+            handled = true;
+        }
+        return handled;
+    }
+
     vegaUpdate(dataSetName, data, bRender, callback) {
       var context = this;
+      var handled = false;
       if (context.vegaSpecJSON && context.vegaSpecJSON.data) {
         var dataSet = null;
         context.vegaSpecJSON.data.forEach(function(set) {
@@ -127,7 +181,35 @@ class VegaComponent extends PolymerElement {
       }
     }
 
+    internalInteraction(interaction, rawItem) {
+        var context = this;
+        var handled = false;
+        var item = rawItem.datum;
+        if (!item) {
+            return handled;
+        }
+        var itemId = item.id;
+        if (!itemId) {
+            return handled;
+        }
+        switch (interaction) {
+            case "click":
+                if ((context.selectedItemId === itemId) && context.internalInteractionMap["secondClick"]) {
+                    interaction = "secondClick";
+                }
+                break;
+        }
+        var handlerTag = context.internalInteractionMap[interaction];
+        if (handlerTag && context[handlerTag]) {
+            handled = context[handlerTag](item.id, item);
+        }
+        return handled;
+    }
+
     highlightTreePath(itemId) {
+      if (!itemId) {
+          return;
+      }
       var context = this;
       if (!context.backgroundOpacity) {
         return;
@@ -148,16 +230,16 @@ class VegaComponent extends PolymerElement {
             }
           }
         })
+        context.selectedItemId = itemId;
+        return true;
       }
     }
 
     vegaRender(spec, vegaTarget, callback) {
       var context = this;
-      if (context.width) {
-        spec.width = context.width;
-      }
-      if (context.height) {
-        spec.height = context.height;
+      context.vegaSpecJSON = spec;
+      if (spec.internalInteractionMap) {
+          context.internalInteractionMap = spec.internalInteractionMap;
       }
       if (!callback) {
         callback = context.vegaRenderCallback
@@ -179,6 +261,7 @@ class VegaComponent extends PolymerElement {
         try {
           context._getItemNodes(context.vegaView.info()._scenegraph.root.items[0].items); //context.vegaView.info()._scenegraph.root.items[0].items[0].items
         } catch(e) {};
+        window.windowResize();
       }, 500);
       context.vegaEvents(view);
       return view.runAsync();
@@ -215,7 +298,9 @@ class VegaComponent extends PolymerElement {
     vegaEvents(view) {
       var context = this;
       view.addEventListener('click', function(event, item) {
-        dispatchEvent(event, "click", item);
+        if (!context.internalInteraction("click", item)) {
+            dispatchEvent(event, "click", item);
+        }
       })
       view.addEventListener('mouseover', function(event, item) {
         dispatchEvent(event, "mouseover", item);
