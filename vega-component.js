@@ -80,6 +80,12 @@ class VegaComponent extends PolymerElement {
         },
         dataSetName: {
           type: String
+        },
+        resizeInterval: {
+            type: Number
+        },
+        bestFit: {
+            type: Boolean
         }
       }
     }
@@ -94,6 +100,8 @@ class VegaComponent extends PolymerElement {
       this.dataSetName = "";
       this.internalInteractionMap = {};
       this.updateDataMapJSON = {};
+      this.resizeInterval = 0;
+      this.bestFit = false;
     }
 
     _vegaSpecChanged(newValue) {
@@ -261,6 +269,7 @@ class VegaComponent extends PolymerElement {
         try {
           context._getItemNodes(context.vegaView.info()._scenegraph.root.items[0].items); //context.vegaView.info()._scenegraph.root.items[0].items[0].items
         } catch(e) {};
+        context.scaleIfNecessary();
       }, 500);
       context.vegaEvents(view);
       return view.runAsync();
@@ -323,9 +332,32 @@ class VegaComponent extends PolymerElement {
           }
         }));
       }
-
     }
 
+    scaleIfNecessary() {
+        var context = this;
+        if (context.bestFit) {
+            if (context.resizeInterval) {
+                clearInterval(context.resizeInterval);
+            }
+            var vegaContainer = context.shadowRoot.querySelector("svg.marks");
+            if (vegaContainer) {
+                var vegaWidth = vegaContainer.clientWidth;
+                var vegaHeight = vegaContainer.clientHeight;
+                var remixAppParent = document.querySelector(".remix-app-parent");
+                if (remixAppParent) {
+                    var maxWidth = remixAppParent.offsetWidth;
+                    var maxHeight = remixAppParent.offsetHeight;
+                    if ((vegaWidth > maxWidth) || (vegaHeight > maxHeight)) {
+                        var horzScale = vegaWidth / maxWidth;
+                        var vertScale = vegaHeight / maxHeight;
+                        var i = 0;
+                        i++;
+                    }
+                }
+            }
+        }
+    }
 }
 
 
