@@ -133,7 +133,7 @@ class VegaComponent extends PolymerElement {
     
     _vegaSpecJsonChanged(newValue) {
       var context = this;
-      if (!context.width) {
+      if (!newValue.width) {
         return;
       }
       var vegaTarget = context.shadowRoot.querySelector("#content");
