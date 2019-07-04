@@ -344,7 +344,7 @@ class VegaComponent extends PolymerElement {
             if (vegaContainer) {
                 var vegaWidth = vegaContainer.clientWidth;
                 var vegaHeight = vegaContainer.clientHeight;
-                var remixAppParent = document.querySelector(".remix-app-parent");
+                var remixAppParent = document.querySelector("remix-sg-viewer#inspector-out_2");
                 if (remixAppParent) {
                     var maxWidth = remixAppParent.offsetWidth;
                     var maxHeight = remixAppParent.offsetHeight;
