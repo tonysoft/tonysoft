@@ -368,7 +368,7 @@ class VegaComponent extends PolymerElement {
             doScale();
             context.resizeInterval = setInterval(function() {
                 doScale();
-            }, 5000);
+            }, 2500);
         }
     }
 }
