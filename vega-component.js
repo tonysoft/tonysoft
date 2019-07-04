@@ -345,23 +345,19 @@ class VegaComponent extends PolymerElement {
                 if (vegaContainer) {
                     var vegaWidth = vegaContainer.clientWidth;
                     var vegaHeight = vegaContainer.clientHeight;
-                    if (vegaContainer) {
-                        var vegaWidth = vegaContainer.clientWidth;
-                        var vegaHeight = vegaContainer.clientHeight;
-                        var remixAppParent = document.querySelector("remix-sg-viewer#inspector-out_2");
-                        if (remixAppParent) {
-                            var maxWidth = remixAppParent.offsetWidth;
-                            var maxHeight = remixAppParent.offsetHeight;
-                            if ((vegaWidth > maxWidth) || (vegaHeight > maxHeight)) {
-                                var horzScale = maxWidth / vegaWidth;
-                                var vertScale = maxHeight / vegaHeight;
-                                var scale = Math.min(horzScale, vertScale);
-                                var componentHTML = context.shadowRoot.querySelector(".main");
-                                componentHTML.style.transform = "scale(" + scale + ")";
-                            }
-                            else {
-                                componentHTML.style.transform = "scale(1.0)";
-                            }
+                    var remixAppParent = document.querySelector("remix-sg-viewer#inspector-out_2");
+                    if (remixAppParent) {
+                        var maxWidth = remixAppParent.offsetWidth;
+                        var maxHeight = remixAppParent.offsetHeight;
+                        if ((vegaWidth > maxWidth) || (vegaHeight > maxHeight)) {
+                            var horzScale = maxWidth / vegaWidth;
+                            var vertScale = maxHeight / vegaHeight;
+                            var scale = Math.min(horzScale, vertScale);
+                            var componentHTML = context.shadowRoot.querySelector(".main");
+                            componentHTML.style.transform = "scale(" + scale + ")";
+                        }
+                        else {
+                            componentHTML.style.transform = "scale(1.0)";
                         }
                     }
                 }
