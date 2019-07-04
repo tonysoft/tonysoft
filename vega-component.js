@@ -340,22 +340,36 @@ class VegaComponent extends PolymerElement {
             if (context.resizeInterval) {
                 clearInterval(context.resizeInterval);
             }
-            var vegaContainer = context.shadowRoot.querySelector("svg.marks");
-            if (vegaContainer) {
-                var vegaWidth = vegaContainer.clientWidth;
-                var vegaHeight = vegaContainer.clientHeight;
-                var remixAppParent = document.querySelector("remix-sg-viewer#inspector-out_2");
-                if (remixAppParent) {
-                    var maxWidth = remixAppParent.offsetWidth;
-                    var maxHeight = remixAppParent.offsetHeight;
-                    if ((vegaWidth > maxWidth) || (vegaHeight > maxHeight)) {
-                        var horzScale = vegaWidth / maxWidth;
-                        var vertScale = vegaHeight / maxHeight;
-                        var i = 0;
-                        i++;
+            function doScale() {
+                var vegaContainer = context.shadowRoot.querySelector("svg.marks");
+                if (vegaContainer) {
+                    var vegaWidth = vegaContainer.clientWidth;
+                    var vegaHeight = vegaContainer.clientHeight;
+                    if (vegaContainer) {
+                        var vegaWidth = vegaContainer.clientWidth;
+                        var vegaHeight = vegaContainer.clientHeight;
+                        var remixAppParent = document.querySelector("remix-sg-viewer#inspector-out_2");
+                        if (remixAppParent) {
+                            var maxWidth = remixAppParent.offsetWidth;
+                            var maxHeight = remixAppParent.offsetHeight;
+                            if ((vegaWidth > maxWidth) || (vegaHeight > maxHeight)) {
+                                var horzScale = maxWidth / vegaWidth;
+                                var vertScale = maxHeight / vegaHeight;
+                                var scale = Math.min(horzScale, vertScale);
+                                var componentHTML = context.shadowRoot.querySelector(".main");
+                                componentHTML.style.transform = "scale(" + scale + ")";
+                            }
+                            else {
+                                componentHTML.style.transform = "scale(1.0)";
+                            }
+                        }
                     }
                 }
             }
+            doScale();
+            context.resizeInterval = setInterval(function() {
+                doScale();
+            }, 5000);
         }
     }
 }
