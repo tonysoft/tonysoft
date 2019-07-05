@@ -373,14 +373,14 @@ class VegaComponent extends PolymerElement {
                             var vertScale = maxHeight / vegaHeight;
                             if (horzScale < vertScale) {
                               scale = horzScale;
-                              adjHeight *= scale;
+                              // adjHeight *= scale;
                             }
                             else {
                               scale = vertScale;
-                              adjWidth *= scale;
+                              // adjWidth *= scale;
                             }
                         }
-                        context.style.transform = "scale(" + scale + ")";
+                        context.parentNode.style.transform = "scale(" + scale + ")";
                         context.parentNode.style.width = adjWidth + "px";
                         context.parentNode.style.height = adjHeight + "px";
                     }
