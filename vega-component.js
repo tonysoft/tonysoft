@@ -87,6 +87,9 @@ class VegaComponent extends PolymerElement {
         bestFit: {
             type: Boolean
         },
+        lastScale: {
+          type: Number
+        },
         originalWidth: {
           type: Number
         },
@@ -391,16 +394,19 @@ class VegaComponent extends PolymerElement {
                               // adjWidth = parseInt(context.originalWidth * scale) + "px";
                             }
                         }
-                        context.style.transform = transform;
-                        context.style.width = adjWidth;
-                        context.style.height = adjHeight;
+                        if (context.lastScale !== scale) {
+                          context.style.transform = transform;
+                          context.style.width = adjWidth;
+                          context.style.height = adjHeight;
+                          context.lastScale = scale;
+                        }
                     }
                 }
             }
             doScale();
             context.resizeInterval = setInterval(function() {
                 doScale();
-            }, 2500);
+            }, 1000);
         }
     }
 }
