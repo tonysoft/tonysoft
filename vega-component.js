@@ -360,10 +360,10 @@ class VegaComponent extends PolymerElement {
                             var horzScale = maxWidth / vegaWidth;
                             var vertScale = maxHeight / vegaHeight;
                             var scale = Math.min(horzScale, vertScale);
-                            context.style.transform = "scale(" + scale + ")";
+                            context.parentNode.style.transform = "scale(" + scale + ")";
                         }
                         else {
-                            context.style.transform = "scale(1.0)";
+                            context.parentNode.style.transform = "scale(1.0)";
                         }
                     }
                 }
