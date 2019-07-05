@@ -365,22 +365,29 @@ class VegaComponent extends PolymerElement {
                     if (remixAppParent) {
                         var maxWidth = remixAppParent.offsetWidth;
                         var maxHeight = remixAppParent.offsetHeight;
-                        var scale = 1.0
+                        var transform = "";
+                        var scale = 1.0;
                         var adjWidth = "";
                         var adjHeight = "";
+                        var translateX = 0;
+                        var translateY = 0;
                         if ((vegaWidth > maxWidth) || (vegaHeight > maxHeight)) {
                             var horzScale = maxWidth / vegaWidth;
                             var vertScale = maxHeight / vegaHeight;
                             if (horzScale < vertScale) {
                               scale = horzScale;
                               adjHeight = parseInt(context.originalHeight * scale) + "px";
+                              // translateX = (mainWidth * (1 - newScale)) / -2;
+                              translateY = (maxHeight * (1 - scale)) / -2;
+                              transform = "translate(" + translateX + "px," + translateY + "px) scale(" + scale + ")"
                             }
                             else {
                               scale = vertScale;
+                              transform = "translate(" + translateX + "px," + translateY + "px) scale(" + scale + ")"
                               // adjWidth = parseInt(context.originalWidth * scale) + "px";
                             }
                         }
-                        context.style.transform = "scale(" + scale + ")";
+                        context.style.transform = transform;
                         context.style.width = adjWidth;
                         context.style.height = adjHeight;
                     }
