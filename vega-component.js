@@ -86,6 +86,12 @@ class VegaComponent extends PolymerElement {
         },
         bestFit: {
             type: Boolean
+        },
+        originalWidth: {
+          type: Number
+        },
+        originalHeight: {
+          type: Number
         }
       }
     }
@@ -133,8 +139,8 @@ class VegaComponent extends PolymerElement {
     
     _vegaSpecJsonChanged(newValue) {
       var context = this;
-      if (!newValue.width) {
-        return;
+      if (newValue.replace) {
+        return;  // sometimes we get a bogus value (a string) on init...
       }
       var vegaTarget = context.shadowRoot.querySelector("#content");
       if (vegaTarget) {
@@ -340,6 +346,10 @@ class VegaComponent extends PolymerElement {
     scaleIfNecessary() {
         var context = this;
         if (context.bestFit) {
+            if (!context.originalWidth) {
+              context.originalWidth = context.parentNode.offsetWidth;
+              context.originalHeight = context.parentNode.offsetHeight;
+            }
             if (context.resizeInterval) {
                 clearInterval(context.resizeInterval);
             }
@@ -355,16 +365,17 @@ class VegaComponent extends PolymerElement {
                     if (remixAppParent) {
                         var maxWidth = remixAppParent.offsetWidth;
                         var maxHeight = remixAppParent.offsetHeight;
-                        var componentHTML = context.shadowRoot.querySelector(".main");
+                        var scale = 1.0
                         if ((vegaWidth > maxWidth) || (vegaHeight > maxHeight)) {
                             var horzScale = maxWidth / vegaWidth;
                             var vertScale = maxHeight / vegaHeight;
-                            var scale = Math.min(horzScale, vertScale);
-                            context.parentNode.style.transform = "scale(" + scale + ")";
+                            scale = Math.min(horzScale, vertScale);
                         }
-                        else {
-                            context.parentNode.style.transform = "scale(1.0)";
-                        }
+                        context.parentNode.style.transform = "scale(" + scale + ")";
+                        var adjWidth = parseInt(context.originalWidth * scale) + "px";
+                        var adjHeight = parseInt(context.originalHeight * scale) + "px";
+                        context.parentNode.style.width = adjWidth;
+                        context.parentNode.style.height = adjHeight;
                     }
                 }
             }
