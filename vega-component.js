@@ -201,7 +201,7 @@ class VegaComponent extends PolymerElement {
     internalInteraction(interaction, rawItem) {
         var context = this;
         var handled = false;
-        var item = rawItem.datum;
+        var item = rawItem ? rawItem.datum : null;
         if (!item) {
             return handled;
         }
@@ -358,6 +358,8 @@ class VegaComponent extends PolymerElement {
                 if (vegaContainer) {
                     var vegaWidth = vegaContainer.clientWidth;
                     var vegaHeight = vegaContainer.clientHeight;
+                    var padding = vegaContainer.parentNode.style.padding;
+                    padding = padding ? parseInt(padding.replace("px", "")) : 0;
                     var remixAppParent = document.querySelector("remix-sg-viewer#inspector-out_2");
                     if (!remixAppParent) {
                       remixAppParent = document.querySelector(".remix-app-parent");
@@ -377,12 +379,14 @@ class VegaComponent extends PolymerElement {
                             if (horzScale < vertScale) {
                               scale = horzScale;
                               adjHeight = parseInt(context.originalHeight * scale) + "px";
-                              // translateX = (mainWidth * (1 - newScale)) / -2;
                               translateY = (maxHeight * (1 - scale)) / -2;
+                              translateY += padding * 2;
                               transform = "translate(" + translateX + "px," + translateY + "px) scale(" + scale + ")"
                             }
                             else {
                               scale = vertScale;
+                              translateX = (mainWidth * (1 - newScale)) / -2;
+                              translateX += padding * 2;
                               transform = "translate(" + translateX + "px," + translateY + "px) scale(" + scale + ")"
                               // adjWidth = parseInt(context.originalWidth * scale) + "px";
                             }
