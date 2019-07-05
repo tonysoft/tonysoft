@@ -380,7 +380,7 @@ class VegaComponent extends PolymerElement {
                               adjWidth *= scale;
                             }
                         }
-                        context.parentNode.style.transform = "scale(" + scale + ")";
+                        context.style.transform = "scale(" + scale + ")";
                         context.parentNode.style.width = adjWidth + "px";
                         context.parentNode.style.height = adjHeight + "px";
                     }
