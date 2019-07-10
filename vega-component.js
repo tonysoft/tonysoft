@@ -63,7 +63,8 @@ class VegaComponent extends PolymerElement {
           type: Object
         },
         vegaData: {
-          type: Object
+          type: Object,
+          observer: '_vegaDataChanged'
         },
         vegaView: {
           type: Object
