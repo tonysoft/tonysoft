@@ -360,7 +360,7 @@ class VegaComponent extends PolymerElement {
     scaleIfNecessary() {
         var context = this;
         if (context.bestFit) {
-            if (!context.originalWidth) {
+            if (!context.originalWidth && context.parentNode) {
               context.originalWidth = context.parentNode.offsetWidth;
               context.originalHeight = context.parentNode.offsetHeight;
             }
@@ -368,6 +368,9 @@ class VegaComponent extends PolymerElement {
                 clearInterval(context.resizeInterval);
             }
             function doScale() {
+                if (!context.parentNode) {
+                  return;
+                }
                 var vegaContainer = context.shadowRoot.querySelector("svg.marks");
                 if (vegaContainer) {
                     var vegaWidth = vegaContainer.clientWidth;
