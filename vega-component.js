@@ -79,7 +79,8 @@ class VegaComponent extends PolymerElement {
           observer: '_vegaDataChanged'
         },
         dataSetName: {
-          type: String
+          type: String,
+          observer: '_dataSetNameChanged'
         },
         resizeInterval: {
             type: Number
@@ -161,13 +162,23 @@ class VegaComponent extends PolymerElement {
       }
     }
 
+    _dataSetNameChanged(newData) {
+      var context = this;
+      if (newData) {
+        context.vegaDataSetName = newData;
+        context.dataSetName = "";
+      }
+    }
     _vegaDataChanged(newData) {
       var context = this;
       if (newData) {
-        setTimeout(function() {
-          context.vegaUpdate(context.vegaDataSetName, context.vegaData, true);
-          context.vegaDataSetName = "";  
-        }, 250)
+        var dataChangedInterval = setInterval(function() {
+          if (context.vegaView) {
+            clearInterval(dataChangedInterval);
+            context.vegaUpdate(context.vegaDataSetName, context.vegaData, true);
+            context.vegaDataSetName = "";  
+          }
+        }, 50)
       }
     }
 
