@@ -164,10 +164,10 @@ class VegaComponent extends PolymerElement {
     _vegaDataChanged(newData) {
       var context = this;
       if (newData) {
-        // var changeset = vega.changeset().remove(() => true).insert(newData);
-        // context.vegaView.change(context.vegaDataSetName, changeset).runAsync();
-        context.vegaUpdate(context.vegaDataSetName, context.vegaData, true);
-        context.vegaDataSetName = "";
+        setTimeout(function() {
+          context.vegaUpdate(context.vegaDataSetName, context.vegaData, true);
+          context.vegaDataSetName = "";  
+        }, 250)
       }
     }
 
