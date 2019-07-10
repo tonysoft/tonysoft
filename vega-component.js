@@ -96,6 +96,10 @@ class VegaComponent extends PolymerElement {
         },
         originalHeight: {
           type: Number
+        },
+        updateTrigger: {
+          type: Boolean,
+          observer: "_updateTriggerChanged"
         }
       }
     }
@@ -112,6 +116,7 @@ class VegaComponent extends PolymerElement {
       this.updateDataMapJSON = {};
       this.resizeInterval = 0;
       this.bestFit = false;
+      this.updateTrigger = false;
     }
 
     _vegaSpecChanged(newValue) {
@@ -166,9 +171,17 @@ class VegaComponent extends PolymerElement {
       var context = this;
       if (newData) {
         context.vegaDataSetName = newData;
-        context.dataSetName = "";
       }
     }
+
+    _updateTriggerChanged(newData) {
+      var context = this;
+      if (newData && context.dataSetName) {
+        context.updateTrigger = false;
+        context._dataSetNameChanged(context.dataSetName);
+      }
+    }
+
     _vegaDataChanged(newData) {
       var context = this;
       if (newData) {
