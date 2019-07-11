@@ -66,6 +66,9 @@ class VegaComponent extends PolymerElement {
           type: Object,
           observer: '_vegaDataChanged'
         },
+        vegaDataMap: {
+          type: Object
+        },
         data: {
           type: String,
           observer: '_dataChanged'
@@ -115,6 +118,7 @@ class VegaComponent extends PolymerElement {
       this.dataSetName = "";
       this.internalInteractionMap = {};
       this.updateDataMapJSON = {};
+      this.vegaDataMap = {};
       this.resizeInterval = 0;
       this.bestFit = false;
     }
@@ -188,10 +192,20 @@ class VegaComponent extends PolymerElement {
           if (context.vegaView) {
             clearInterval(dataChangedInterval);
             context.vegaUpdate(context.vegaDataSetName, context.vegaData, true);
-            // context.vegaDataSetName = "";  
+            createVegaDataMap(context.vegaData);
           }
         }, 50)
       }
+    }
+
+    createVegaDataMap(vegaData) {
+      var context = this;
+      context.vegaDataMap = {};
+      vegaData.forEach(function(item) {
+        if (item.id) {
+          vegaDataMap[item.id] = item;
+        }
+      })
     }
 
     dataUpdate(itemId) {
