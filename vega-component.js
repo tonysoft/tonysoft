@@ -203,7 +203,7 @@ class VegaComponent extends PolymerElement {
       context.vegaDataMap = {};
       vegaData.forEach(function(item) {
         if (item.id) {
-          vegaDataMap[item.id] = item;
+          context.vegaDataMap[item.id] = item;
         }
       })
     }
@@ -368,8 +368,8 @@ class VegaComponent extends PolymerElement {
 
       function dispatchEvent(event, interaction, vegaItem) {
         var rawItem = vegaItem ? vegaItem : { datum: {} };
-        var itemId = rawItem.datum.id;
-        var item = rawItem;
+        var item = rawItem.datum;
+        var itemId = item.id;
         if (context.vegaDataMap[itemId]) {
           item = context.vegaDataMap[itemId];
           item.vegaItem = false;
