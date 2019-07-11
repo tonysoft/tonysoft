@@ -366,18 +366,24 @@ class VegaComponent extends PolymerElement {
         dispatchEvent(event, "mouseout", item);
       })
 
-      function dispatchEvent(event, interaction, item) {
-        context.dispatchEvent(new CustomEvent('interaction', { 
+      function dispatchEvent(event, interaction, vegaItem) {
+        var rawItem = vegaItem ? vegaItem : { datum: {} };
+        var itemId = rawItem.datum.id;
+        var item = rawItem;
+        if (context.vegaDataMap[itemId]) {
+          item = context.vegaDataMap[itemId];
+          item.vegaItem = false;
+        }
+        else {
+          item.vegaItem = true;
+        }
+        context.dispatchEvent(new CustomEvent(interaction, { 
           detail: { 
             id: context.id,
             category: context.category,
             interaction: interaction,
-            rawEvent: event,
-            event: event,
-            container: context,
-            view: context.vegaView,
             item: item,
-            items: context.items
+            items: context.vegaDataMap
           }
         }));
       }
