@@ -192,7 +192,7 @@ class VegaComponent extends PolymerElement {
           if (context.vegaView) {
             clearInterval(dataChangedInterval);
             context.vegaUpdate(context.vegaDataSetName, context.vegaData, true);
-            createVegaDataMap(context.vegaData);
+            context.createVegaDataMap(context.vegaData);
           }
         }, 50)
       }
