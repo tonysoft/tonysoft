@@ -47,14 +47,14 @@ class digitalTimePiece extends PolymerElement {
             }
         </style>
         <div class="relatively active noSelect digital-clock" style="width: [[setWidth(width)]];" on-click="getCurrentTime">
-          <digit-cell id="hourTens" class="cellMargin" size="[[size]]" value="0" on-click="clickDigit"></digit-cell>
-          <digit-cell id="hourOnes" class="cellMargin" size="[[size]]" value="0"></digit-cell>
+          <digit-cell id="hourTens" class="cellMargin" size="[[size]]" value="0" max-value="2" on-click="clickDigit"></digit-cell>
+          <digit-cell id="hourOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
           <div  class="cellMargin"style="font-size: [[size]]px;">:</div>
-          <digit-cell id="minuteTens" class="cellMargin" size="[[size]]" value="0"></digit-cell>
-          <digit-cell id="minuteOnes" class="cellMargin" size="[[size]]" value="0"></digit-cell>
+          <digit-cell id="minuteTens" class="cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
+          <digit-cell id="minuteOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
           <div  class="cellMargin"style="font-size: [[size]]px;">:</div>
-          <digit-cell id="secondTens" class="cellMargin" size="[[size]]" value="0"></digit-cell>
-          <digit-cell id="secondOnes" class="cellMargin" size="[[size]]" value="0"></digit-cell>
+          <digit-cell id="secondTens" class="cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
+          <digit-cell id="secondOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
         </div>
         `;
     }
@@ -98,6 +98,9 @@ class digitalTimePiece extends PolymerElement {
             },
             width: {
                 type: String
+            },
+            incrementDecrement: {
+                type: Boolean
             }
         };
     }
@@ -113,6 +116,7 @@ class digitalTimePiece extends PolymerElement {
         this.currentTime = ""; 
         this.isReady = false;
         this.width = "";
+        this.incrementDecrement = false;
     }
     ready() {
         var context = this;
@@ -120,6 +124,7 @@ class digitalTimePiece extends PolymerElement {
         context.isReady = true;
         if (context.currentTime) {
             context._currentTimeChanged(context.currentTime);
+            context.hasIncrementDecrement(context.incrementDecrement);
         }
         if (context.autoStart) {
           context.start();
@@ -127,6 +132,13 @@ class digitalTimePiece extends PolymerElement {
     }
     reset() {
         this.elapsedTime = 0;
+    }
+    hasIncrementDecrement(incrementDecrement) {
+        var context = this;
+        var digitCells = context.shadowRoot.querySelectorAll("digit-cell");
+        digitCells.forEach(function(digitCell) {
+            digitCell.incrementDecrement = incrementDecrement;
+        })
     }
     setWidth(width) {
         if (width) {
@@ -230,7 +242,7 @@ class digitalTimePiece extends PolymerElement {
     getCurrentTime(e) {
         var context = this;
         // e.stopPropagation();
-        context.dispatchEvent(new CustomEvent('click', { 
+        context.dispatchEvent(new CustomEvent('currentTime', { 
             detail: {
                 hour: context.clockHours,
                 minute: context.clockMinutes,
