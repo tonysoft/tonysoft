@@ -199,6 +199,9 @@ class VegaComponent extends PolymerElement {
     }
 
     createVegaDataMap(vegaData) {
+      if (!vegaData) {
+        return;
+      }
       var context = this;
       context.vegaDataMap = {};
       vegaData.forEach(function(item) {
@@ -420,19 +423,23 @@ class VegaComponent extends PolymerElement {
                         var scale = 1.0;
                         var adjWidth = "";
                         var adjHeight = "";
-                        var translateX = "-50%";
-                        var translateY = "-50%";
+                        var translateX = 0;
+                        var translateY = 0;
                         if ((vegaWidth > maxWidth) || (vegaHeight > maxHeight)) {
                             var horzScale = maxWidth / vegaWidth;
                             var vertScale = maxHeight / vegaHeight;
                             if (horzScale < vertScale) {
                               scale = horzScale;
                               adjHeight = parseInt(context.originalHeight * scale) + "px";
-                              transform = "translate(" + translateX + "," + translateY + ") scale(" + scale + ")"
+                              translateY = (maxHeight * (1 - scale)) / -4;
+                              translateY += padding * 2;
+                              transform = "translate(-50%,-50%) scale(" + scale + ")";
                             }
                             else {
                               scale = vertScale;
-                              transform = "translate(" + translateX + "," + translateY + ") scale(" + scale + ")"
+                              translateX = (maxWidth * (1 - scale)) / -4;
+                              translateX += padding * 2;
+                              transform = "translate(-50%,-50%) scale(" + scale + ")";
                               // adjWidth = parseInt(context.originalWidth * scale) + "px";
                             }
                         }
