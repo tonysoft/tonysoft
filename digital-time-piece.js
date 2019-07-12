@@ -28,6 +28,10 @@ class digitalTimePiece extends PolymerElement {
                 cursor: default;
                 pointer-events: none
             }
+            .active {
+                cursor: pointer;
+                pointer-events: all;
+            }
             .noSelect {
                 user-select: none;
             }
@@ -42,8 +46,8 @@ class digitalTimePiece extends PolymerElement {
                 margin: var(--cell-margin)
             }
         </style>
-        <div class="relatively inert noSelect digital-clock">
-          <digit-cell id="hourTens" class="cellMargin" size="[[size]]" value="0"></digit-cell>
+        <div class="relatively active noSelect digital-clock" style="width: [[setWidth(width)]];" on-click="getCurrentTime">
+          <digit-cell id="hourTens" class="cellMargin" size="[[size]]" value="0" on-click="clickDigit"></digit-cell>
           <digit-cell id="hourOnes" class="cellMargin" size="[[size]]" value="0"></digit-cell>
           <div  class="cellMargin"style="font-size: [[size]]px;">:</div>
           <digit-cell id="minuteTens" class="cellMargin" size="[[size]]" value="0"></digit-cell>
@@ -65,7 +69,11 @@ class digitalTimePiece extends PolymerElement {
             },
             autoStart: {
                 type: Boolean
-              },
+            },
+            currentTime: {
+                type: String,
+                observer: "_currentTimeChanged"
+            },
             elapsedTime: {
                 type: Number,
                 observer: '_elapsedTimeChanged'
@@ -84,6 +92,12 @@ class digitalTimePiece extends PolymerElement {
             clockHours: {
                 type: Number,
                 observer: '_dispatchHours'
+            },
+            isReady: {
+                type: Boolean
+            },
+            width: {
+                type: String
             }
         };
     }
@@ -95,17 +109,32 @@ class digitalTimePiece extends PolymerElement {
         this.clockMode = true;
         this.clockSeconds = 0;
         this.clockMinutes = 0;
-        this.clockHours = 0;  
+        this.clockHours = 0; 
+        this.currentTime = ""; 
+        this.isReady = false;
+        this.width = "";
     }
     ready() {
         var context = this;
         super.ready();
+        context.isReady = true;
+        if (context.currentTime) {
+            context._currentTimeChanged(context.currentTime);
+        }
         if (context.autoStart) {
           context.start();
         }
     }
     reset() {
         this.elapsedTime = 0;
+    }
+    setWidth(width) {
+        if (width) {
+            return width + "px";
+        }
+        else {
+            return "";
+        }
     }
     start() {
         var context = this;
@@ -121,6 +150,26 @@ class digitalTimePiece extends PolymerElement {
           this.clockTimer = 0;
         }
     }
+
+    _currentTimeChanged(newValue) {
+        var context = this;
+        var testDate = "01/01/2000";
+        var validTime = new Date(Date.parse(testDate));
+        if (!context.isReady) {
+            return;
+        }
+        if (newValue) {
+            testDate += " " + newValue;
+            var newTime = new Date(Date.parse(testDate));
+            if (newTime.toString() !== "Invalid Date") {
+                validTime = newTime;
+            }
+        }
+        context.clockSeconds = validTime.getSeconds()
+        context.clockMinutes = validTime.getMinutes()
+        context.clockHours = validTime.getHours();
+    }
+
     _elapsedTimeChanged() {
         var context = this;
         if (context.clockTimer) {
@@ -173,6 +222,21 @@ class digitalTimePiece extends PolymerElement {
     _sizeChanged (newValue, oldValue) {
         var margin = parseInt(newValue * .05);
         this.updateStyles({'--cell-margin': "0 " + margin + "px 0 " + margin + "px"});
+    }
+    clickDigit(e) {
+        var context = this;
+        var event = e;
+    }
+    getCurrentTime(e) {
+        var context = this;
+        // e.stopPropagation();
+        context.dispatchEvent(new CustomEvent('click', { 
+            detail: {
+                hour: context.clockHours,
+                minute: context.clockMinutes,
+                second: context.clockSeconds
+            }
+        }));
     }
 }
 
