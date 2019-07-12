@@ -371,7 +371,7 @@ class VegaComponent extends PolymerElement {
 
       function dispatchEvent(event, interaction, vegaItem) {
         var rawItem = vegaItem ? vegaItem : { datum: {} };
-        var item = rawItem.datum;
+        var item = rawItem.datum ? rawItem.datum : {};
         var itemId = item.id;
         if (context.vegaDataMap[itemId]) {
           item = context.vegaDataMap[itemId];
@@ -433,13 +433,13 @@ class VegaComponent extends PolymerElement {
                               adjHeight = parseInt(context.originalHeight * scale) + "px";
                               translateY = (maxHeight * (1 - scale)) / -4;
                               translateY += padding * 2;
-                              transform = "translate(-50%,-50%) scale(" + scale + ")";
+                              transform = "translate(" + translateX + "px," + translateY + "px) scale(" + scale + ")"
                             }
                             else {
                               scale = vertScale;
                               translateX = (maxWidth * (1 - scale)) / -4;
                               translateX += padding * 2;
-                              transform = "translate(-50%,-50%) scale(" + scale + ")";
+                              transform = "translate(" + translateX + "px," + translateY + "px) scale(" + scale + ")"
                               // adjWidth = parseInt(context.originalWidth * scale) + "px";
                             }
                         }
