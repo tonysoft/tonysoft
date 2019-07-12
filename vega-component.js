@@ -433,12 +433,14 @@ class VegaComponent extends PolymerElement {
                               adjHeight = parseInt(context.originalHeight * scale) + "px";
                               translateY = (maxHeight * (1 - scale)) / -4;
                               translateY += padding * 2;
+                              translateY = (translateY > 0) ? 0 : translateY;
                               transform = "translate(" + translateX + "px," + translateY + "px) scale(" + scale + ")"
                             }
                             else {
                               scale = vertScale;
                               translateX = (maxWidth * (1 - scale)) / -4;
                               translateX += padding * 2;
+                              translateX = (translateX > 0) ? 0 : translateX;
                               transform = "translate(" + translateX + "px," + translateY + "px) scale(" + scale + ")"
                               // adjWidth = parseInt(context.originalWidth * scale) + "px";
                             }
