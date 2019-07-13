@@ -42,11 +42,18 @@ class digitalTimePiece extends PolymerElement {
                 justify-content: space-evenly;
                 align-items: center;
             }
+            .clock-components { 
+                display: flex; 
+                flex-direction: column; 
+                flex-wrap: wrap; 
+                justify-content: space-evenly;
+                align-items: center;
+            }
             .cellMargin {
                 margin: var(--cell-margin)
             }
             .timePicker {
-                border: 1 solid black;
+                border: 1px solid black;
                 background-color: #cccccc;
                 position: relative;
             }
@@ -65,139 +72,40 @@ class digitalTimePiece extends PolymerElement {
             .pickerTick {
                 width: 1px;
                 position: absolute;
-                top: 0%;
+                bottom: 0%;
                 left: 50%;
                 height: 100%;
                 background-color: black;
             }
-            .hoursTwelve {
-                left: 50%;
+            .tick100 {
+                height: 100%
             }
-            .hoursSix {
-                left: 25%;
-                height: 75%;
+            .tick75 {
+                height: 75%
             }
-            .hoursThree {
-                left: 12.5%;
-                height: 50%;
+            .tick50 {
+                height: 50%
             }
-            .hoursNine {
-                left: 37.5%;
-                height: 50%;
-            }
-            .hoursEighteen {
-                left: 75%;
-                height: 75%;
-            }
-            .hoursFifteen {
-                left: 62.5%;
-                height: 50%;
-            }
-            .hoursTwentyOne {
-                left: 87.5%;
-                height: 50%;
-            }
-            .hoursOne {
-                left: 4.166%;
-                height: 25%;
-            }
-            .hoursTwo {
-                left: 8.333%;
-                height: 25%;
-            }
-            .hoursFour {
-                left: 16.666%;
-                height: 25%;
-            }
-            .hoursFive {
-                left: 20.832%;
-                height: 25%;
-            }
-            .hoursSeven {
-                left: 29.166%;
-                height: 25%;
-            }
-            .hoursEight {
-                left: 33.333%;
-                height: 25%;
-            }
-            .hoursTen {
-                left: 41.666%;
-                height: 25%;
-            }
-            .hoursEleven {
-                left: 45.832%;
-                height: 25%;
-            }
-            .hoursThirteen {
-                left: 54.166%;
-                height: 25%;
-            }
-            .hoursFourteen {
-                left: 58.333%;
-                height: 25%;
-            }
-            .hoursSixteen {
-                left: 66.666%;
-                height: 25%;
-            }
-            .hoursSeventeen  {
-                left: 70.832%;
-                height: 25%;
-            }
-            .hoursNineteen {
-                left: 79.166%;
-                height: 25%;
-            }
-            .hoursTwenty {
-                left: 83.333%;
-                height: 25%;
-            }
-            .hoursTwentyTwo {
-                left: 91.666%;
-                height: 25%;
-            }
-            .hoursTwentyThree {
-                left: 95.832%;
-                height: 25%;
+            .tick25 {
+                height: 25%
             }
         </style>
-        <div class="relatively active noSelect digital-clock" style="width: [[setWidth(width)]];" on-click="getCurrentTime">
-          <digit-cell id="hourTens" class="cellMargin" size="[[size]]" value="0" max-value="2" on-click="clickDigit"></digit-cell>
-          <digit-cell id="hourOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
-          <div class="cellMargin"style="font-size: [[size]]px;">:</div>
-          <digit-cell id="minuteTens" class="cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
-          <digit-cell id="minuteOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
-          <div class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" style="font-size: [[size]]px;">:</div>
-          <digit-cell id="secondTens" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
-          <digit-cell id="secondOnes" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
+        <div class="relatively clock-components">
+            <div class="relatively active noSelect digital-clock" style="width: [[setWidth(width)]];" on-click="getCurrentTime">
+                <digit-cell id="hourTens" class="cellMargin" size="[[size]]" value="0" max-value="2" on-click="clickDigit"></digit-cell>
+                <digit-cell id="hourOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
+                <div class="cellMargin"style="font-size: [[size]]px;">:</div>
+                <digit-cell id="minuteTens" class="cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
+                <digit-cell id="minuteOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
+                <div class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" style="font-size: [[size]]px;">:</div>
+                <digit-cell id="secondTens" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
+                <digit-cell id="secondOnes" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
+            </div>
+            <div class$="timePicker pickerInvisible [[shouldShowPicker(timePicker)]]" style="width: [[setPickerWidth(timePicker)]]; height: [[setPickerHeight(width)]];" on-click="setCurrentTime">
+                <div class="pickerTick tick100" style="left: 50%;"></div>
+            </div>
         </div>
-        <div class$="timePicker pickerInvisible [[shouldShowPicker(timePicker)]]" style="width: [[setWidth(width)]]; height: [[setHeight(width)]];">
-            <div class="pickerTick hoursTwelve"></div>
-            <div class="pickerTick hoursSix"></div>
-            <div class="pickerTick hoursThree"></div>
-            <div class="pickerTick hoursNine"></div>
-            <div class="pickerTick hoursEighteen"></div>
-            <div class="pickerTick hoursTwentyOne"></div>
-            <div class="pickerTick hoursFifteen"></div>
-            <div class="pickerTick hoursOne"></div>
-            <div class="pickerTick hoursTwo"></div>
-            <div class="pickerTick hoursFour"></div>
-            <div class="pickerTick hoursFive"></div>
-            <div class="pickerTick hoursSeven"></div>
-            <div class="pickerTick hoursEight"></div>
-            <div class="pickerTick hoursTen"></div>
-            <div class="pickerTick hoursEleven"></div>
-            <div class="pickerTick hoursThirteen"></div>
-            <div class="pickerTick hoursFourteen"></div>
-            <div class="pickerTick hoursSixteen"></div>
-            <div class="pickerTick hoursSeventeen"></div>
-            <div class="pickerTick hoursNineteen"></div>
-            <div class="pickerTick hoursTwenty"></div>
-            <div class="pickerTick hoursTwentyTwo"></div>
-            <div class="pickerTick hoursTwentyThree"></div>
-        </div>
-        `;
+            `;
     }
     static get properties() {
         return {
@@ -247,7 +155,7 @@ class digitalTimePiece extends PolymerElement {
                 type: Boolean
             },
             timePicker: {
-                type: Boolean
+                type: Number
             }
         };
     }
@@ -265,7 +173,7 @@ class digitalTimePiece extends PolymerElement {
         this.width = "";
         this.incrementDecrement = false;
         this.hideSeconds = false;
-        this.timePicker = false;
+        this.timePicker = 0;
     }
     ready() {
         var context = this;
@@ -278,6 +186,7 @@ class digitalTimePiece extends PolymerElement {
         if (context.autoStart) {
           context.start();
         }
+        context.addTicks();
     }
     reset() {
         this.elapsedTime = 0;
@@ -288,6 +197,42 @@ class digitalTimePiece extends PolymerElement {
             return "secondsInvisible";
         } else {
             return "";
+        }
+    }
+    addTicks() {
+        var  context = this;
+        if (context.timePicker) {
+            if (context.shadowRoot) {
+                var picker = context.shadowRoot.querySelector(".timePicker");
+                var tickTemplate = picker.innerHTML;
+                var ticks = "";
+                for (var i = 1; i < 24; i++) {
+                    var tick = tickTemplate;
+                    var left = i * 4.166;
+                    var height = "tick100";
+                    var tickType = i % 6;
+                    switch (tickType) {
+                        case 0:
+                            height = "tick75";
+                            break;
+                        case 1:
+                        case 2:
+                        case 4:
+                        case 5:
+                            height = "tick25";
+                            break;
+                        case 3:
+                            height = "tick50";
+                            break;
+                    }
+                    if (i !== 12) {
+                        tick = tick.replace("50", left);
+                        tick = tick.replace("tick100", height);
+                    }
+                    ticks += tick;
+                }
+                picker.innerHTML = ticks;
+            }
         }
     }
     shouldShowPicker(timePicker) {
@@ -313,9 +258,17 @@ class digitalTimePiece extends PolymerElement {
             return "";
         }
     }
-    setHeight(width) {
+    setPickerHeight(width) {
         if (width) {
-            return parseInt(width / 12) + "px";
+            return parseInt(width / 9) + "px";
+        }
+        else {
+            return "";
+        }
+    }
+    setPickerWidth(timePicker) {
+        if (timePicker) {
+            return timePicker + "px";
         }
         else {
             return "";
@@ -430,6 +383,32 @@ class digitalTimePiece extends PolymerElement {
             default:
                 break;
         }
+    }
+    setCurrentTime(e) {
+        var context = this;
+        e.stopPropagation();
+        var timePicker = e.srcElement;
+        var width = timePicker.offsetWidth;
+        var xOffset = e.offsetX;
+        var height = timePicker.offsetHeight;
+        var yOffset = e.offsetY;
+        var hour = parseInt(xOffset * 24 / width);
+        var minutes = 0;
+        if (yOffset < (height / 2)) {
+            var hourWidth = width / 24;
+            var offsetWithinHour = xOffset - (hour * hourWidth);
+            var pctIntoHour = parseInt(offsetWithinHour / hourWidth * 100);
+            if (pctIntoHour > 75) {
+                minutes = 45;
+            } else if (pctIntoHour > 50) {
+                minutes = 30;
+            } else if (pctIntoHour > 25) {
+                minutes = 15
+            }
+        }
+        context.clockSeconds = 0;
+        context.clockMinutes = minutes;
+        context.clockHours = hour;
     }
     getCurrentTime(e) {
         var context = this;
