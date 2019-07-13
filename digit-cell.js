@@ -122,6 +122,9 @@ class digitCell extends PolymerElement {
             },
             incrementDecrement: {
                 type: Boolean
+            },
+            direction: {
+                type: Number
             }
         };
     }
@@ -131,6 +134,7 @@ class digitCell extends PolymerElement {
         this.maxValue = 9;
         this.size = 100;
         this.incrementDecrement = false;
+        this.direction = 0;
     }
     incDecVisible(incrementDecrement) {
         var context = this;
@@ -250,7 +254,7 @@ class digitCell extends PolymerElement {
         this.updateStyles({'--icon-size': iconSize + "px"});
         var bump = parseInt(newValue * 1.10 * .20) * -1;
         this.updateStyles({'--inc-vert-bump': bump + "px"});
-        bump = parseInt(newValue * .20);
+        bump = parseInt(newValue * .07);
         this.updateStyles({'--dec-vert-bump': bump + "px"});
         bump = parseInt(newValue * .05) * -1;
         this.updateStyles({'--inc-horz-bump': bump + "px"});
@@ -269,7 +273,8 @@ class digitCell extends PolymerElement {
             value++;
         }
         digitCell.value = value;
-        digitCell.getValue(e);
+        digitCell.direction = 1;
+        digitCell.fireEvent(value, 1)
     }
     decrement(e) {
         var digitCell = this;
@@ -282,13 +287,19 @@ class digitCell extends PolymerElement {
             value--;
         }
         digitCell.value = value;
-        digitCell.getValue(e);
+        digitCell.direction = -1;
+        digitCell.fireEvent(value, -1)
     }
     getValue(e) {
         var context = this;
         // e.stopPropagation();
+        context.direction = 0;
+        context.fireEvent(context.value, 0)
+    }
+    fireEvent(value, direction) {
+        var context = this;
         context.dispatchEvent(new CustomEvent('click', { 
-            detail: context.value
+            detail: { value: value, direction: direction }
         }));
     }
 }

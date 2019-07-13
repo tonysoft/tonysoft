@@ -1,5 +1,7 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {digitCell} from 'tonysoft/digit-cell.js';
+import '@polymer/iron-icon/iron-icon.js';
+import 'tonysoft/iron-icons.js'
 
 /**
  * `digital-time-piece`
@@ -16,6 +18,7 @@ class digitalTimePiece extends PolymerElement {
             :host {
                 display: block;
                 --cell-margin: 0 2px 0 2px;
+                --icon-size: 24px;
             }
             .absolutely {
                 position: absolute;
@@ -89,6 +92,10 @@ class digitalTimePiece extends PolymerElement {
             .tick25 {
                 height: 25%
             }
+            .iconSize {
+                --iron-icon-height: var(--icon-size);
+                --iron-icon-width: var(--icon-size);
+            }
         </style>
         <div class="relatively clock-components">
             <div class="relatively active noSelect digital-clock" style="width: [[setWidth(width)]];" on-click="getCurrentTime">
@@ -100,8 +107,9 @@ class digitalTimePiece extends PolymerElement {
                 <div class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" style="font-size: [[size]]px;">:</div>
                 <digit-cell id="secondTens" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
                 <digit-cell id="secondOnes" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
+                <div class$="[[shouldShowPicker(timePicker)]] cellMargin" on-click="displayTimePicker"><iron-icon icon="schedule" class="iconSize"></div>
             </div>
-            <div class$="timePicker pickerInvisible [[shouldShowPicker(timePicker)]]" style="width: [[setPickerWidth(timePicker)]]; height: [[setPickerHeight(width)]];" on-click="setCurrentTime">
+            <div class="timePicker pickerInvisible" style="width: [[setPickerWidth(timePicker)]]; height: [[setPickerHeight(width)]];" on-click="setCurrentTime">
                 <div class="pickerTick tick100" style="left: 50%;"></div>
             </div>
         </div>
@@ -197,6 +205,19 @@ class digitalTimePiece extends PolymerElement {
             return "secondsInvisible";
         } else {
             return "";
+        }
+    }
+
+    displayTimePicker(e) {
+        var context = this;
+        e.stopPropagation();
+        var picker = context.shadowRoot.querySelector(".timePicker");
+        var classList = picker.classList;
+        if (classList.value.indexOf("pickerVisible") < 0) {
+            picker.classList.add("pickerVisible");
+        } else {
+            picker.classList.remove("pickerVisible");
+            context.currentTimeEvent();
         }
     }
     addTicks() {
@@ -360,6 +381,7 @@ class digitalTimePiece extends PolymerElement {
     _sizeChanged (newValue, oldValue) {
         var margin = parseInt(newValue * .05);
         this.updateStyles({'--cell-margin': "0 " + margin + "px 0 " + margin + "px"});
+        this.updateStyles({'--icon-size': parseInt(this.size * .75) + "px"});
     }
     clickDigit(e) {
         var context = this;
@@ -368,21 +390,46 @@ class digitalTimePiece extends PolymerElement {
         switch (id) {
             case "hourOnes":
                 var hourTens = context.shadowRoot.querySelector("#hourTens");
-                if ((digit.value > 3) && (hourTens.value > 1)) {
+                if ((digit.direction > 0) && (digit.value > 3) && (hourTens.value > 1)) {
                     digit.value = 3;
-                }
-                break;
-            case "hourTens":
-                if (digit.value > 1) {
-                    var hourOnes = context.shadowRoot.querySelector("#hourOnes");
-                    if (hourOnes.value > 3) {
-                        hourOnes.value = 0;
+                } else {
+                    if ((digit.value === 0) && (digit.direction > 0) && (hourTens.value < 2)) {
+                        hourTens.value++;
+                    }
+                    if ((digit.value === 9) && (digit.direction < 0) && (hourTens.value > 0)) {
+                        hourTens.value--;
                     }
                 }
                 break;
+            case "minuteOnes":
+                var minuteTens = context.shadowRoot.querySelector("#minuteTens");
+                if ((digit.value === 0) && (digit.direction > 0) && (minuteTens.value < 5)) {
+                    minuteTens.value++;
+                }
+                if ((digit.value === 9) && (digit.direction < 0) && (minuteTens.value > 0)) {
+                    minuteTens.value--;
+                }
+                break;
+            case "hourTens":
+                    if (digit.value > 1) {
+                        var hourOnes = context.shadowRoot.querySelector("#hourOnes");
+                        if (hourOnes.value > 3) {
+                            hourOnes.value = 0;
+                        }
+                    }
+                    break;
+            // case "minuteTens":
+            //     if (digit.value > 1) {
+            //         var minuteOnes = context.shadowRoot.querySelector("#minuteOnes");
+            //         if (minuteOnes.value > 3) {
+            //             minuteOnes.value = 0;
+            //         }
+            //     }
+            //     break;
             default:
                 break;
         }
+        context.currentTimeEvent();
     }
     setCurrentTime(e) {
         var context = this;
@@ -409,10 +456,15 @@ class digitalTimePiece extends PolymerElement {
         context.clockSeconds = 0;
         context.clockMinutes = minutes;
         context.clockHours = hour;
+        context.currentTimeEvent();
     }
     getCurrentTime(e) {
         var context = this;
-        // e.stopPropagation();
+        e.stopPropagation();
+        context.currentTimeEvent();
+    }
+    currentTimeEvent() {
+        var context = this;
         context.dispatchEvent(new CustomEvent('currentTime', { 
             detail: {
                 hour: context.clockHours,
