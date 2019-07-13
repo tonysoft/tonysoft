@@ -97,6 +97,70 @@ class digitalTimePiece extends PolymerElement {
                 left: 87.5%;
                 height: 50%;
             }
+            .hoursOne {
+                left: 4.166%;
+                height: 25%;
+            }
+            .hoursTwo {
+                left: 8.333%;
+                height: 25%;
+            }
+            .hoursFour {
+                left: 16.666%;
+                height: 25%;
+            }
+            .hoursFive {
+                left: 20.832%;
+                height: 25%;
+            }
+            .hoursSeven {
+                left: 29.166%;
+                height: 25%;
+            }
+            .hoursEight {
+                left: 33.333%;
+                height: 25%;
+            }
+            .hoursTen {
+                left: 41.666%;
+                height: 25%;
+            }
+            .hoursEleven {
+                left: 45.832%;
+                height: 25%;
+            }
+            .hoursThirteen {
+                left: 54.166%;
+                height: 25%;
+            }
+            .hoursFourteen {
+                left: 58.333%;
+                height: 25%;
+            }
+            .hoursSixteen {
+                left: 66.666%;
+                height: 25%;
+            }
+            .hoursSeventeen  {
+                left: 70.832%;
+                height: 25%;
+            }
+            .hoursNineteen {
+                left: 79.166%;
+                height: 25%;
+            }
+            .hoursTwenty {
+                left: 83.333%;
+                height: 25%;
+            }
+            .hoursTwentyTwo {
+                left: 91.666%;
+                height: 25%;
+            }
+            .hoursTwentyThree {
+                left: 95.832%;
+                height: 25%;
+            }
         </style>
         <div class="relatively active noSelect digital-clock" style="width: [[setWidth(width)]];" on-click="getCurrentTime">
           <digit-cell id="hourTens" class="cellMargin" size="[[size]]" value="0" max-value="2" on-click="clickDigit"></digit-cell>
@@ -116,6 +180,22 @@ class digitalTimePiece extends PolymerElement {
             <div class="pickerTick hoursEighteen"></div>
             <div class="pickerTick hoursTwentyOne"></div>
             <div class="pickerTick hoursFifteen"></div>
+            <div class="pickerTick hoursOne"></div>
+            <div class="pickerTick hoursTwo"></div>
+            <div class="pickerTick hoursFour"></div>
+            <div class="pickerTick hoursFive"></div>
+            <div class="pickerTick hoursSeven"></div>
+            <div class="pickerTick hoursEight"></div>
+            <div class="pickerTick hoursTen"></div>
+            <div class="pickerTick hoursEleven"></div>
+            <div class="pickerTick hoursThirteen"></div>
+            <div class="pickerTick hoursFourteen"></div>
+            <div class="pickerTick hoursSixteen"></div>
+            <div class="pickerTick hoursSeventeen"></div>
+            <div class="pickerTick hoursNineteen"></div>
+            <div class="pickerTick hoursTwenty"></div>
+            <div class="pickerTick hoursTwentyTwo"></div>
+            <div class="pickerTick hoursTwentyThree"></div>
         </div>
         `;
     }
