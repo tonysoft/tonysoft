@@ -45,16 +45,77 @@ class digitalTimePiece extends PolymerElement {
             .cellMargin {
                 margin: var(--cell-margin)
             }
+            .timePicker {
+                border: 1 solid black;
+                background-color: #cccccc;
+                position: relative;
+            }
+            .secondsVisible {
+                display: ;
+            }
+            .secondsInvisible {
+                display:none;
+            }
+            .pickerInvisible {
+                display:none;
+            }
+            .pickerVisible {
+                display: block;
+            }
+            .pickerTick {
+                width: 1px;
+                position: absolute;
+                top: 0%;
+                left: 50%;
+                height: 100%;
+                background-color: black;
+            }
+            .hoursTwelve {
+                left: 50%;
+            }
+            .hoursSix {
+                left: 25%;
+                height: 75%;
+            }
+            .hoursThree {
+                left: 12.5%;
+                height: 50%;
+            }
+            .hoursNine {
+                left: 37.5%;
+                height: 50%;
+            }
+            .hoursEighteen {
+                left: 75%;
+                height: 75%;
+            }
+            .hoursFifteen {
+                left: 62.5%;
+                height: 50%;
+            }
+            .hoursTwentyOne {
+                left: 87.5%;
+                height: 50%;
+            }
         </style>
         <div class="relatively active noSelect digital-clock" style="width: [[setWidth(width)]];" on-click="getCurrentTime">
           <digit-cell id="hourTens" class="cellMargin" size="[[size]]" value="0" max-value="2" on-click="clickDigit"></digit-cell>
           <digit-cell id="hourOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
-          <div  class="cellMargin"style="font-size: [[size]]px;">:</div>
+          <div class="cellMargin"style="font-size: [[size]]px;">:</div>
           <digit-cell id="minuteTens" class="cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
           <digit-cell id="minuteOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
-          <div  class="cellMargin"style="font-size: [[size]]px;">:</div>
-          <digit-cell id="secondTens" class="cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
-          <digit-cell id="secondOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
+          <div class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" style="font-size: [[size]]px;">:</div>
+          <digit-cell id="secondTens" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
+          <digit-cell id="secondOnes" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
+        </div>
+        <div class$="timePicker pickerInvisible [[shouldShowPicker(timePicker)]]" style="width: [[setWidth(width)]]; height: [[setHeight(width)]];">
+            <div class="pickerTick hoursTwelve"></div>
+            <div class="pickerTick hoursSix"></div>
+            <div class="pickerTick hoursThree"></div>
+            <div class="pickerTick hoursNine"></div>
+            <div class="pickerTick hoursEighteen"></div>
+            <div class="pickerTick hoursTwentyOne"></div>
+            <div class="pickerTick hoursFifteen"></div>
         </div>
         `;
     }
@@ -101,6 +162,12 @@ class digitalTimePiece extends PolymerElement {
             },
             incrementDecrement: {
                 type: Boolean
+            },
+            hideSeconds: {
+                type: Boolean
+            },
+            timePicker: {
+                type: Boolean
             }
         };
     }
@@ -117,6 +184,8 @@ class digitalTimePiece extends PolymerElement {
         this.isReady = false;
         this.width = "";
         this.incrementDecrement = false;
+        this.hideSeconds = false;
+        this.timePicker = false;
     }
     ready() {
         var context = this;
@@ -133,6 +202,22 @@ class digitalTimePiece extends PolymerElement {
     reset() {
         this.elapsedTime = 0;
     }
+    shouldHideSeconds(hideSeconds) {
+        var context = this;
+        if (hideSeconds) {
+            return "secondsInvisible";
+        } else {
+            return "";
+        }
+    }
+    shouldShowPicker(timePicker) {
+        var context = this;
+        if (timePicker) {
+            return "pickerVisible";
+        } else {
+            return "";
+        }
+    }
     hasIncrementDecrement(incrementDecrement) {
         var context = this;
         var digitCells = context.shadowRoot.querySelectorAll("digit-cell");
@@ -143,6 +228,14 @@ class digitalTimePiece extends PolymerElement {
     setWidth(width) {
         if (width) {
             return width + "px";
+        }
+        else {
+            return "";
+        }
+    }
+    setHeight(width) {
+        if (width) {
+            return parseInt(width / 12) + "px";
         }
         else {
             return "";
@@ -237,7 +330,26 @@ class digitalTimePiece extends PolymerElement {
     }
     clickDigit(e) {
         var context = this;
-        var event = e;
+        var digit = e.srcElement;
+        var id = digit.id;
+        switch (id) {
+            case "hourOnes":
+                var hourTens = context.shadowRoot.querySelector("#hourTens");
+                if ((digit.value > 3) && (hourTens.value > 1)) {
+                    digit.value = 3;
+                }
+                break;
+            case "hourTens":
+                if (digit.value > 1) {
+                    var hourOnes = context.shadowRoot.querySelector("#hourOnes");
+                    if (hourOnes.value > 3) {
+                        hourOnes.value = 0;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
     }
     getCurrentTime(e) {
         var context = this;
