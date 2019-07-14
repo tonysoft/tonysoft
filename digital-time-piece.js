@@ -281,7 +281,7 @@ class digitalTimePiece extends PolymerElement {
     }
     setPickerHeight(width) {
         if (width) {
-            return parseInt(width / 9) + "px";
+            return parseInt(width / 6) + "px";
         }
         else {
             return "";
