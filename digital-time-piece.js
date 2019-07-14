@@ -84,6 +84,7 @@ class digitalTimePiece extends PolymerElement {
                 left: 50%;
                 height: 100%;
                 background-color: black;
+                pointer-events: none;
             }
             .pickerLabel {
                 pointer-events: none;
