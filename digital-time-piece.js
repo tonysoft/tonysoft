@@ -19,6 +19,7 @@ class digitalTimePiece extends PolymerElement {
                 display: block;
                 --cell-margin: 0 2px 0 2px;
                 --icon-size: 24px;
+                --picker-label: 12px;
             }
             .absolutely {
                 position: absolute;
@@ -60,6 +61,10 @@ class digitalTimePiece extends PolymerElement {
                 background-color: #cccccc;
                 position: relative;
             }
+            .timePickerLabels {
+                position: relative;
+                user-select: none;
+            }
             .secondsVisible {
                 display: ;
             }
@@ -80,6 +85,9 @@ class digitalTimePiece extends PolymerElement {
                 height: 100%;
                 background-color: black;
             }
+            .pickerLabel {
+                pointer-events: none;
+            }
             .tick100 {
                 height: 100%
             }
@@ -91,6 +99,11 @@ class digitalTimePiece extends PolymerElement {
             }
             .tick25 {
                 height: 25%
+            }
+            .pickerLabel {
+                position: absolute;
+                font-size: var(--picker-label);
+                text-align: center;
             }
             .iconSize {
                 --iron-icon-height: var(--icon-size);
@@ -109,8 +122,13 @@ class digitalTimePiece extends PolymerElement {
                 <digit-cell id="secondOnes" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
                 <div class$="pickerInvisible [[shouldShowPicker(timePicker)]] cellMargin" on-click="displayTimePicker"><iron-icon icon="schedule" class="iconSize"></div>
             </div>
-            <div class="timePicker pickerInvisible" style="width: [[setPickerWidth(timePicker)]]; height: [[setPickerHeight(width)]];" on-click="setCurrentTime">
-                <div class="pickerTick tick100" style="left: 50%;"></div>
+            <div class$="timePickerWrapper pickerInvisible [[shouldShowPicker(timePicker)]]" style="width: [[setPickerWidth(timePicker)]];">
+                <div class="timePicker" style="width: [[setPickerWidth(timePicker)]]; height: [[setPickerHeight(width)]];" on-click="setCurrentTime">
+                    <div class="pickerTick tick100" style="left: 50%;"></div>
+                </div>
+                <div id="timePickerLabels" class="timePickerLabels" style="width: [[setPickerWidth(timePicker)]]; height: [[setPickerHeight(width)]];" on-click="setCurrentTime">
+                    <div class="pickerLabel" style="left: 50%; width: 4.166%;">XX</div>
+                </div>
             </div>
         </div>
             `;
@@ -211,7 +229,7 @@ class digitalTimePiece extends PolymerElement {
     displayTimePicker(e) {
         var context = this;
         e.stopPropagation();
-        var picker = context.shadowRoot.querySelector(".timePicker");
+        var picker = context.shadowRoot.querySelector(".timePickerWrapper");
         var classList = picker.classList;
         if (classList.value.indexOf("pickerVisible") < 0) {
             picker.classList.add("pickerVisible");
@@ -225,8 +243,23 @@ class digitalTimePiece extends PolymerElement {
         if (context.timePicker) {
             if (context.shadowRoot) {
                 var picker = context.shadowRoot.querySelector(".timePicker");
+                var pickerLabels = context.shadowRoot.querySelector(".timePickerLabels");
                 var tickTemplate = picker.innerHTML;
+                var labelTemplate = pickerLabels.innerHTML;
                 var ticks = "";
+                var labels = "";
+                for (var i = 0; i < 24; i++) {
+                    var label = labelTemplate;
+                    var label = labelTemplate;
+                    var labelLeft = i * 4.166;
+                    label = label.replace("50", labelLeft);
+                    if (i && ((i % 3) === 0)) {
+                        label = label.replace("XX", i);
+                    } else {
+                        label = label.replace("XX", "");
+                    }
+                    labels += label;
+                }
                 for (var i = 1; i < 24; i++) {
                     var tick = tickTemplate;
                     var left = i * 4.166;
@@ -253,6 +286,7 @@ class digitalTimePiece extends PolymerElement {
                     ticks += tick;
                 }
                 picker.innerHTML = ticks;
+                pickerLabels.innerHTML = labels;
             }
         }
     }
@@ -382,6 +416,8 @@ class digitalTimePiece extends PolymerElement {
         var margin = parseInt(newValue * .05);
         this.updateStyles({'--cell-margin': "0 " + margin + "px 0 " + margin + "px"});
         this.updateStyles({'--icon-size': parseInt(this.size * .75) + "px"});
+        this.updateStyles({'--picker-label': parseInt(this.size * .375) + "px"});
+        
     }
     clickDigit(e) {
         var context = this;
@@ -435,13 +471,14 @@ class digitalTimePiece extends PolymerElement {
         var context = this;
         e.stopPropagation();
         var timePicker = e.srcElement;
+        var id = timePicker.id;
         var width = timePicker.offsetWidth;
         var xOffset = e.offsetX;
         var height = timePicker.offsetHeight;
         var yOffset = e.offsetY;
         var hour = parseInt(xOffset * 24 / width);
         var minutes = 0;
-        if (yOffset < (height / 2)) {
+        if (!id && (yOffset < (height / 2))) {
             var hourWidth = width / 24;
             var offsetWithinHour = xOffset - (hour * hourWidth);
             var pctIntoHour = parseInt(offsetWithinHour / hourWidth * 100);
