@@ -122,7 +122,7 @@ class digitalTimePiece extends PolymerElement {
                 <digit-cell id="secondOnes" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
                 <div class$="pickerInvisible [[shouldShowPicker(timePicker)]] cellMargin" on-click="displayTimePicker"><iron-icon icon="schedule" class="iconSize"></div>
             </div>
-            <div class$="timePickerWrapper pickerInvisible [[shouldShowPicker(timePicker)]]" style="width: [[setPickerWidth(timePicker)]];">
+            <div class="timePickerWrapper pickerInvisible" style="width: [[setPickerWidth(timePicker)]];">
                 <div class="timePicker" style="width: [[setPickerWidth(timePicker)]]; height: [[setPickerHeight(width)]];" on-click="setCurrentTime">
                     <div class="pickerTick tick100" style="left: 50%;"></div>
                 </div>
