@@ -292,7 +292,7 @@ class digitCell extends PolymerElement {
     }
     getValue(e) {
         var context = this;
-        // e.stopPropagation();
+        e.stopPropagation();
         context.direction = 0;
         context.dispatchEvent(new CustomEvent('click', { 
             detail: { value: context.value }
