@@ -53,7 +53,7 @@ class digitCell extends PolymerElement {
             }
             .incDecVisible {
                 display: block;
-                opacity: .10;
+                opacity: .20;
             }
             .bumpDecrement {
                 position: relative;
