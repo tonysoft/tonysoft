@@ -123,6 +123,9 @@ class digitCell extends PolymerElement {
             incrementDecrement: {
                 type: Boolean
             },
+            clickEvent: {
+                type: Boolean
+            },
             direction: {
                 type: Number
             }
@@ -134,6 +137,7 @@ class digitCell extends PolymerElement {
         this.maxValue = 9;
         this.size = 100;
         this.incrementDecrement = false;
+        this.clickEvent = false;
         this.direction = 0;
     }
     incDecVisible(incrementDecrement) {
