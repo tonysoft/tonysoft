@@ -67,8 +67,8 @@ class digitCell extends PolymerElement {
             }
         </style>
         <div>
-            <div class$="digitWidth bumpDecrement incDecInvisible [[incDecVisible(incrementDecrement)]]" on-click="decrement"><iron-icon icon="arrow-drop-down" class="iconSize"></iron-icon></div>
-            <div class="relatively inert noSelect" style="width: [[width]]px; height: [[height]]px;" on-click="getValue">
+        <div class$="digitWidth bumpIncrement incDecInvisible [[incDecVisible(incrementDecrement)]]" on-click="increment"><iron-icon icon="arrow-drop-up" class="iconSize"></iron-icon></div>
+        <div class="relatively inert noSelect" style="width: [[width]]px; height: [[height]]px;" on-click="getValue">
                 <span class="svg digit">
                 <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" class="q" viewBox="4 1 12.613149 22.785754" version="1.1" id="svg3751" sodipodi:docname="digit.svg" inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
                     <g id="digit" inkscape:label="">
@@ -98,7 +98,7 @@ class digitCell extends PolymerElement {
                 </svg>
             </span>
           </div>
-          <div class$="digitWidth bumpIncrement incDecInvisible [[incDecVisible(incrementDecrement)]]" on-click="increment"><iron-icon icon="arrow-drop-up" class="iconSize"></iron-icon></div>
+          <div class$="digitWidth bumpDecrement incDecInvisible [[incDecVisible(incrementDecrement)]]" on-click="decrement"><iron-icon icon="arrow-drop-down" class="iconSize"></iron-icon></div>
           </div>
         `;
     }
@@ -252,13 +252,13 @@ class digitCell extends PolymerElement {
         this.height = newValue;
         var iconSize = parseInt(newValue * .55);
         this.updateStyles({'--icon-size': iconSize + "px"});
-        var bump = parseInt(newValue * 1.10 * .20) * -1;
+        var bump = parseInt(newValue * .15);
         this.updateStyles({'--inc-vert-bump': bump + "px"});
-        bump = parseInt(newValue * .07);
+        bump = parseInt(newValue * .15) * -1;
         this.updateStyles({'--dec-vert-bump': bump + "px"});
-        bump = parseInt(newValue * .05) * -1;
-        this.updateStyles({'--inc-horz-bump': bump + "px"});
         bump = parseInt(newValue * .05);
+        this.updateStyles({'--inc-horz-bump': bump + "px"});
+        bump = parseInt(newValue * .05) * -1;
         this.updateStyles({'--dec-horz-bump': bump + "px"});
         
     }
