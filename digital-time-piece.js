@@ -141,10 +141,10 @@ class digitalTimePiece extends PolymerElement {
                 observer: '_sizeChanged'
             },
             clockMode: {
-             type: Boolean
+             type: Number
             },
             autoStart: {
-                type: Boolean
+                type: Number
             },
             currentTime: {
                 type: String,
@@ -176,10 +176,10 @@ class digitalTimePiece extends PolymerElement {
                 type: String
             },
             incrementDecrement: {
-                type: Boolean
+                type: Number
             },
             hideSeconds: {
-                type: Boolean
+                type: Number
             },
             timePicker: {
                 type: Number
@@ -191,15 +191,16 @@ class digitalTimePiece extends PolymerElement {
         this.size = 50;
         this.reset();
         this.optionalDisplayScale = 1.0;
-        this.clockMode = true;
+        this.clockMode = 1;
         this.clockSeconds = 0;
         this.clockMinutes = 0;
         this.clockHours = 0; 
         this.currentTime = ""; 
         this.isReady = false;
         this.width = "";
-        this.incrementDecrement = false;
-        this.hideSeconds = false;
+        this.autoStart = 0;
+        this.incrementDecrement = 0;
+        this.hideSeconds = 0;
         this.timePicker = 0;
     }
     ready() {
