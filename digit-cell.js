@@ -274,7 +274,7 @@ class digitCell extends PolymerElement {
         }
         digitCell.value = value;
         digitCell.direction = 1;
-        digitCell.fireEvent(value, 1)
+        digitCell.fireEvent(value, 1);
     }
     decrement(e) {
         var digitCell = this;
@@ -288,14 +288,14 @@ class digitCell extends PolymerElement {
         }
         digitCell.value = value;
         digitCell.direction = -1;
-        digitCell.fireEvent(value, -1)
+        digitCell.fireEvent(value, -1);
     }
     getValue(e) {
         var context = this;
         // e.stopPropagation();
         context.direction = 0;
         context.dispatchEvent(new CustomEvent('click', { 
-            detail: { value: value }
+            detail: { value: context.value }
         }));
     }
     fireEvent(value, direction) {
