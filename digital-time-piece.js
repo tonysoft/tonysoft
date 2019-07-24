@@ -208,8 +208,8 @@ class digitalTimePiece extends PolymerElement {
         context.isReady = true;
         if (context.currentTime) {
             context._currentTimeChanged(context.currentTime);
-            context.hasIncrementDecrement(context.incrementDecrement);
         }
+        context.hasIncrementDecrement(context.incrementDecrement);
         if (context.autoStart) {
           context.start();
         }
