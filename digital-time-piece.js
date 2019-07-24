@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {digitCell} from 'tonysoft/digit-cell.js';
+// import {digitCell} from 'tonysoft/digit-cell.js';
 import '@polymer/iron-icon/iron-icon.js';
 import 'tonysoft/iron-icons.js'
 
