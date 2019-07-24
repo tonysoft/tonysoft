@@ -113,14 +113,14 @@ class digitalTimePiece extends PolymerElement {
         </style>
         <div class="relatively clock-components">
             <div class="relatively active noSelect digital-clock" style="width: [[setWidth(width)]];" on-click="getCurrentTime">
-                <digit-cell id="hourTens" class="cellMargin" size="[[size]]" value="0" max-value="2" on-click="clickDigit"></digit-cell>
-                <digit-cell id="hourOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
+                <digit-cell id="hourTens" class="cellMargin" size="[[size]]" value="0" max-value="2" on-changed="clickDigit"></digit-cell>
+                <digit-cell id="hourOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-changed="clickDigit"></digit-cell>
                 <div class="cellMargin"style="font-size: [[size]]px;">:</div>
-                <digit-cell id="minuteTens" class="cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
-                <digit-cell id="minuteOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
+                <digit-cell id="minuteTens" class="cellMargin" size="[[size]]" value="0" max-value="5" on-changed="clickDigit"></digit-cell>
+                <digit-cell id="minuteOnes" class="cellMargin" size="[[size]]" value="0" max-value="9" on-changed="clickDigit"></digit-cell>
                 <div class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" style="font-size: [[size]]px;">:</div>
-                <digit-cell id="secondTens" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="5" on-click="clickDigit"></digit-cell>
-                <digit-cell id="secondOnes" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="9" on-click="clickDigit"></digit-cell>
+                <digit-cell id="secondTens" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="5" on-changed="clickDigit"></digit-cell>
+                <digit-cell id="secondOnes" class$="secondsVisible [[shouldHideSeconds(hideSeconds)]] cellMargin" size="[[size]]" value="0" max-value="9" on-changed="clickDigit"></digit-cell>
                 <div class$="pickerInvisible [[shouldShowPicker(timePicker)]] cellMargin" on-click="displayTimePicker"><iron-icon icon="schedule" class="iconSize"></div>
             </div>
             <div class="timePickerWrapper pickerInvisible" style="width: [[setPickerWidth(timePicker)]];">
@@ -141,10 +141,10 @@ class digitalTimePiece extends PolymerElement {
                 observer: '_sizeChanged'
             },
             clockMode: {
-             type: Number
+             type: Boolean
             },
             autoStart: {
-                type: Number
+                type: Boolean
             },
             currentTime: {
                 type: String,
@@ -176,10 +176,10 @@ class digitalTimePiece extends PolymerElement {
                 type: String
             },
             incrementDecrement: {
-                type: Number
+                type: Boolean
             },
             hideSeconds: {
-                type: Number
+                type: Boolean
             },
             timePicker: {
                 type: Number
@@ -191,16 +191,15 @@ class digitalTimePiece extends PolymerElement {
         this.size = 50;
         this.reset();
         this.optionalDisplayScale = 1.0;
-        this.clockMode = 1;
+        this.clockMode = true;
         this.clockSeconds = 0;
         this.clockMinutes = 0;
         this.clockHours = 0; 
         this.currentTime = ""; 
         this.isReady = false;
         this.width = "";
-        this.autoStart = 0;
-        this.incrementDecrement = 0;
-        this.hideSeconds = 0;
+        this.incrementDecrement = false;
+        this.hideSeconds = false;
         this.timePicker = 0;
     }
     ready() {
