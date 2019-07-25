@@ -80,6 +80,7 @@
         this.map = new google.maps.Map(this, this.mapOptions);
         this.dispatchEvent(new CustomEvent('google-map-ready', { detail: this.map }));
         if (context.markers) {
+            var markerCount = context.markers.length;
             const latLngBounds = new google.maps.LatLngBounds();
             context.markers.forEach(function(marker) {
                 addMarker(marker);
@@ -90,7 +91,7 @@
                 var aMarker = new google.maps.Marker({
                     position: marker.location,
                     map: context.map,
-                    title: marker.id
+                    title: marker.title || marker.id
                 });
                 aMarker.addListener('click', function() {
                     context.map.setZoom(8);
@@ -107,8 +108,10 @@
                 if (context.authoring && !context.markerJustAdded) {
                     context.markerJustAdded = true;
                     var now = new Date();
-                    var newMarker = { id: now.getTime().toString(), location: { lat: e.latLng.lat(), lng: e.latLng.lng() }};
+                    markerCount++;
+                    var newMarker = { id: now.getTime().toString(), title: "Marker " + markerCount, location: { lat: e.latLng.lat(), lng: e.latLng.lng() }};
                     addMarker(newMarker);
+                    context.dispatchEvent(new CustomEvent('new-marker', { detail: newMarker }));
                 } else {
                     if (context.authoring) {
                         context.markerJustAdded = false;
