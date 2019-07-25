@@ -69,10 +69,6 @@ class VegaComponent extends PolymerElement {
         vegaDataMap: {
           type: Object
         },
-        data: {
-          type: String,
-          observer: '_dataChanged'
-        },
         vegaView: {
           type: Object
         },
@@ -94,11 +90,14 @@ class VegaComponent extends PolymerElement {
             type: Number
         },
         bestFit: {
-            type: Boolean
+          type: Boolean
+        },
+        internalEvents: {
+          type: Boolean
         },
         lastScale: {
           type: Number
-        },
+          },
         originalWidth: {
           type: Number
         },
@@ -121,6 +120,7 @@ class VegaComponent extends PolymerElement {
       this.vegaDataMap = {};
       this.resizeInterval = 0;
       this.bestFit = false;
+      this.internalEvents = false;
     }
 
     _vegaSpecChanged(newValue) {
@@ -244,6 +244,9 @@ class VegaComponent extends PolymerElement {
     internalInteraction(interaction, rawItem) {
         var context = this;
         var handled = false;
+        if (!context.internalEvents) {
+          return handled;
+        }
         var item = rawItem ? rawItem.datum : null;
         if (!item) {
             return handled;
@@ -358,14 +361,17 @@ class VegaComponent extends PolymerElement {
     vegaEvents(view) {
       var context = this;
       view.addEventListener('click', function(event, item) {
+        event.stopPropagation();
         if (!context.internalInteraction("click", item)) {
             dispatchEvent(event, "click", item);
         }
       })
       view.addEventListener('mouseover', function(event, item) {
+        event.stopPropagation();
         dispatchEvent(event, "mouseover", item);
       })
       view.addEventListener('mouseout', function(event, item) {
+        event.stopPropagation();
         dispatchEvent(event, "mouseout", item);
       })
 
