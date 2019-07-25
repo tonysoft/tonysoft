@@ -18,7 +18,7 @@
 
   customElements.define('rmx-map', class extends HTMLElement {
     static get observedAttributes() {
-      return ['api-key', 'zoom', 'latitude', 'longitude', 'map-options', 'markers', 'fit-to-markers'];
+      return ['api-key', 'zoom', 'latitude', 'longitude', 'map-options', 'markers', 'fit-to-markers', "authoring"];
     }
 
     attributeChangedCallback(name, oldVal, val) {
@@ -33,6 +33,8 @@
           break;
         case "fit-to-markers":
             this.fitToMarkers = true;
+        case "authoring":
+            this.authoring = true;
         case 'latitude':
         case 'longitude':
           this[name] = parseFloat(val);
@@ -58,6 +60,7 @@
       this.longitude = null;
       this.mapOptions = {};
       this.markers = null;
+      this.authoring = false;
     }
 
     connectedCallback() {
@@ -77,6 +80,10 @@
         if (context.markers) {
             const latLngBounds = new google.maps.LatLngBounds();
             context.markers.forEach(function(marker) {
+                addMarker(marker);
+            });
+
+            function addMarker(marker) {
                 latLngBounds.extend(new google.maps.LatLng(marker.location.lat, marker.location.lng));
                 var aMarker = new google.maps.Marker({
                     position: marker.location,
@@ -88,18 +95,28 @@
                     context.map.setCenter(marker.location);
                     context.dispatchEvent(new CustomEvent('marker', { detail: marker }));
                 });
-            });
+            }
 
             if (context.fitToMarkers) {
                 fitToMarkers();
             }
 
             context.map.addListener('click', function(e) {
-                if (context.fitToMarkers) {
-                    fitToMarkers();
+                if (context.authoring && !context.markerJustAdded) {
+                    context.markerJustAdded = true;
+                    var now = new Date();
+                    var newMarker = { id: now.getTime().toString(), location: { lat: e.latLng.lat(), lng: e.latLng.lng() }};
+                    addMarker(newMarker);
                 } else {
-                    context.map.setZoom(context.zoom);
-                    context.map.setCenter({ lat: context.latitude, lng: context.longitude});
+                    if (context.authoring) {
+                        context.markerJustAdded = false;
+                    }
+                    if (context.fitToMarkers) {
+                        fitToMarkers();
+                    } else {
+                        context.map.setZoom(context.zoom);
+                        context.map.setCenter({ lat: context.latitude, lng: context.longitude});
+                    }
                 }
             });
 
