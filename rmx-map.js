@@ -94,7 +94,7 @@
                 fitToMarkers();
             }
 
-            context.map.addListener('click', function() {
+            context.map.addListener('click', function(e) {
                 if (context.fitToMarkers) {
                     fitToMarkers();
                 } else {
