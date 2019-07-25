@@ -33,8 +33,10 @@
           break;
         case "fit-to-markers":
             this.fitToMarkers = true;
+            break;
         case "authoring":
             this.authoring = true;
+            break;
         case 'latitude':
         case 'longitude':
           this[name] = parseFloat(val);
