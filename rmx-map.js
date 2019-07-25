@@ -35,7 +35,7 @@
             this.fitToMarkers = val ? true : false;
             break;
         case "authoring":
-            this.authoring = = val ? true : false;
+            this.authoring = val ? true : false;
             break;
         case 'latitude':
         case 'longitude':
