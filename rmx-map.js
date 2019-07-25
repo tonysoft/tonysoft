@@ -32,10 +32,10 @@
           if (this.map) this.map.setZoom(this.zoom);
           break;
         case "fit-to-markers":
-            this.fitToMarkers = true;
+            this.fitToMarkers = val ? true : false;
             break;
         case "authoring":
-            this.authoring = true;
+            this.authoring = = val ? true : false;
             break;
         case 'latitude':
         case 'longitude':
