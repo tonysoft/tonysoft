@@ -215,31 +215,20 @@ class VegaComponent extends PolymerElement {
       })
     }
 
-    dataUpdate(itemId) {
-        var context = this;
-        var handled = false;
-        if (context.dataSetName && context.updateDataMapJSON[itemId]) {
-            context.vegaUpdate(context.dataSetName, context.updateDataMapJSON[itemId], true);
-            context.currentItemId = itemId;
-            context.selectedItemId = "";
-            handled = true;
-        }
-        return handled;
-    }
-
     vegaUpdate(dataSetName, data, bRender, callback) {
       var context = this;
       var handled = false;
       if (context.vegaSpecJson && context.vegaSpecJson.data) {
         var dataSet = null;
+        dataSet = context.vegaSpecJson.data[0];
         context.vegaSpecJson.data.forEach(function(set) {
           if (set.name === dataSetName) {
             dataSet = set;
-            delete dataSet.url;
-            dataSet.values = data;
           }
         })
         if (dataSet && bRender) {
+          delete dataSet.url;
+          dataSet.values = data;
           context.vegaRender(context.vegaSpecJson, undefined, callback);
         }
       }
