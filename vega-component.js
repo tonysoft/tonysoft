@@ -171,6 +171,9 @@ class VegaComponent extends PolymerElement {
             newValue.height = context.height;
         }
         context.vegaRender(newValue, vegaTarget);
+        if (context.vegaData) {
+          context.vegaUpdate(context.vegaDataSetName, context.vegaData, true);
+        }
       } else {
         if (this.vegaRenderCallback) {
           this.vegaRenderCallback();
