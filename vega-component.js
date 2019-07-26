@@ -152,6 +152,9 @@ class VegaComponent extends PolymerElement {
     
     _vegaSpecJsonChanged(newValue) {
       var context = this;
+      if (!newValue) {
+        return;
+      }
       if (newValue.indexOf && (newValue.indexOf("{") === 0)) {
         try {
           newValue = JSON.parse(newValue);
