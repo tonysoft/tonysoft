@@ -384,7 +384,8 @@ class VegaComponent extends PolymerElement {
         }
         context.dispatchEvent(new CustomEvent(interaction, { 
           detail: { 
-            id: context.id,
+            chartId: context.id,
+            itemId: itemId,
             category: context.category,
             interaction: interaction,
             item: item,
