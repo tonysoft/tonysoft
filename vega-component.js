@@ -156,8 +156,11 @@ class VegaComponent extends PolymerElement {
         try {
           newValue = JSON.parse(newValue);
         } catch(e) {
-          return;  // sometimes we get a bogus value (a string) on init...
+          return;  
         }
+      }
+      if (newValue.indexOf) {
+        return;  // sometimes we get a bogus value (a string) on init...
       }
       var vegaTarget = context.shadowRoot.querySelector("#content");
       if (vegaTarget) {
