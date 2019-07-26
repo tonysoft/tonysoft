@@ -203,7 +203,7 @@ class VegaComponent extends PolymerElement {
     }
 
     createVegaDataMap(vegaData) {
-      if (!vegaData) {
+      if (!vegaData || !vegaData.forEach) {
         return;
       }
       var context = this;
