@@ -126,7 +126,7 @@ class VegaComponent extends PolymerElement {
     _vegaSpecChanged(newValue) {
       var context = this;
       var vegaTarget = context.shadowRoot.querySelector("#content");
-      if (vegaTarget) {
+      if (vegaTarget && newValue) {
         fetch(newValue)
           .then(res => res.json())
           .then(spec => context.vegaRender(spec, vegaTarget))
@@ -152,8 +152,12 @@ class VegaComponent extends PolymerElement {
     
     _vegaSpecJsonChanged(newValue) {
       var context = this;
-      if (newValue.replace) {
-        return;  // sometimes we get a bogus value (a string) on init...
+      if (newValue.indexOf && (newValue.indexOf("{") === 0)) {
+        try {
+          newValue = JSON.parse(newValue);
+        } catch(e) {
+          return;  // sometimes we get a bogus value (a string) on init...
+        }
       }
       var vegaTarget = context.shadowRoot.querySelector("#content");
       if (vegaTarget) {
