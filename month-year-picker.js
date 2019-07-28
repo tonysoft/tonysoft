@@ -19,6 +19,8 @@ class monthYearPicker extends PolymerElement {
                 display: block;
                 --icon-size: 24px;
                 --font-size: 24px;
+                --adjust-double-arrow-left: 12px;
+                --adjust-double-arrow-right: -12px;
             }
             .inert {
                 cursor: default;
@@ -91,19 +93,30 @@ class monthYearPicker extends PolymerElement {
                 --iron-icon-height: var(--icon-size);
                 --iron-icon-width: var(--icon-size);
             }
-            .fontSize {
+            .adjustDoubleArrowLeft {
+                position: relative;
+                left: var(--adjust-double-arrow-left);
+            }
+            .adjustDoubleArrowRight {
+                position: relative;
+                left: var(--adjust-double-arrow-right);
+            }
+            .monthYearDisplay {
                 font-size: var(--font-size);
+                font-family: inherit;
+                font-weight: bold;
+                margin: 0 20px 0 20px;
             }
         </style>
-        <div class="relatively flex-layout" style="width: [[setWidth(width)]];">
-            <div id="yearBack" on-click="yearBack"><iron-icon icon="chevron-left" class="iconSize"></iron-icon><iron-icon icon="chevron-left" class="iconSize"></iron-icon></div>
+        <div class="relatively flex-layout noSelect" style="width: [[setWidth(width)]];">
+            <div id="yearBack" on-click="yearBack"><iron-icon icon="chevron-left" class="iconSize"></iron-icon><iron-icon icon="chevron-left" class="iconSize adjustDoubleArrowLeft"></iron-icon></div>
             <div id="monthBack" on-click="monthBack"><iron-icon icon="chevron-left" class="iconSize"></iron-icon></div>
-            <div class="fontSize">
-                <div id="month" style="margin-right: 10px; display: inline-block;">Jan</div>
-                <div id="year" style="display: inline-block;">2000</div>
+            <div class="monthYearDisplay">
+                <div id="month" style="margin-right: 10px; display: inline-block;">[[formatMonth(month)]]</div>
+                <div id="year" style="display: inline-block;">[[year]]</div>
             </div>
             <div id="monthForward" on-click="monthForward"><iron-icon icon="chevron-right" class="iconSize"></iron-icon></div>
-            <div id="yearForward" on-click="yearForward"><iron-icon icon="chevron-right" class="iconSize"></iron-icon><iron-icon icon="chevron-right" class="iconSize"></iron-icon></div>
+            <div id="yearForward" on-click="yearForward"><iron-icon icon="chevron-right" class="iconSize adjustDoubleArrowRight"></iron-icon><iron-icon icon="chevron-right" class="iconSize"></iron-icon></div>
         </div>
             `;
     }
@@ -122,24 +135,39 @@ class monthYearPicker extends PolymerElement {
             timePicker: {
                 type: Number
             },
+            year: {
+                type: Number
+            },
+            maxYear: {
+                type: Number,
+                observer: "_maxYearChanged"
+            },
+            minYear: {
+                type: Number,
+                observer: "_minYearChanged"
+            },
             month: {
                 type: Number
             },
-            year: {
-                type: Number
+            monthFormat: {
+                type: String
             }
-
         };
     }
     constructor() {
         super();
         this.size = 16;
-        this.reset();
-        this.month = 1;
-        this.year = 2000;
+        this.month = new Date().getMonth();
+        this.year = new Date().getFullYear();
+        this.maxYear = this.year;
+        this.minYear = 0;
         this.isReady = false;
-        this.width = "";
+        this.width = "220";
         this.timePicker = 0;
+        this.monthFormat = "short";  // || "number" || "long";
+        this.monthShort = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        this.monthLong = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        this.monthNumber = ["", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
     }
     ready() {
         var context = this;
@@ -238,8 +266,97 @@ class monthYearPicker extends PolymerElement {
     }
     _sizeChanged (newValue, oldValue) {
         var margin = parseInt(newValue * .05);
-        this.updateStyles({'--icon-size': parseInt(this.size * .75) + "px"});
-        this.updateStyles({'--font-size': parseInt(this.size) + "px"});        
+        this.updateStyles({'--icon-size': parseInt(this.size * .95) + "px"});
+        this.updateStyles({'--font-size': parseInt(this.size) + "px"});
+        this.updateStyles({'--adjust-double-arrow-left': parseInt(this.size * .5) * -1 + "px"});
+        this.updateStyles({'--adjust-double-arrow-right': parseInt(this.size * .5) + "px"});
+    }
+    _maxYearChanged(newValue) {
+        var context = this;
+        if (newValue < context.year) {
+            context.year = newValue;
+        }
+    }
+    _minYearChanged(newValue) {
+        var context = this;
+        if (newValue > context.year) {
+            context.year = newValue;
+        }
+    }
+    formatMonth(month) {
+        var context = this;
+        if (month > 12) {
+            month = 12;
+        }
+        if (month <= 0) {
+            month = 1;
+        }
+        var monthFormatted = month;
+        switch (context.monthFormat) {
+            case "number":
+                monthFormatted = context.monthNumber[month];
+                break;
+            case "long":
+                monthFormatted = context.monthLong[month];
+                break;
+            case "short":
+            default:
+                monthFormatted = context.monthShort[month];
+                break;
+        }
+        return monthFormatted;
+    }
+    yearBack(e) {
+        var context = this;
+        if (e) {
+            e.stopPropagation();
+            context.year--;
+        }
+        if (context.year < context.minYear) {
+            context.year = context.minYear;
+        }
+        context.yearChanged();
+    }
+    yearForward(e) {
+        var context = this;
+        if (e) {
+            e.stopPropagation();
+            context.year++;
+        }
+        if (context.year > context.maxYear) {
+            context.year = context.maxYear;
+        }
+        context.yearChanged();
+    }
+    yearChanged() {
+        var context = this;
+        context.dispatchEvent(new CustomEvent('yearChanged', { detail: { year: context.year }}));
+    }
+    monthBack(e) {
+        var context = this;
+        e.stopPropagation();
+        context.month--;
+        if (context.month < 1) {
+            context.month = 12;
+            context.year--;
+            context.yearBack();
+        }
+        context.yearChanged();
+    }
+    monthForward(e) {
+        var context = this;
+        e.stopPropagation();
+        context.month++;
+        if (context.month > 12) {
+            context.month = 1;
+            context.year++;
+            context.yearForward();
+        }
+        context.monthChanged();
+    }
+    monthChanged() {
+        var context = this;
+        context.dispatchEvent(new CustomEvent('monthChanged', { detail: { month: context.month, formattedMonth: context.formatMonth(context.month) }}));
     }
 }
 
