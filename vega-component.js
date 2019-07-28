@@ -2,6 +2,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import 'https://cdn.jsdelivr.net/npm/vega@5';
 import '@polymer/iron-icon/iron-icon.js';
 import 'tonysoft/iron-icons.js'
+import 'tonysoft/av-icons.js'
 
 /**
  * `vega-container`
