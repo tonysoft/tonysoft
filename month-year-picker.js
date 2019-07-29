@@ -341,7 +341,7 @@ class monthYearPicker extends PolymerElement {
             context.year--;
             context.yearBack();
         }
-        context.yearChanged();
+        context.monthChanged();
     }
     monthForward(e) {
         var context = this;
