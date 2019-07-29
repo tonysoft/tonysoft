@@ -330,7 +330,7 @@ class monthYearPicker extends PolymerElement {
     }
     yearChanged() {
         var context = this;
-        context.dispatchEvent(new CustomEvent('yearChanged', { detail: { year: context.year }}));
+        context.dispatchEvent(new CustomEvent('yearChanged', { detail: { year: context.year, formattedYear: context.year.toString() }}));
     }
     monthBack(e) {
         var context = this;
