@@ -160,7 +160,7 @@ class VegaComponent extends PolymerElement {
     
     _vegaSpecJsonChanged(newValue) {
       var context = this;
-      if (!newValue) {
+      if (!newValue || !newValue["$schema"]) {
         return;
       }
       if (newValue.indexOf && (newValue.indexOf("{") === 0)) {
