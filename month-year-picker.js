@@ -148,9 +148,9 @@ class monthYearPicker extends PolymerElement {
             <div class="relatively flex-layout noSelect" style="width: [[setWidth(width)]];">
                 <div id="yearBack" on-click="yearBack"><iron-icon icon="chevron-left" class="iconSize"></iron-icon><iron-icon icon="chevron-left" class="iconSize adjustDoubleArrowLeft"></iron-icon></div>
                 <div id="monthBack" on-click="monthBack"><iron-icon icon="chevron-left" class="iconSize"></iron-icon></div>
-                <div class="monthYearDisplay">
+                <div class="monthYearDisplay" on-click="displayPicker">
                     <div id="month" style="display: inline-block;">[[formatMonth(month)]]</div>
-                    <iron-icon icon="arrow-drop-down" class="dropIcon" on-click="displayPicker"></iron-icon>
+                    <iron-icon icon="arrow-drop-down" class="dropIcon"></iron-icon>
                     <div id="year" style="display: inline-block;">[[year]]</div>
                 </div>
                 <div id="monthForward" on-click="monthForward"><iron-icon icon="chevron-right" class="iconSize"></iron-icon></div>
