@@ -20,7 +20,7 @@ class VegaComponent extends PolymerElement {
             }
           </style>
           <div class="main noSelect">
-            <div id="content"></div>
+            <div id="content"><div on-click="guidance" style="cursor: pointer;">Click for Guidance on using the <b>vega-component</b>...</div>
           </div>
         `;
       }
@@ -128,6 +128,7 @@ class VegaComponent extends PolymerElement {
       this.resizeInterval = 0;
       this.bestFit = false;
       this.internalEvents = false;
+      this.guidanceMarkup = "https://tonysoft.github.io/vegaTest/guidance.html";
     }
 
     _vegaSpecChanged(newValue) {
@@ -234,6 +235,9 @@ class VegaComponent extends PolymerElement {
     vegaUpdate(dataSetName, data, bRender, callback) {
       var context = this;
       var handled = false;
+      if (!data) {
+          return handled;
+      }
       if (context.vegaSpecJson && context.vegaSpecJson.data) {
         var dataSet = null;
         dataSet = context.vegaSpecJson.data[0];
@@ -475,6 +479,34 @@ class VegaComponent extends PolymerElement {
                 doScale();
             }, 1000);
         }
+    }
+    guidance(e) {
+        e.stopPropagation();
+        var context = this;
+        var target = context.shadowRoot.querySelector("#content");
+        this.loadFile(context.guidanceMarkup, function(markup) {
+            target.innerHTML = markup;
+        }, function(error) {
+            target.innerHTML = "No guidance available...";
+        })
+    }
+    loadFile(filePath, success, error) {
+        var response = null;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", filePath, true);
+        xmlhttp.onload = function (e) {
+          if (xmlhttp.readyState === 4) {
+            if (xmlhttp.status === 200) {
+              success(xmlhttp.responseText);
+            } else {
+              error(xmlhttp.statusText);
+            }
+          }
+        };
+        xmlhttp.onerror = function (e) {
+          error(xmlhttp.statusText);
+        };
+        xmlhttp.send();
     }
 }
 
