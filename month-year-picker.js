@@ -379,7 +379,9 @@ class monthYearPicker extends PolymerElement {
         if (context.year > context.maxYear) {
             context.year = context.maxYear;
         }
-        context.yearChanged();
+        if (e !== null) {
+            context.yearChanged();
+        }
     }
     yearChanged() {
         var context = this;
@@ -436,7 +438,7 @@ class monthYearPicker extends PolymerElement {
         if (bCommit) {
             context.saveYear = context.year;
         }
-        context.yearForward();
+        context.yearForward(null);
     }
 
     hoverYearFromRange(e) {
