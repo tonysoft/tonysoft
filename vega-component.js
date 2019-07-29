@@ -14,7 +14,12 @@ import '@polymer/iron-icon/iron-icon.js';
 class VegaComponent extends PolymerElement {
     static get template() {
         return html`
-          <div class="main">
+        <style>
+            .noSelect {
+                user-select: none;
+            }
+          </style>
+          <div class="main noSelect">
             <div id="content"></div>
           </div>
         `;
