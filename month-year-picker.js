@@ -438,7 +438,7 @@ class monthYearPicker extends PolymerElement {
         if (bCommit) {
             context.saveYear = context.year;
         }
-        context.yearForward(null);
+        context.yearForward(!bCommit ? null : e);
     }
 
     hoverYearFromRange(e) {
