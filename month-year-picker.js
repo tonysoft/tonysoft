@@ -18,7 +18,10 @@ class monthYearPicker extends PolymerElement {
             :host {
                 display: block;
                 --icon-size: 24px;
+                --drop-top: 6px;
                 --font-size: 24px;
+                --picker-label: 12px;
+                --picker-height: 16px;
                 --adjust-double-arrow-left: 12px;
                 --adjust-double-arrow-right: -12px;
             }
@@ -33,9 +36,9 @@ class monthYearPicker extends PolymerElement {
             .noSelect {
                 user-select: none;
             }
-            .digital-clock { 
+            .picker-components { 
                 display: flex; 
-                flex-direction: row; 
+                flex-direction: column; 
                 flex-wrap: wrap; 
                 justify-content: space-evenly;
                 align-items: center;
@@ -47,12 +50,20 @@ class monthYearPicker extends PolymerElement {
                 justify-content: space-evenly;
                 align-items: center;
             }
-            .timePicker {
+            .picker {
                 border: 1px solid black;
-                background-color: #cccccc;
+                background-color: #eeeeee;
+                text-align: center;
+                color: transparent;
                 position: relative;
+                height: var(--font-size);
+                line-height: var(--font-size);
+                margin-top: 4px;
+                padding: 2px 3px 0 3px;
+                cursor: pointer;
+                overflow: hidden;
             }
-            .timePickerLabels {
+            .pickerLabels {
                 position: relative;
                 user-select: none;
             }
@@ -63,16 +74,20 @@ class monthYearPicker extends PolymerElement {
                 display: block;
             }
             .pickerTick {
-                width: 1px;
                 position: absolute;
-                bottom: 0%;
+                top: 0%;
                 left: 50%;
                 height: 100%;
-                background-color: black;
                 pointer-events: none;
+                border-right: 1px solid black;
+                color: black;
+                font-size: var(--picker-label);
+                line-height: var(--font-size);
+                padding-top: 2px;
+                text-align: center;
             }
             .tick100 {
-                height: 100%
+                height: 100%;
             }
             .tick75 {
                 height: 75%
@@ -83,15 +98,36 @@ class monthYearPicker extends PolymerElement {
             .tick25 {
                 height: 25%
             }
+            .yearLabel {
+                font-size: var(--picker-label);
+                text-align: center;
+                color: black;
+                display: inline-block;
+            }
+            .yearPicker {
+                font-size: var(--picker-label);
+                text-align: center;
+                display: inline-block;
+            }
             .pickerLabel {
                 pointer-events: none;
                 position: absolute;
                 font-size: var(--picker-label);
                 text-align: center;
+                padding: 2px;
+                border-left: 1px solid black;
             }
             .iconSize {
                 --iron-icon-height: var(--icon-size);
                 --iron-icon-width: var(--icon-size);
+            }
+            .dropIcon {
+                --iron-icon-height: var(--icon-size);
+                --iron-icon-width: var(--icon-size);
+                top: var(--drop-top);
+                position: relative; 
+                margin: 0 0px 0 0px; 
+                display: inline-block;
             }
             .adjustDoubleArrowLeft {
                 position: relative;
@@ -108,15 +144,30 @@ class monthYearPicker extends PolymerElement {
                 margin: 0 20px 0 20px;
             }
         </style>
-        <div class="relatively flex-layout noSelect" style="width: [[setWidth(width)]];">
-            <div id="yearBack" on-click="yearBack"><iron-icon icon="chevron-left" class="iconSize"></iron-icon><iron-icon icon="chevron-left" class="iconSize adjustDoubleArrowLeft"></iron-icon></div>
-            <div id="monthBack" on-click="monthBack"><iron-icon icon="chevron-left" class="iconSize"></iron-icon></div>
-            <div class="monthYearDisplay">
-                <div id="month" style="margin-right: 10px; display: inline-block;">[[formatMonth(month)]]</div>
-                <div id="year" style="display: inline-block;">[[year]]</div>
+        <div class="relatively picker-components">
+            <div class="relatively flex-layout noSelect" style="width: [[setWidth(width)]];">
+                <div id="yearBack" on-click="yearBack"><iron-icon icon="chevron-left" class="iconSize"></iron-icon><iron-icon icon="chevron-left" class="iconSize adjustDoubleArrowLeft"></iron-icon></div>
+                <div id="monthBack" on-click="monthBack"><iron-icon icon="chevron-left" class="iconSize"></iron-icon></div>
+                <div class="monthYearDisplay">
+                    <div id="month" style="display: inline-block;">[[formatMonth(month)]]</div>
+                    <iron-icon icon="arrow-drop-down" class="dropIcon" on-click="displayPicker"></iron-icon>
+                    <div id="year" style="display: inline-block;">[[year]]</div>
+                </div>
+                <div id="monthForward" on-click="monthForward"><iron-icon icon="chevron-right" class="iconSize"></iron-icon></div>
+                <div id="yearForward" on-click="yearForward"><iron-icon icon="chevron-right" class="iconSize adjustDoubleArrowRight"></iron-icon><iron-icon icon="chevron-right" class="iconSize"></iron-icon></div>
             </div>
-            <div id="monthForward" on-click="monthForward"><iron-icon icon="chevron-right" class="iconSize"></iron-icon></div>
-            <div id="yearForward" on-click="yearForward"><iron-icon icon="chevron-right" class="iconSize adjustDoubleArrowRight"></iron-icon><iron-icon icon="chevron-right" class="iconSize"></iron-icon></div>
+            <div class="pickerWrapper pickerInvisible noSelect" style="text-align: center;">
+                <div>
+                    <div class="picker yearLabel" on-click="pickYearFromLabel">[[minYear]]</div>
+                    <div class="picker yearPicker" style="width: [[setWidth(width)]];" on-click="pickYearFromRange" on-mouseover="hoverRange"  on-mousemove="hoverYearFromRange" on-mouseout="unhoverRange">
+                        <div class="pickerTick" style="left: 50px; width: 10px; color: transparent">y</div>
+                    </div>
+                    <div class="picker yearLabel" on-click="pickYearFromLabel">[[maxYear]]</div>
+                </div>
+                <div class="picker monthPicker" style="width: [[setWidth(width)]]; display: inline-block;" on-click="pickMonthFromRange">
+                    <div class="pickerTick" style="left: 50px; width: 10px;">XX</div>
+                </div>
+            </div>
         </div>
             `;
     }
@@ -132,7 +183,7 @@ class monthYearPicker extends PolymerElement {
             width: {
                 type: String
             },
-            timePicker: {
+            picker: {
                 type: Number
             },
             year: {
@@ -160,10 +211,10 @@ class monthYearPicker extends PolymerElement {
         this.month = new Date().getMonth();
         this.year = new Date().getFullYear();
         this.maxYear = this.year;
-        this.minYear = 0;
+        this.minYear = 1950;
         this.isReady = false;
         this.width = "220";
-        this.timePicker = 0;
+        this.picker = 0;
         this.monthFormat = "short";  // || "number" || "long";
         this.monthShort = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         this.monthLong = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -173,64 +224,63 @@ class monthYearPicker extends PolymerElement {
         var context = this;
         super.ready();
         context.isReady = true;
-        // context.addTicks();
+        context.displayPicker();
+        context.addMonthTicks();
+        context.addYearTicks();
+        context.displayPicker();
     }
 
-    addTicks() {
+    addMonthTicks() {
         var  context = this;
-        if (context.timePicker) {
-            if (context.shadowRoot) {
-                var picker = context.shadowRoot.querySelector(".timePicker");
-                var pickerLabels = context.shadowRoot.querySelector(".timePickerLabels");
-                var tickTemplate = picker.innerHTML;
-                var labelTemplate = pickerLabels.innerHTML;
-                var ticks = "";
-                var labels = "";
-                for (var i = 0; i < 24; i++) {
-                    var label = labelTemplate;
-                    var label = labelTemplate;
-                    var labelLeft = i * 4.166;
-                    label = label.replace("50", labelLeft);
-                    if (i && ((i % 3) === 0)) {
-                        label = label.replace("XX", i);
-                    } else {
-                        label = label.replace("XX", "");
-                    }
-                    labels += label;
-                }
-                for (var i = 1; i < 24; i++) {
-                    var tick = tickTemplate;
-                    var left = i * 4.166;
-                    var height = "tick100";
-                    var tickType = i % 6;
-                    switch (tickType) {
-                        case 0:
-                            height = "tick75";
-                            break;
-                        case 1:
-                        case 2:
-                        case 4:
-                        case 5:
-                            height = "tick25";
-                            break;
-                        case 3:
-                            height = "tick50";
-                            break;
-                    }
-                    if (i !== 12) {
-                        tick = tick.replace("50", left);
-                        tick = tick.replace("tick100", height);
-                    }
-                    ticks += tick;
-                }
-                picker.innerHTML = ticks;
-                pickerLabels.innerHTML = labels;
-            }
+        var picker = context.shadowRoot.querySelector(".monthPicker");
+        var pickerWidth = picker.offsetWidth;
+        var width = (pickerWidth / 12);
+        var tickTemplate = picker.innerHTML;
+        var ticks = "";
+        for (var i = 0; i < 12; i++) {
+            var tick = tickTemplate;
+            var left = i * width;
+            tick = tick.replace("50px", left + "px");
+            tick = tick.replace("10px", width + "px");
+            var leading = ((i + 1) < 10) ? "0" : "";
+            tick = tick.replace("XX", leading + (i + 1));
+            ticks += tick;
+        }
+        picker.innerHTML = ticks;
+    }
+    addYearTicks() {
+        var  context = this;
+        var picker = context.shadowRoot.querySelector(".yearPicker");
+        var pickerWidth = picker.offsetWidth;
+        var numYears = context.maxYear - context.minYear - 1;
+        var width = (pickerWidth / numYears);
+        var tickTemplate = picker.innerHTML;
+        var ticks = "";
+        for (var i = 0; i < numYears; i++) {
+            var tick = tickTemplate;
+            var left = i * width;
+            tick = tick.replace("50px", left + "px");
+            tick = tick.replace("10px", width + "px");
+            ticks += tick;
+        }
+        picker.innerHTML = ticks;
+    }
+    displayPicker(e) {
+        var context = this;
+        if (e) {
+            e.stopPropagation();
+        }
+        var picker = context.shadowRoot.querySelector(".pickerWrapper");
+        var classList = picker.classList;
+        if (classList.value.indexOf("pickerVisible") < 0) {
+            picker.classList.add("pickerVisible");
+        } else {
+            picker.classList.remove("pickerVisible");
         }
     }
-    shouldShowPicker(timePicker) {
+    shouldShowPicker(picker) {
         var context = this;
-        if (timePicker) {
+        if (picker) {
             return "pickerVisible";
         } else {
             return "";
@@ -252,9 +302,9 @@ class monthYearPicker extends PolymerElement {
             return "";
         }
     }
-    setPickerWidth(timePicker) {
-        if (timePicker) {
-            return timePicker + "px";
+    setPickerWidth(picker) {
+        if (picker) {
+            return picker + "px";
         }
         else {
             return "";
@@ -266,7 +316,10 @@ class monthYearPicker extends PolymerElement {
     }
     _sizeChanged (newValue, oldValue) {
         var margin = parseInt(newValue * .05);
+        this.updateStyles({'--picker-label': parseInt(this.size * .6) + "px"});
+        this.updateStyles({'--picker-height': parseInt(this.size * .8) + "px"});
         this.updateStyles({'--icon-size': parseInt(this.size * .95) + "px"});
+        this.updateStyles({'--drop-top': parseInt(this.size * .25) + "px"});
         this.updateStyles({'--font-size': parseInt(this.size) + "px"});
         this.updateStyles({'--adjust-double-arrow-left': parseInt(this.size * .5) * -1 + "px"});
         this.updateStyles({'--adjust-double-arrow-right': parseInt(this.size * .5) + "px"});
@@ -334,8 +387,10 @@ class monthYearPicker extends PolymerElement {
     }
     monthBack(e) {
         var context = this;
-        e.stopPropagation();
-        context.month--;
+        if (e) {
+            e.stopPropagation();
+            context.month--;
+        }
         if (context.month < 1) {
             context.month = 12;
             context.year--;
@@ -345,8 +400,10 @@ class monthYearPicker extends PolymerElement {
     }
     monthForward(e) {
         var context = this;
-        e.stopPropagation();
-        context.month++;
+        if (e) {
+            e.stopPropagation();
+            context.month++;
+        }
         if (context.month > 12) {
             context.month = 1;
             context.year++;
@@ -357,6 +414,72 @@ class monthYearPicker extends PolymerElement {
     monthChanged() {
         var context = this;
         context.dispatchEvent(new CustomEvent('monthChanged', { detail: { month: context.month, formattedMonth: context.formatMonth(context.month) }}));
+    }
+
+    pickYearFromLabel(e) {
+        var context = this;
+        e.stopPropagation();
+        context.year = parseInt(e.srcElement.innerText);
+        context.yearForward();
+    }
+
+    setYearFromXOffset(e, bCommit) {
+        var context = this;
+        var picker = e.srcElement;
+        var width = picker.offsetWidth;
+        var xOffset = e.offsetX;
+        var numYears = context.maxYear - context.minYear - 1;
+        var yearLength = width / numYears;
+        var yearOffset = parseInt(xOffset / yearLength);
+        yearOffset += 1;
+        context.year = context.minYear + yearOffset;
+        if (bCommit) {
+            context.saveYear = context.year;
+        }
+        context.yearForward();
+    }
+
+    hoverYearFromRange(e) {
+        var context = this;
+        e.stopPropagation();
+        context.setYearFromXOffset(e, false);
+    }
+
+    hoverRange(e) {
+        var context = this;
+        e.stopPropagation();
+        context.saveYear = context.year;
+    }
+
+    unhoverRange(e) {
+        var context = this;
+        e.stopPropagation();
+        context.year = context.saveYear;
+    }
+
+    pickYearFromRange(e) {
+        var context = this;
+        e.stopPropagation();
+        context.setYearFromXOffset(e, true);
+    }
+
+    setMonthFromXOffset(e, bCommit) {
+        var context = this;
+        var picker = e.srcElement;
+        var width = picker.offsetWidth;
+        var xOffset = e.offsetX;
+        var numMonths = 12;
+        var monthLength = width / numMonths;
+        var monthOffset = parseInt(xOffset / monthLength);
+        monthOffset += 1;
+        context.month = monthOffset;
+        context.monthForward();
+    }
+
+    pickMonthFromRange(e) {
+        var context = this;
+        e.stopPropagation();
+        context.setMonthFromXOffset(e, true);
     }
 }
 
