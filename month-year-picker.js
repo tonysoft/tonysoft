@@ -79,13 +79,15 @@ class monthYearPicker extends PolymerElement {
                 left: 50%;
                 height: 100%;
                 pointer-events: none;
-                border-right: 1px solid black;
+                border-left: 1px solid black;
                 color: black;
                 font-size: var(--picker-label);
                 line-height: var(--font-size);
                 padding-top: 2px;
                 text-align: center;
+                background-color: transparent;
             }
+
             .tick100 {
                 height: 100%;
             }
@@ -103,6 +105,7 @@ class monthYearPicker extends PolymerElement {
                 text-align: center;
                 color: black;
                 display: inline-block;
+                background-color: #eeeeee;
             }
             .yearPicker {
                 font-size: var(--picker-label);
@@ -117,6 +120,11 @@ class monthYearPicker extends PolymerElement {
                 padding: 2px;
                 border-left: 1px solid black;
             }
+
+            .selectedTick {
+                background-color: #ddddFF;
+            }
+
             .iconSize {
                 --iron-icon-height: var(--icon-size);
                 --iron-icon-width: var(--icon-size);
@@ -158,14 +166,14 @@ class monthYearPicker extends PolymerElement {
             </div>
             <div class="pickerWrapper pickerInvisible noSelect" style="text-align: center;">
                 <div>
-                    <div class="picker yearLabel" on-click="pickYearFromLabel">[[minYear]]</div>
+                    <div id="year[[minYear]]" class="picker yearTick yearLabel" on-click="pickYearFromLabel">[[minYear]]</div>
                     <div class="picker yearPicker" style="width: [[setWidth(width)]];" on-click="pickYearFromRange" on-mouseover="hoverRange"  on-mousemove="hoverYearFromRange" on-mouseout="unhoverRange">
-                        <div class="pickerTick" style="left: 50px; width: 10px; color: transparent">y</div>
+                        <div id="yearX" class="pickerTick yearTick" style="left: 50px; width: 10px; color: transparent;">y</div>
                     </div>
-                    <div class="picker yearLabel" on-click="pickYearFromLabel">[[maxYear]]</div>
+                    <div id="year[[maxYear]]" class="picker yearTick yearLabel" on-click="pickYearFromLabel">[[maxYear]]</div>
                 </div>
                 <div class="picker monthPicker" style="width: [[setWidth(width)]]; display: inline-block;" on-click="pickMonthFromRange">
-                    <div class="pickerTick" style="left: 50px; width: 10px;">XX</div>
+                    <div id="monthX" class="pickerTick monthTick" style="left: 50px; width: 10px;">XX</div>
                 </div>
             </div>
         </div>
@@ -245,7 +253,7 @@ class monthYearPicker extends PolymerElement {
         var ticks = "";
         for (var i = 0; i < 12; i++) {
             var tick = tickTemplate;
-            var left = i * width;
+            var left = (i * width) - 1;
             tick = tick.replace("50px", left + "px");
             tick = tick.replace("10px", width + "px");
             switch (context.monthFormat) {
@@ -258,9 +266,11 @@ class monthYearPicker extends PolymerElement {
                     tick = tick.replace("XX", leading + (i + 1));
                     break;
             }
+            tick = tick.replace("monthX", "month" + (i + 1));
             ticks += tick;
         }
         picker.innerHTML = ticks;
+        context.updateMonthTicks();
     }
     addYearTicks() {
         var context = this;
@@ -273,12 +283,14 @@ class monthYearPicker extends PolymerElement {
         var ticks = "";
         for (var i = 0; i < numYears; i++) {
             var tick = tickTemplate;
-            var left = i * width;
+            var left = (i * width) - 1;
             tick = tick.replace("50px", left + "px");
             tick = tick.replace("10px", width + "px");
+            tick = tick.replace("yearX", "year" + (context.minYear + i + 1));
             ticks += tick;
         }
         picker.innerHTML = ticks;
+        context.updateYearTicks()
     }
     displayPicker(e) {
         var context = this;
@@ -407,7 +419,21 @@ class monthYearPicker extends PolymerElement {
     yearChanged() {
         var context = this;
         context.dispatchEvent(new CustomEvent('yearChanged', { detail: { year: context.year, formattedYear: context.year.toString() }}));
+        context.updateYearTicks()
     }
+
+    updateYearTicks() {
+        var context = this;
+        if (context.isReady) {
+            var yearTicks = context.shadowRoot.querySelectorAll(".yearTick");
+            yearTicks.forEach(function(yearTick) {
+                yearTick.classList.remove("selectedTick");
+            })
+            var yearTick = context.shadowRoot.querySelector("#year" + context.year);
+            yearTick.classList.add("selectedTick");
+        }
+    }
+
     monthBack(e) {
         var context = this;
         if (e) {
@@ -437,6 +463,19 @@ class monthYearPicker extends PolymerElement {
     monthChanged() {
         var context = this;
         context.dispatchEvent(new CustomEvent('monthChanged', { detail: { month: context.month, formattedMonth: context.formatMonth(context.month) }}));
+        context.updateMonthTicks();
+    }
+
+    updateMonthTicks() {
+        var context = this;
+        if (context.isReady) {
+            var monthTicks = context.shadowRoot.querySelectorAll(".monthTick");
+            monthTicks.forEach(function(monthTick) {
+                monthTick.classList.remove("selectedTick");
+            })
+            var monthTick = context.shadowRoot.querySelector("#month" + context.month);
+            monthTick.classList.add("selectedTick");
+        }
     }
 
     pickYearFromLabel(e) {
