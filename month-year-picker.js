@@ -224,6 +224,11 @@ class monthYearPicker extends PolymerElement {
         var context = this;
         super.ready();
         context.isReady = true;
+        context.setTicks();
+    }
+
+    setTicks() {
+        var context = this;
         context.displayPicker();
         context.addMonthTicks();
         context.addYearTicks();
@@ -235,7 +240,8 @@ class monthYearPicker extends PolymerElement {
         var picker = context.shadowRoot.querySelector(".monthPicker");
         var pickerWidth = picker.offsetWidth;
         var width = (pickerWidth / 12);
-        var tickTemplate = picker.innerHTML;
+        var tickTemplate = context.monthTickTemplate || picker.innerHTML;
+        context.monthTickTemplate = tickTemplate;
         var ticks = "";
         for (var i = 0; i < 12; i++) {
             var tick = tickTemplate;
@@ -262,7 +268,8 @@ class monthYearPicker extends PolymerElement {
         var pickerWidth = picker.offsetWidth;
         var numYears = context.maxYear - context.minYear - 1;
         var width = (pickerWidth / numYears);
-        var tickTemplate = picker.innerHTML;
+        var tickTemplate = context.yearTickTemplate || picker.innerHTML;
+        context.yearTickTemplate = tickTemplate;
         var ticks = "";
         for (var i = 0; i < numYears; i++) {
             var tick = tickTemplate;
@@ -336,12 +343,18 @@ class monthYearPicker extends PolymerElement {
         var context = this;
         if (newValue < context.year) {
             context.year = newValue;
+            if (context.isReady) {
+                context.setTicks();
+            }
         }
     }
     _minYearChanged(newValue) {
         var context = this;
         if (newValue > context.year) {
             context.year = newValue;
+            if (context.isReady) {
+                context.setTicks();
+            }
         }
     }
     formatMonth(month) {
@@ -445,8 +458,10 @@ class monthYearPicker extends PolymerElement {
         context.year = context.minYear + yearOffset;
         if (bCommit) {
             context.saveYear = context.year;
+            context.yearChanged();
         }
-        context.yearForward(!bCommit ? null : e);
+        // context.yearForward(!bCommit ? null : e);
+        
     }
 
     hoverYearFromRange(e) {
