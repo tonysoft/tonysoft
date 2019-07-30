@@ -231,7 +231,7 @@ class monthYearPicker extends PolymerElement {
     }
 
     addMonthTicks() {
-        var  context = this;
+        var context = this;
         var picker = context.shadowRoot.querySelector(".monthPicker");
         var pickerWidth = picker.offsetWidth;
         var width = (pickerWidth / 12);
@@ -242,14 +242,22 @@ class monthYearPicker extends PolymerElement {
             var left = i * width;
             tick = tick.replace("50px", left + "px");
             tick = tick.replace("10px", width + "px");
-            var leading = ((i + 1) < 10) ? "0" : "";
-            tick = tick.replace("XX", leading + (i + 1));
+            switch (context.monthFormat) {
+                case "short":
+                case "long":
+                    tick = tick.replace("XX", this.monthShort[i + 1][0]);
+                    break;
+                default:
+                    var leading = ((i + 1) < 10) ? "0" : "";
+                    tick = tick.replace("XX", leading + (i + 1));
+                    break;
+            }
             ticks += tick;
         }
         picker.innerHTML = ticks;
     }
     addYearTicks() {
-        var  context = this;
+        var context = this;
         var picker = context.shadowRoot.querySelector(".yearPicker");
         var pickerWidth = picker.offsetWidth;
         var numYears = context.maxYear - context.minYear - 1;
