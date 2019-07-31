@@ -59,7 +59,7 @@ class monthYearPicker extends PolymerElement {
                 height: var(--font-size);
                 line-height: var(--font-size);
                 margin-top: 4px;
-                padding: 2px 3px 0 3px;
+                padding: 0 3px 0 3px;
                 cursor: pointer;
                 overflow: hidden;
             }
@@ -83,7 +83,7 @@ class monthYearPicker extends PolymerElement {
                 color: black;
                 font-size: var(--picker-label);
                 line-height: var(--font-size);
-                padding-top: 2px;
+                padding-top: 0px;
                 text-align: center;
                 background-color: transparent;
             }
