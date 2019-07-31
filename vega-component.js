@@ -240,13 +240,13 @@ class VegaComponent extends PolymerElement {
         if (newData.forEach) {
             var updatedData = context.getVegaData();
             // var updatedData = context.vegaData ? JSON.parse(JSON.stringify(context.vegaData)) : [];
-            if ((context.maxVegaDataItems > 0) && ((updatedData.length + newData.length) > context.maxVegaDataItems)) {
-                var toRemove = (updatedData.length + newData.length) - context.maxVegaDataItems;
-                updatedData.splice(0, toRemove);
-            }
             newData.forEach(function(newItem) {
                 updatedData.push(newItem);
             })
+            if ((context.maxVegaDataItems > 0) && (updatedData.length > context.maxVegaDataItems)) {
+                var toRemove = (updatedData.length + newData.length) - context.maxVegaDataItems;
+                updatedData.splice(0, toRemove);
+            }
             context.vegaData = updatedData;
         }
     }
