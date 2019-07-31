@@ -58,11 +58,11 @@ class VegaComponent extends PolymerElement {
         selectedItemId: {
             type: String
         },
-        vegaSpec: {
+        vegaSpecUrl: {
           type: String,
-          observer: '_vegaSpecChanged'
+          observer: '_vegaSpecUrlChanged'
         },
-        vegaSpecJson: {
+        vegaSpec: {
           type: Object,
           observer: '_vegaSpecJsonChanged'
         },
@@ -70,8 +70,18 @@ class VegaComponent extends PolymerElement {
           type: Object
         },
         vegaData: {
-          type: Object,
-          observer: '_vegaDataChanged'
+            type: Object,
+            observer: '_vegaDataChanged'
+        },
+        addedVegaData: {
+            type: Object,
+            observer: '_addVegaData'
+        },
+        referenceItem: {
+            type: Object
+        },
+        maxVegaDataItems: {
+            type: Number
         },
         vegaDataMap: {
           type: Object
@@ -119,6 +129,9 @@ class VegaComponent extends PolymerElement {
       this.vegaRenderCallback = null;
       this.vegaData = null;
       this.vegaView = null;
+      this.addedVegaData = null;
+      this.referenceItem = null;
+      this.maxVegaDataItems = 0;
       this.currentItemId = "";
       this.selectedItemId = "";
       this.dataSetName = "";
@@ -131,7 +144,7 @@ class VegaComponent extends PolymerElement {
       this.guidanceMarkup = "https://tonysoft.github.io/vegaTest/guidance.html";
     }
 
-    _vegaSpecChanged(newValue) {
+    _vegaSpecUrlChanged(newValue) {
       var context = this;
       var vegaTarget = context.shadowRoot.querySelector("#content");
       if (vegaTarget && newValue) {
@@ -219,6 +232,42 @@ class VegaComponent extends PolymerElement {
       }
     }
 
+    _addVegaData(newData) {
+        var context = this;
+        if (!newData) {
+            return;
+        }
+        if (newData.forEach) {
+            var updatedData = context.getVegaData();
+            // var updatedData = context.vegaData ? JSON.parse(JSON.stringify(context.vegaData)) : [];
+            if ((context.maxVegaDataItems > 0) && ((updatedData.length + newData.length) > context.maxVegaDataItems)) {
+                var toRemove = (updatedData.length + newData.length) - context.maxVegaDataItems;
+                updatedData.splice(0, toRemove);
+            }
+            newData.forEach(function(newItem) {
+                updatedData.push(newItem);
+            })
+            context.vegaData = updatedData;
+        }
+    }
+
+    getVegaData() {
+         var context = this;
+         var vegaData = [];
+         if (context.referenceItem && context.vegaData) {
+            var refItem = JSON.stringify(context.referenceItem);
+            context.vegaData.forEach(function(item) {
+                var itemString = JSON.stringify(item);
+                if (itemString !== refItem) {
+                    vegaData.push(item);
+                }
+            })
+         } else if (context.vegaData) {
+            vegaData = JSON.parse(JSON.stringify(context.vegaData));
+         }
+         return vegaData;
+    }
+
     createVegaDataMap(vegaData) {
       if (!vegaData || !vegaData.forEach) {
         return;
@@ -238,10 +287,13 @@ class VegaComponent extends PolymerElement {
       if (!data) {
           return handled;
       }
-      if (context.vegaSpecJson && context.vegaSpecJson.data) {
+      if (context.referenceItem && data.forEach) {
+          data.push(context.referenceItem);
+      }
+      if (context.vegaSpec && context.vegaSpec.data) {
         var dataSet = null;
-        dataSet = context.vegaSpecJson.data[0];
-        context.vegaSpecJson.data.forEach(function(set) {
+        dataSet = context.vegaSpec.data[0];
+        context.vegaSpec.data.forEach(function(set) {
           if (set.name === dataSetName) {
             dataSet = set;
           }
@@ -249,7 +301,7 @@ class VegaComponent extends PolymerElement {
         if (dataSet && bRender) {
           delete dataSet.url;
           dataSet.values = data;
-          context.vegaRender(context.vegaSpecJson, undefined, callback);
+          context.vegaRender(context.vegaSpec, undefined, callback);
         }
       }
     }
@@ -313,7 +365,7 @@ class VegaComponent extends PolymerElement {
 
     vegaRender(spec, vegaTarget, callback) {
       var context = this;
-      context.vegaSpecJson = spec;
+      context.vegaSpec = spec;
       if (spec.internalInteractionMap) {
           context.internalInteractionMap = spec.internalInteractionMap;
       }
