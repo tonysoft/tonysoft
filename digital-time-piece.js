@@ -386,7 +386,7 @@ class digitalTimePiece extends PolymerElement {
           context.dispatchEvent(new CustomEvent('updateTime', { detail: { rawDate: d, hours: d.getHours(), minutes: context.clockMinutes, seconds: context.clockSeconds }}));
           if (context.notificationInterval && !context.intervalNotification) {
               context.intervalNotification = setInterval(function() {
-                context.dispatchEvent(new CustomEvent('notification', { detail: { rawDate: d, hours: d.getHours(), minutes: context.clockMinutes, seconds: context.clockSeconds }}));
+                context.dispatchEvent(new CustomEvent('periodicNotification', { detail: { rawDate: d, hours: d.getHours(), minutes: context.clockMinutes, seconds: context.clockSeconds }}));
               }, context.notificationInterval * 1000)
           }
         }
