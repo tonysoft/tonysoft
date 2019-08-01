@@ -244,7 +244,7 @@ class VegaComponent extends PolymerElement {
                 updatedData.push(newItem);
             })
             if ((context.maxVegaDataItems > 0) && (updatedData.length > context.maxVegaDataItems)) {
-                var toRemove = (updatedData.length + newData.length) - context.maxVegaDataItems;
+                var toRemove = updatedData.length - context.maxVegaDataItems;
                 updatedData.splice(0, toRemove);
             }
             context.vegaData = updatedData;
