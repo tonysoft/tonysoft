@@ -50,7 +50,7 @@ class AccumulateResponses extends PolymerElement {
             if (numProps || !context.rejectEmpty) {
                 if (!newValue.timestamp) {
                     var timestamp = new Date();
-                    timeUTC = timestamp.toUTCString();
+                    var timeUTC = timestamp.toUTCString();
                     newValue.timestamp = timestamp.getTime();
                     var time = timeUTC.replace(" GMT", "");
                     newValue.time = time.substr(time.lastIndexOf(" ") + 1);
