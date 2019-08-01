@@ -25,6 +25,9 @@ class AccumulateResponses extends PolymerElement {
         getResponses: {
           type: Boolean,
           observer: "_getResponses"
+        },
+        rejectEmpty: {
+            type: Boolean
         }
       }
     }
@@ -34,14 +37,21 @@ class AccumulateResponses extends PolymerElement {
       this.responses = [];
       this.newResponse = null;
       this.getResponses = false;
+      this.rejectEmpty = true;
     }
 
     _newResponse(newValue) {
-      var context = this;
-      if (newValue) {
-        context.responses.push(newValue);
-        context.dispatchResponses();
-    }
+        var context = this;
+        if (newValue) {
+            var numProps = 0;
+            for (var propId in newValue) {
+                numProps++;
+            }
+            if (numProps || !context.rejectEmpty) {
+                context.responses.push(newValue);
+                context.dispatchResponses();
+            }
+        }
     }
 
     _getResponses(newValue) {
