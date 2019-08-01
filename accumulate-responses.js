@@ -40,19 +40,25 @@ class AccumulateResponses extends PolymerElement {
       var context = this;
       if (newValue) {
         context.responses.push(newValue);
-      }
+        context.dispatchResponses();
+    }
     }
 
     _getResponses(newValue) {
         var context = this;
         if (newValue) {
-          context.dispatchEvent(new CustomEvent("responses", { 
-            detail: { 
-              responses: context.responses
-            }
-          }));
-          context.getResponses = false;
+            context.dispatchResponses();
+            context.getResponses = false;
         }
+    }
+
+    dispatchResponses() {
+        var context = this;
+        context.dispatchEvent(new CustomEvent("responses", { 
+            detail: { 
+                responses: context.responses
+            }
+        }));
     }
 
 }
