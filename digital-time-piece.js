@@ -204,7 +204,7 @@ class digitalTimePiece extends PolymerElement {
         this.incrementDecrement = false;
         this.hideSeconds = false;
         this.timePicker = 0;
-        this.notificationInterval = 0;
+        this.notificationInterval = 1;
     }
     ready() {
         var context = this;
@@ -383,10 +383,9 @@ class digitalTimePiece extends PolymerElement {
             context.clockMinutes = d.getMinutes()
             context.clockHours = d.getHours();
           }
-          context.dispatchEvent(new CustomEvent('updateTime', { detail: { rawDate: d, hours: d.getHours(), minutes: context.clockMinutes, seconds: context.clockSeconds }}));
 
           if (context.notificationInterval && ((context.clockSeconds % context.notificationInterval) === 0)) {
-                context.dispatchEvent(new CustomEvent('periodicNotification', { detail: { rawDate: d, hours: d.getHours(), minutes: context.clockMinutes, seconds: context.clockSeconds }}));
+            context.dispatchEvent(new CustomEvent('updateTime', { detail: { rawDate: d, hours: d.getHours(), minutes: context.clockMinutes, seconds: context.clockSeconds }}));
           }
         }
     }
