@@ -49,11 +49,12 @@ class AccumulateResponses extends PolymerElement {
             }
             if (numProps || !context.rejectEmpty) {
                 if (!newValue.timestamp) {
-                    var timestamp = new Date().toString();
-                    var time = timestamp.substr(timestamp.lastIndexOf(" ") + 1);
-                    newValue.timestamp = timestamp;
-                    newValue.time = time;
-                }
+                    var timestamp = new Date();
+                    timeUTC = timestamp.toUTCString();
+                    newValue.timestamp = timestamp.getTime();
+                    var time = timeUTC.replace(" GMT", "");
+                    newValue.time = time.substr(time.lastIndexOf(" ") + 1);
+              }
                 context.responses.push(newValue);
                 context.dispatchResponses();
             }
