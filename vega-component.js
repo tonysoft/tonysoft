@@ -4,7 +4,7 @@ import '@polymer/iron-icon/iron-icon.js';
 
 
 /**
- * `vega-container`
+ * `vega-component`
  * A generic-container which also allows Vega Visualizations to be rendered within it.
  *
  * @customElement
