@@ -50,7 +50,7 @@ class AccumulateResponses extends PolymerElement {
             if (numProps || !context.rejectEmpty) {
                 if (!newValue.timestamp) {
                     var timestamp = new Date().toString();
-                    var time = timeStamp.substr(timestamp.lastIndexOf(" ") + 1);
+                    var time = timestamp.substr(timestamp.lastIndexOf(" ") + 1);
                     newValue.timestamp = timestamp;
                     newValue.time = time;
                 }
