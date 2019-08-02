@@ -5,6 +5,7 @@
   "width": 600,
   "height": 400,
   "style": "cell",
+  "fields": ["memory", "time", "sessions", "maxMemory"],
   "data": [
     {
         "name": "table",
@@ -13,14 +14,18 @@
             "expr": "datum.time",
             "type": "formula"
           },{
-              "as": "memory",
-              "expr": "datum.heap_memory",
+            "as": "memory",
+            "expr": "datum.heap_memory",
+            "type": "formula"
+        },{
+              "as": "maxMemory",
+              "expr": "datum.heap_memory_max",
               "type": "formula"
-          },{
+        },{
             "as": "sessions",
             "expr": "datum.num_sessions",
             "type": "formula"
-          },{
+        },{
             "as": "pct",
             "expr": "datum.heap_memory / datum.heap_memory_max * 100",
             "type": "formula"
