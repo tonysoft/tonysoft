@@ -1,0 +1,101 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json", 
+  "autosize": "pad",
+  "padding": 5,
+  "width": 600,
+  "height": 400,
+  "style": "cell",
+  "data": [
+    {
+        "name": "table",
+        "transform": [{
+            "as": "id",
+            "expr": "datum.time",
+            "type": "formula"
+          },{
+              "as": "memory",
+              "expr": "datum.heap_memory",
+              "type": "formula"
+          },{
+            "as": "sessions",
+            "expr": "datum.num_sessions",
+            "type": "formula"
+          },{
+            "as": "pct",
+            "expr": "datum.heap_memory / datum.heap_memory_max * 100",
+            "type": "formula"
+        }]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "table"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"sessions\": ''+datum[\"sessions\"], \"memory\": format(datum[\"memory\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "id"},
+          "width": {"scale": "x", "band": true},
+          "y": {"scale": "y", "field": "pct"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "table", "field": "id"},
+      "range": "width",
+      "padding": 0.25,
+      "round": true
+    },
+    {
+      "name": "y",
+      "domain": {"data": "table", "field": "pct"},
+      "nice": true,
+      "range": "height"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelAlign": "left",
+      "labelAngle": 60,
+      "labelPadding": 5,
+      "labelBaseline": "middle",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "memory",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ]
+}
