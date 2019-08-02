@@ -8,6 +8,7 @@
   "fields": ["memory", "time", "sessions", "maxMemory", "pct"],
   "maxField": "maxMemory",
   "measuredField": "memory",
+  "labelField": "time",
   "data": [
     {
         "name": "table",
