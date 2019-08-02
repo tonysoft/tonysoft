@@ -5,7 +5,7 @@
   "width": 600,
   "height": 400,
   "style": "cell",
-  "fields": ["memory", "time", "sessions", "maxMemory"],
+  "fields": ["memory", "time", "sessions", "maxMemory", "pct"],
   "data": [
     {
         "name": "table",
