@@ -6,8 +6,8 @@
   "height": 400,
   "style": "cell",
   "fields": ["memory", "time", "sessions", "maxMemory", "pct"],
-  "maxField": "maxMemory",
-  "measuredField": "memory",
+  "maxField": "heap_memory_max",
+  "measuredField": "heap_memory",
   "labelField": "time",
   "data": [
     {
