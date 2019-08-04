@@ -52,6 +52,8 @@ class AccumulateResponses extends PolymerElement {
                     var timestamp = new Date();
                     newValue.timeUTC = timestamp.toUTCString();
                     newValue.timestamp = timestamp.getTime();
+                    var date = timestamp.getUTCFullYear() + "-" + pad(timestamp.getUTCMonth() + 1) + "-" + pad(timestamp.getUTCDate());
+                    newValue.date = date;
                     var time = newValue.timeUTC.replace(" GMT", "");
                     newValue.time = time.substr(time.lastIndexOf(" ") + 1);
               }
@@ -59,6 +61,7 @@ class AccumulateResponses extends PolymerElement {
                 context.dispatchResponses();
             }
         }
+        function pad(n){return n<10 ? '0'+n : n}
     }
 
     _getResponses(newValue) {
