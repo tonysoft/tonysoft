@@ -225,6 +225,9 @@ class VegaComponent extends PolymerElement {
         var dataChangedInterval = setInterval(function() {
           if (context.vegaView) {
             clearInterval(dataChangedInterval);
+            if (context.vegaData.length) {
+              context.vegaData[0].updateTimestamp = new Date().getTime();
+            }
             context.vegaUpdate(context.vegaDataSetName, context.vegaData, true);
             context.createVegaDataMap(context.vegaData);
           }
