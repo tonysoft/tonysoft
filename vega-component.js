@@ -287,6 +287,9 @@ class VegaComponent extends PolymerElement {
       if (!data) {
           return handled;
       }
+      if (!data.length) {
+        data = [];
+      }
       if (context.referenceItem && data.forEach) {
           data.push(context.referenceItem);
       }
