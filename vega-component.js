@@ -392,7 +392,10 @@ class VegaComponent extends PolymerElement {
         context.scaleIfNecessary();
       }, 500);
       context.vegaEvents(view);
-      return view.runAsync();
+      context.dispatchEvent(new CustomEvent("rendered", { 
+        detail: context.vegaData
+      }));
+    return view.runAsync();
     }
 
     _getItemNodes(items) {
