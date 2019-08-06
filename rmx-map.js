@@ -176,7 +176,7 @@
         this.map = new google.maps.Map(this, this.mapOptions);
         this.dispatchEvent(new CustomEvent('google-map-ready', { detail: this.map }));
 
-        context.processMarkers();
+        context.processMarkers(context.markers);
 
         // exposed 2 extra events to the external world
         this.map.addListener('zoom_changed', () => {
