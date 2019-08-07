@@ -1,0 +1,85 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json", 
+  "autosize": "pad",
+  "padding": 5,
+  "width": 600,
+  "height": 400,
+  "style": "cell",
+  "fields": ["user", "periodsActive", "usage"],
+  "data": [
+    {
+        "name": "table"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "table"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"periodsActive\": ''+datum[\"periodsActive\"], \"usage\": format(datum[\"usage\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "user"},
+          "width": {"scale": "x", "band": true},
+          "y": {"scale": "y", "field": "periodsActive"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "table", "field": "user"},
+      "range": "width",
+      "padding": 0.25,
+      "round": true
+    },
+    {
+      "name": "y",
+      "domain": {"data": "table", "field": "periodsActive"},
+      "nice": true,
+      "range": "height"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelAlign": "left",
+      "labelAngle": 60,
+      "labelPadding": 5,
+      "labelBaseline": "middle",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "memory",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ]
+}
