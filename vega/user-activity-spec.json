@@ -5,7 +5,7 @@
   "width": 600,
   "height": 400,
   "style": "cell",
-  "fields": ["user", "startTime", "endTime", "periodsActive", "usage", "startTime", "endTime"],
+  "fields": ["user", "startTime", "endTime", "periodsActive", "usage"],
   "data": [
     {
         "name": "table"
