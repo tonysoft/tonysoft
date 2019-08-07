@@ -5,7 +5,7 @@
   "width": 600,
   "height": 400,
   "style": "cell",
-  "fields": ["user", "periodsActive", "usage", "startTime", "endTime"],
+  "fields": ["user", "startTime", "endTime", "periodsActive", "usage", "startTime", "endTime"],
   "data": [
     {
         "name": "table"
@@ -21,7 +21,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"periodsActive\": ''+datum[\"periodsActive\"], \"usage\": format(datum[\"usage\"], \"\")}"
+            "signal": "{\"user\": ''+datum[\"user\"], \"startTime\": ''+datum[\"startTime\"], \"endTime\": ''+datum[\"endTime\"], \"periodsActive\": ''+datum[\"periodsActive\"], \"usage\": format(datum[\"usage\"], \"\")}"
           },
           "x": {"scale": "x", "field": "user"},
           "width": {"scale": "x", "band": true},
