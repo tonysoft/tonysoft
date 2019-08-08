@@ -1,0 +1,5 @@
+{
+	"vegaData": "https://unpkg.com/tonysoft@^1.51.35/vega/seattleTemps.json",
+	"vegaSpec": "https://unpkg.com/tonysoft@^1.51.35/vega/seattleTempsSpec.json",
+	"screenTitle": "Test Chart Components"
+}
