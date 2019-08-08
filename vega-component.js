@@ -109,6 +109,10 @@ class VegaComponent extends PolymerElement {
         bestFit: {
           type: Boolean
         },
+        hideGuidance: {
+          type: Boolean,
+          observer: '_hideGuidance'
+        },
         internalEvents: {
           type: Boolean
         },
@@ -141,6 +145,7 @@ class VegaComponent extends PolymerElement {
       this.resizeInterval = 0;
       this.bestFit = false;
       this.internalEvents = false;
+      this.hideGuidance = false;
       this.guidanceMarkup = "https://tonysoft.github.io/vegaTest/guidance.html";
     }
 
@@ -538,6 +543,11 @@ class VegaComponent extends PolymerElement {
             }, 1000);
         }
     }
+    _hideGuidance() {
+      var context = this;
+      var target = context.shadowRoot.querySelector("#content");
+      target.innerHTML = "";
+  }
     guidance(e) {
         e.stopPropagation();
         var context = this;
