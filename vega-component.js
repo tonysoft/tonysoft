@@ -543,10 +543,12 @@ class VegaComponent extends PolymerElement {
             }, 1000);
         }
     }
-    _hideGuidance() {
+    _hideGuidance(newValue) {
       var context = this;
-      var target = context.shadowRoot.querySelector("#content");
-      target.innerHTML = "";
+      if (newValue) {
+        var target = context.shadowRoot.querySelector("#content");
+        target.innerHTML = "";
+      }
   }
     guidance(e) {
         e.stopPropagation();
