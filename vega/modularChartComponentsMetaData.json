@@ -2,5 +2,7 @@
     "vegaSpec": "https://tonysoft.github.io/vegaTest/bar-chart.vg.by.url.json", 
     "vegaData": "https://tonysoft.github.io/vegaTest/bar-chart.data.json",
     "screenTitle": "Test Chart Components",
-    "entity": "chartSnapshot"
+    "entity": "chartSnapshot",
+    "fields": ["id", "amount"],
+    "fieldsFriendly": ["name", "value"]
 }
