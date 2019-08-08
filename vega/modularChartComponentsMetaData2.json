@@ -4,5 +4,5 @@
     "screenTitle": "Test Chart Components",
     "entity": "chartSnapshot",
     "fields": ["id", "amount"],
-    "fieldsFriendly": ["Name", "Value"]
+    "fieldsFriendlyx": ["Name", "Value"]
 }
