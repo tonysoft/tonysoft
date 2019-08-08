@@ -10,7 +10,7 @@
     "data": [
       {
         "name": "source_0",
-        "url": "https://unpkg.com/tonysoft@^1.51.33/vega/seattleTemps.json",
+        "urlx": "https://unpkg.com/tonysoft@^1.51.33/vega/seattleTemps.json",
         "format": {
           "type": "json",
           "parse": {"date": "date", "temp": "number"},
@@ -84,7 +84,8 @@
         "name": "color",
         "type": "linear",
         "domain": {"data": "source_0", "field": "max_temp"},
-        "range": "heatmap",
+        "range": {"scheme": "magma"},
+        "reverse": true,
         "interpolate": "hcl",
         "zero": false
       }
