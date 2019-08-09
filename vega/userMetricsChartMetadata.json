@@ -1,0 +1,22 @@
+{
+    "vegaSpec": "https://unpkg.com/tonysoft@^1.51.32/vega/user-activity-spec.json", 
+    "screenTitle": "Test Chart Components",
+    "entity": "chartSnapshot",
+    "fields": ["id", "amount"],
+    "fieldsFriendlyx": ["Name", "Value"],
+    "headers": {
+        "accept": "*.*",
+        "authorization": "${authorization}",
+        "content-type": "application/json"
+    },
+    "params": {
+        "aggregation.alignmentPeriod": "${alignmentPeriod}",
+        "aggregation.crossSeriesReducer": "REDUCE_SUM",
+        "aggregation.groupByFields": "metric.label.user",
+        "aggregation.perSeriesAligner": "ALIGN_NONE",
+        "filter": "metric.type=\"logging.googleapis.com/user/user_sessions\"",
+        "interval.endTime": "${endTime}",
+        "interval.startTime": "${startTime}",
+        "name": "projects/rmx-staging"
+    }
+}
