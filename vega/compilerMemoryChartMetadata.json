@@ -2,7 +2,7 @@
     "vegaSpec": "https://unpkg.com/tonysoft@^1.51.20/vega/compiler-memory-spec.json",
     "vegaData": "https://staging.remixlabs.com/staging/amp/x/monitor/compiler",
     "screenTitle": "Compiler Memory Utilization",
-    "entity": "chartSnapshot",
+    "entity": "dataSnapshot",
     "fields": ["maxMemory", "memory", "pct", "sessions", "time"],
     "fieldsFriendly": ["Max Memory", "Memory", "Percentage of Max", "Sessions", "Time of Sample"],
     "headers": {
