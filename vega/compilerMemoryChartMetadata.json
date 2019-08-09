@@ -1,0 +1,13 @@
+{
+    "vegaSpec": "https://unpkg.com/tonysoft@^1.51.20/vega/compiler-memory-spec.json",
+    "vegaData": "https://staging.remixlabs.com/staging/amp/x/monitor/compiler",
+    "screenTitle": "Compiler Memory Utilization",
+    "entity": "chartSnapshot",
+    "fields": ["id", "amount"],
+    "fieldsFriendlyx": ["Name", "Value"],
+    "headers": {
+        "accept": "*.*",
+        "content-type": "application/json"
+    },
+    "params": {}
+}
