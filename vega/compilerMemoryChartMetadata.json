@@ -4,7 +4,7 @@
     "screenTitle": "Compiler Memory Utilization",
     "entity": "chartSnapshot",
     "fields": ["maxMemory", "memory", "pct", "sessions", "time"],
-    "fieldsFriendlyx": ["Max Memory", "Memory", "Percentage of Max", "Sessions", "Time of Sample"],
+    "fieldsFriendly": ["Max Memory", "Memory", "Percentage of Max", "Sessions", "Time of Sample"],
     "headers": {
         "accept": "application/json",
         "content-type": "application/json"
