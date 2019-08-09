@@ -3,10 +3,10 @@
     "vegaData": "https://staging.remixlabs.com/staging/amp/x/monitor/compiler",
     "screenTitle": "Compiler Memory Utilization",
     "entity": "chartSnapshot",
-    "fields": ["id", "amount"],
-    "fieldsFriendlyx": ["Name", "Value"],
+    "fields": ["maxMemory", "memory", "pct", "sessions", "time"],
+    "fieldsFriendlyx": ["Max Memory", "Memory", "Percentage of Max", "Sessions", "Time of Sample"],
     "headers": {
-        "accept": "*.*",
+        "accept": "application/json",
         "content-type": "application/json"
     },
     "params": {}
