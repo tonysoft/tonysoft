@@ -1,0 +1,22 @@
+[{   
+    "entity": "screenMetadata",
+    "id": "userActivitySnapshots",
+    "metadata": {
+        "defaultScreenTitle": "User Activity Snapshots",
+        "vegaSpec": "https://unpkg.com/tonysoft@^1.51.32/vega/user-activity-spec.json",
+        "entity": "userActivity",
+        "fields": ["user", "startTime", "endTime", "periodsActive", "usage"],
+        "fieldsFriendly": ["User", "Start Time", "End Time", "Periods Active", "Usage"]
+    }
+},
+{
+	"id": "compilerMemorySnapshots",
+	"metadata": {
+        "defaultScreenTitle": "Compiler Memory Snapshots",
+		"entity": "dataSnapshot",
+		"fields": ["maxMemory", "memory", "pct", "sessions", "time"],
+		"fieldsFriendly": ["Max Memory", "Memory", "Percentage of Max", "Sessions", "Time of Sample"],
+		"vegaSpec": "https://unpkg.com/tonysoft@^1.51.20/vega/compiler-memory-spec.json"
+	},
+	"entity": "screenMetadata"
+}]

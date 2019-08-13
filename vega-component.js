@@ -131,6 +131,7 @@ class VegaComponent extends PolymerElement {
     constructor() {
       super();
       this.vegaRenderCallback = null;
+      this.vegaSpec = null;
       this.vegaData = null;
       this.vegaView = null;
       this.addedVegaData = null;
@@ -155,13 +156,25 @@ class VegaComponent extends PolymerElement {
       if (vegaTarget && newValue) {
         fetch(newValue)
           .then(res => res.json())
-          .then(spec => context.vegaRender(spec, vegaTarget))
+          .then(spec => context.preVegaRender(spec, vegaTarget))
           .catch(err => console.error(err));
       } else {
         if (this.vegaRenderCallback) {
           this.vegaRenderCallback();
         }
       }
+    }
+
+    preVegaRender(spec, vegaTarget) {
+      var context = this;
+      if (context.vegaSpec && context.vegaData) {
+        var oldSpec = JSON.stringify(context.vegaSpec)
+        var newSpec = JSON.stringify(spec);
+        if (newSpec !== oldSpec) {
+          context.vegaData = null;
+        }
+      }
+      context.vegaRender(spec, vegaTarget);
     }
 
     _updateDataMapChanged(newValue) {
@@ -199,7 +212,7 @@ class VegaComponent extends PolymerElement {
         if (context.height) {
             newValue.height = context.height;
         }
-        context.vegaRender(newValue, vegaTarget);
+        context.preVegaRender(newValue, vegaTarget);
         if (context.vegaData) {
           context.vegaUpdate(context.vegaDataSetName, context.vegaData, true);
         }
