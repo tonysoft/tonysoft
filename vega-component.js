@@ -320,8 +320,10 @@ class VegaComponent extends PolymerElement {
           }
         })
         if (dataSet && bRender) {
-          delete dataSet.url;
-          dataSet.values = data;
+          if (data.length) {
+            delete dataSet.url;
+            dataSet.values = data;
+          }
           context.vegaRender(context.vegaSpec, undefined, callback);
         }
       }
