@@ -170,7 +170,7 @@ class VegaComponent extends PolymerElement {
       if (context.vegaSpec && context.vegaData) {
         var oldSpec = JSON.stringify(context.vegaSpec)
         var newSpec = JSON.stringify(spec);
-        if (newSpec !== oldSpec) {
+        if ((oldSpec !== "{}") && (newSpec !== oldSpec)) {
           context.vegaData = null;
         }
       }
