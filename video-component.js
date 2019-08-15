@@ -92,39 +92,37 @@ class VideoComponent extends PolymerElement {
                 if (!context.parentNode) {
                   return;
                 }
-                var vegaWidth = context.originalWidth;
-                var vegaHeight = context.originalHeight;
-                var remixAppParent = window; //document.querySelector("remix-sg-viewer#inspector-out_2");
+                var targetWidth = context.originalWidth;
+                var targetHeight = context.originalHeight;
+                var maxWidth = window.innerWidth;
+                var maxHeight = window.innerHeight;
+                var remixAppParent = document.querySelector("remix-sg-viewer#inspector-out_2");
                 if (!remixAppParent) {
                     remixAppParent = document.querySelector(".remix-app-parent");
                 }
                 if (remixAppParent) {
-                    // var w = window.innerWidth;
-                    // var h = window.innerHeight;
-                    var maxWidth = remixAppParent.innerWidth;
-                    var maxHeight = remixAppParent.innerHeight;
-                    var scale = 1.0;
-                    var adjWidth = 0;
-                    var adjHeight = 0;
-                    if (true) { //((vegaWidth > maxWidth) || (vegaHeight > maxHeight)) {
-                        var horzScale = maxWidth / vegaWidth;
-                        var vertScale = maxHeight / vegaHeight;
-                        if (horzScale < vertScale) {
-                            scale = horzScale;
-                        }
-                        else {
-                            scale = vertScale;
-                        }
-                        adjWidth = parseInt((context.originalWidth * scale)) - 2;
-                        adjHeight = parseInt((context.originalHeight * scale)) - 2;
-                        context.top = (maxHeight - adjHeight) / 2;
-                        context.left = (maxWidth - adjWidth) / 2;
+                    maxWidth = remixAppParent.offsetWidth;
+                    maxHeight = remixAppParent.offsetHeight;
                 }
-                    if (context.lastScale !== scale) {
-                        context.width = adjWidth;
-                        context.height = adjHeight;
-                        context.lastScale = scale;
-                    }
+                var scale = 1.0;
+                var adjWidth = 0;
+                var adjHeight = 0;
+                var horzScale = maxWidth / targetWidth;
+                var vertScale = maxHeight / targetHeight;
+                if (horzScale < vertScale) {
+                    scale = horzScale;
+                }
+                else {
+                    scale = vertScale;
+                }
+                adjWidth = parseInt((context.originalWidth * scale)) - 2;
+                adjHeight = parseInt((context.originalHeight * scale)) - 2;
+                context.top = parseInt((maxHeight - adjHeight) / 2);
+                context.left = parseInt((maxWidth - adjWidth) / 2);
+                if (context.lastScale !== scale) {
+                    context.width = adjWidth;
+                    context.height = adjHeight;
+                    context.lastScale = scale;
                 }
             }
             doScale();
