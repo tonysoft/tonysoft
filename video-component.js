@@ -27,7 +27,7 @@ class VideoComponent extends PolymerElement {
                 outline: none;
             }
           </style>
-          <div style="position: relative;">
+          <div style="position: relative; width: [[width]]px; height: [[height]]px;">
             <div class="main noSelect"style="position: absolute; top: [[top]]px; left: [[left]]px; width: [[width]]px; height: [[height]]px;">
                 <video src="[[src]]" controls class="theVideo" on-canplay="loaded" onloadedmetadata="metadataLoaded"></video>
             </div>
