@@ -29,7 +29,7 @@ class VideoComponent extends PolymerElement {
           </style>
           <div style="position: relative; width: [[width]]px; height: [[height]]px;">
             <div class="main noSelect"style="position: absolute; top: [[top]]px; left: [[left]]px; width: [[width]]px; height: [[height]]px;">
-                <video src="" class="theVideo" on-canplay="loaded" onloadedmetadata="metadataLoaded" muted></video>
+                <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
             </div>
           </div>
         `;
@@ -103,6 +103,16 @@ class VideoComponent extends PolymerElement {
     metadataLoaded(e) {
         var context = this;
 
+    }
+
+    playStatus(e) {
+        var context = this;
+        context.dispatchEvent(new CustomEvent("playStatus", { 
+            detail: { 
+                playing: (e.type === "play"),
+                paused: (e.type === "pause")
+            }
+        }));
     }
 
     _playVideo(newValue) {
