@@ -98,6 +98,11 @@ class VideoComponent extends PolymerElement {
         context.isReady = true;
         context.showControlsBar(context.showControls);
         context.scaleIfNecessary();
+        setTimeout(function() {
+            var state = video.paused ? "pause" : "play";
+            context.playStatus({ type: state })
+        }, 100)
+
     }
 
     metadataLoaded(e) {
@@ -110,7 +115,8 @@ class VideoComponent extends PolymerElement {
         context.dispatchEvent(new CustomEvent("playState", { 
             detail: { 
                 playing: (e.type === "play"),
-                paused: (e.type === "pause")
+                paused: (e.type === "pause"),
+                state: (e.type === "play") ? "playing" : "paused"
             }
         }));
     }
