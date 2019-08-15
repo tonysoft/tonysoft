@@ -101,13 +101,17 @@ class VideoComponent extends PolymerElement {
                 var maxWidth = window.innerWidth;
                 var maxHeight = window.innerHeight;
                 var remixAppParent = document.querySelector("remix-sg-viewer#inspector-out_2");
+                var topOffset = 0;
                 if (!remixAppParent) {
                     remixAppParent = document.querySelector(".remix-app-parent");
                 }
                 if (remixAppParent) {
                     maxWidth = remixAppParent.offsetWidth;
                     maxHeight = remixAppParent.offsetHeight;
+                    var parentGroup = context.parentNode;
+                    topOffset = parentGroup.offsetTop;
                 }
+                maxHeight -= topOffset;
                 var scale = 1.0;
                 var adjWidth = 0;
                 var adjHeight = 0;
