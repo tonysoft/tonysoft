@@ -29,7 +29,7 @@ class VideoComponent extends PolymerElement {
           </style>
           <div style="position: relative; width: [[width]]px; height: [[height]]px;">
             <div class="main noSelect"style="position: absolute; top: [[top]]px; left: [[left]]px; width: [[width]]px; height: [[height]]px;">
-                <video src="[[src]]" controls class="theVideo" on-canplay="loaded" onloadedmetadata="metadataLoaded"></video>
+                <video src="" class="theVideo" on-canplay="loaded" onloadedmetadata="metadataLoaded" muted></video>
             </div>
           </div>
         `;
@@ -56,19 +56,83 @@ class VideoComponent extends PolymerElement {
             type: Boolean
         },
         centered: {
+            type: String
+        },
+        isReady: {
             type: Boolean
+        },
+        autoplay: {
+            type: Boolean
+        },
+        muted: {
+            type: Boolean
+        },
+        showControls: {
+            type: Boolean
+        },
+        playVideo: {
+            type: Boolean,
+            observer: "_playVideo"
+        },
+        pauseVideo: {
+            type: Boolean,
+            observer: "_pauseVideo"
         }
       }
     }
 
+
+    ready() {
+        var context = this;
+        super.ready();
+        var video = context.shadowRoot.querySelector("video");
+        video.autoplay = context.autoplay;
+        video.src = context.src;
+    }
     loaded(e) {
         var context = this;
+        var video = context.shadowRoot.querySelector("video");
+        if (!context.autoplay) {
+            video.muted = context.muted;
+        }
+        context.isReady = true;
+        context.showControlsBar(context.showControls);
         context.scaleIfNecessary();
     }
 
     metadataLoaded(e) {
         var context = this;
 
+    }
+
+    _playVideo(newValue) {
+        var context = this;
+        var video = context.shadowRoot.querySelector("video");
+        if (newValue) {
+            context.pauseVideo = false;
+            context.playTheVideo();
+        }
+    }
+
+    _pauseVideo(newValue) {
+        var context = this;
+        var video = context.shadowRoot.querySelector("video");
+        if (newValue) {
+            context.playVideo = false;
+            context.pauseTheVideo();
+        }
+    }
+
+    playTheVideo() {
+        var context = this;
+        var video = context.shadowRoot.querySelector("video");
+        video.play();
+    }
+
+    pauseTheVideo() {
+        var context = this;
+        var video = context.shadowRoot.querySelector("video");
+        video.pause();
     }
 
     constructor() {
@@ -79,7 +143,23 @@ class VideoComponent extends PolymerElement {
       this.top = 0;
       this.src = "";
       this.bestFit = false;
-      this.centered = false;
+      this.centered = "";
+      this.autoplay = false;
+      this.isReady = false;
+      this.playVideo = false;
+      this.pauseVideo = false;
+      this.muted = false;
+    }
+
+    showControlsBar(showControls) {
+        var context = this;
+        var video = context.shadowRoot.querySelector("video");
+        if (showControls) {
+            video.controls = true;
+            return "true";
+        } else {
+            return "false";
+        }
     }
 
     scaleIfNecessary() {
@@ -111,6 +191,9 @@ class VideoComponent extends PolymerElement {
                     var parentGroup = context.parentNode;
                     topOffset = parentGroup.offsetTop;
                 }
+                else {
+                    topOffset = context.offsetTop;
+                }
                 maxHeight -= topOffset;
                 var scale = 1.0;
                 var adjWidth = 0;
@@ -126,8 +209,12 @@ class VideoComponent extends PolymerElement {
                 adjWidth = parseInt((context.originalWidth * scale)) - 2;
                 adjHeight = parseInt((context.originalHeight * scale)) - 2;
                 if (context.centered) {
-                    context.top = parseInt((maxHeight - adjHeight) / 2);
-                    context.left = parseInt((maxWidth - adjWidth) / 2);
+                    if (context.centered.toLowerCase().indexOf("ver") >= 0) {
+                        context.top = parseInt((maxHeight - adjHeight) / 2);
+                    }
+                    if (context.centered.toLowerCase().indexOf("hor") >= 0) {
+                        context.left = parseInt((maxWidth - adjWidth) / 2);
+                    }
                 }
                 if (context.lastScale !== scale) {
                     context.width = adjWidth;
