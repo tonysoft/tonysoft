@@ -132,6 +132,7 @@ class VegaComponent extends PolymerElement {
       super();
       this.vegaRenderCallback = null;
       this.vegaSpec = null;
+      this.vegaSpecUrl = null;
       this.vegaData = null;
       this.vegaView = null;
       this.addedVegaData = null;
