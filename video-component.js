@@ -54,6 +54,9 @@ class VideoComponent extends PolymerElement {
         },
         bestFit: {
             type: Boolean
+        },
+        centered: {
+            type: Boolean
         }
       }
     }
@@ -76,6 +79,7 @@ class VideoComponent extends PolymerElement {
       this.top = 0;
       this.src = "";
       this.bestFit = false;
+      this.centered = false;
     }
 
     scaleIfNecessary() {
@@ -117,8 +121,10 @@ class VideoComponent extends PolymerElement {
                 }
                 adjWidth = parseInt((context.originalWidth * scale)) - 2;
                 adjHeight = parseInt((context.originalHeight * scale)) - 2;
-                context.top = parseInt((maxHeight - adjHeight) / 2);
-                context.left = parseInt((maxWidth - adjWidth) / 2);
+                if (context.centered) {
+                    context.top = parseInt((maxHeight - adjHeight) / 2);
+                    context.left = parseInt((maxWidth - adjWidth) / 2);
+                }
                 if (context.lastScale !== scale) {
                     context.width = adjWidth;
                     context.height = adjHeight;
