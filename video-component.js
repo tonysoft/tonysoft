@@ -149,6 +149,7 @@ class VideoComponent extends PolymerElement {
       this.playVideo = false;
       this.pauseVideo = false;
       this.muted = false;
+      this.showControls = true;
     }
 
     showControlsBar(showControls) {
