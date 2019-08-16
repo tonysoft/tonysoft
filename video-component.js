@@ -97,7 +97,7 @@ class VideoComponent extends PolymerElement {
         var context = this;
         super.ready();
         context.setVideoType();
-        context.video.autoplay = context.autoplay;
+        // context.video.autoplay = context.autoplay;
         // if (context.youTube) {
         //     context.video.videoId = context.src;
         // } else {
@@ -141,8 +141,10 @@ class VideoComponent extends PolymerElement {
         }
 
         if (context.youTube) {
+            context.video.autoplay = context.autoplay ? 1 : 0;
             context.video.videoId = context.src;
         } else {
+            context.video.autoplay = context.autoplay;
             context.video.src = context.src;
         }
     }
@@ -168,28 +170,60 @@ class VideoComponent extends PolymerElement {
 
     }
 
+    timeUpdate(e) {
+        var context = this;
+        var video = context.video;
+        if (!context.timeUpdateInterval && context.playVideo) {
+            context.timeUpdateInterval = setInterval(function() {
+                context.dispatchPlayStatusEvent();
+            }, 1000)
+        }
+    }
+
     playStatus(e) {
         var context = this;
-        var playing = false;
-        var paused = true;
-        var state = "paused";
+        var video = context.video;
+        context.processingPlayStatus = true;
         switch (context.youTube) {
             case false:
-                playing = (e.type === "play");
-                paused = (e.type === "pause");
-                state = (e.type === "play") ? "playing" : "paused";
+                context.playVideo = (e.type === "play");
+                context.pauseVideo = (e.type === "pause");
+                context.playState = (e.type === "play") ? "playing" : "paused";
                 break;
             case true:
-                playing = (e.detail.value === 1);
-                paused = (e.detail.value === 2);
-                state = (e.detail.value === 1) ? "playing" : "paused";
+                context.playVideo = (e.detail.value === 1);
+                context.pauseVideo = (e.detail.value === 2);
+                context.playState = (e.detail.value === 1) ? "playing" : "paused";
                 break;
         }
+        if (context.playVideo) {
+            if (context.youTube) {
+                video.chromeless = false;
+            } else {
+                video.controls = true;
+            }
+        }
+        context.processingPlayStatus = false;
+        if (context.playVideo && !context.timeUpdateInterval) {
+            context.timeUpdate();
+        }
+        context.dispatchPlayStatusEvent();
+    }
+
+    dispatchPlayStatusEvent() {
+        var context = this;
+        var video = context.video;
+        if (context.pauseVideo && context.timeUpdateInterval) {
+            clearInterval(context.timeUpdateInterval);
+            context.timeUpdateInterval = 0;
+        }
+        var currentTimeProperty = context.youTube ? "currenttime" : "currentTime";
         context.dispatchEvent(new CustomEvent("playState", { 
             detail: { 
-                playing: playing,
-                paused: paused,
-                state: state
+                playing: context.playVideo,
+                paused: context.pauseVideo,
+                state: context.playState,
+                currentTime: parseInt(video[currentTimeProperty])
             }
         }));
     }
@@ -209,6 +243,15 @@ class VideoComponent extends PolymerElement {
         if (newValue) {
             context.playVideo = false;
             context.pauseTheVideo();
+            if (context.isReady && !context.processingPlayStatus) {
+                setTimeout(function() {
+                    if (context.youTube) {
+                        video.chromeless = true;
+                    } else {
+                        video.controls = false;
+                    }
+                }, 1)
+            }
         }
     }
 
