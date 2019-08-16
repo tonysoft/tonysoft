@@ -96,11 +96,7 @@ class VideoComponent extends PolymerElement {
     ready() {
         var context = this;
         super.ready();
-        if (context.youTube) {
-            context.video = context.shadowRoot.querySelector(".youTube");
-        } else {
-            context.video = context.shadowRoot.querySelector("video");
-        }
+        context.setVideoType();
         context.video.autoplay = context.autoplay;
         // if (context.youTube) {
         //     context.video.videoId = context.src;
@@ -109,6 +105,15 @@ class VideoComponent extends PolymerElement {
         // }
         context.isReady = true;
         context.scaleIfNecessary();
+    }
+
+    setVideoType() {
+        var context = this;
+        if (context.youTube) {
+            context.video = context.shadowRoot.querySelector(".youTube");
+        } else {
+            context.video = context.shadowRoot.querySelector("video");
+        }
     }
 
     _srcChanged(newValue) {
@@ -129,6 +134,12 @@ class VideoComponent extends PolymerElement {
 
     setSrc(newValue) {
         var context = this;
+        var probablyYouTube = (newValue.indexOf("/") < 0);
+        if (probablyYouTube) {
+            context.youTube = true;
+            context.setVideoType();
+        }
+
         if (context.youTube) {
             context.video.videoId = context.src;
         } else {
