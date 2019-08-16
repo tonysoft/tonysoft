@@ -1,4 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import '@google-web-components/google-youtube/google-youtube.js'
 
 
 /**
@@ -28,8 +29,14 @@ class VideoComponent extends PolymerElement {
             }
           </style>
           <div style="position: relative; width: [[width]]px; height: [[height]]px;">
-            <div class="main noSelect"style="position: absolute; top: [[top]]px; left: [[left]]px; width: [[width]]px; height: [[height]]px;">
-                <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
+            <div class="main noSelect" style="position: absolute; top: [[top]]px; left: [[left]]px; width: [[width]]px; height: [[height]]px;">
+                <span style="display: [[isHTML5(youTube)]];" >
+                    <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
+                </span>
+                <span style="display: [[isYouTube(youTube)]];" >
+                    <google-youtube class="theVideo youTube" video-id="..." rel="0" autoplay="1"></google-youtube>
+                </span>
+        
             </div>
           </div>
         `;
@@ -50,7 +57,8 @@ class VideoComponent extends PolymerElement {
             type: Number
         },
         src: {
-            type: String
+            type: String,
+            observer: "_srcChanged"
         },
         bestFit: {
             type: Boolean
@@ -77,6 +85,9 @@ class VideoComponent extends PolymerElement {
         pauseVideo: {
             type: Boolean,
             observer: "_pauseVideo"
+        },
+        youTube: {
+            type: Boolean
         }
       }
     }
@@ -85,19 +96,55 @@ class VideoComponent extends PolymerElement {
     ready() {
         var context = this;
         super.ready();
-        var video = context.shadowRoot.querySelector("video");
-        video.autoplay = context.autoplay;
-        video.src = context.src;
+        if (context.youTube) {
+            context.video = context.shadowRoot.querySelector(".youTube");
+        } else {
+            context.video = context.shadowRoot.querySelector("video");
+        }
+        context.video.autoplay = context.autoplay;
+        // if (context.youTube) {
+        //     context.video.videoId = context.src;
+        // } else {
+        //     context.video.src = context.src;
+        // }
+        context.isReady = true;
+        context.scaleIfNecessary();
     }
+
+    _srcChanged(newValue) {
+        var context = this;
+        if (newValue) {
+            if (!context.isReady) {
+                var waitForReady = setInterval(function() {
+                    if (context.isReady) {
+                        clearInterval(waitForReady);
+                        context.setSrc(newValue);
+                    }
+                }, 50);
+            } else {
+                context.setSrc(newValue);
+            }
+        }
+    }
+
+    setSrc(newValue) {
+        var context = this;
+        if (context.youTube) {
+            context.video.videoId = context.src;
+        } else {
+            context.video.src = context.src;
+        }
+    }
+
     loaded(e) {
         var context = this;
-        var video = context.shadowRoot.querySelector("video");
+        var video = context.video;
         if (!context.autoplay) {
             video.muted = context.muted;
         }
         context.isReady = true;
         context.showControlsBar(context.showControls);
-        context.scaleIfNecessary();
+        // context.scaleIfNecessary();
         setTimeout(function() {
             var state = video.paused ? "pause" : "play";
             context.playStatus({ type: state })
@@ -123,7 +170,7 @@ class VideoComponent extends PolymerElement {
 
     _playVideo(newValue) {
         var context = this;
-        var video = context.shadowRoot.querySelector("video");
+        var video = context.video;
         if (newValue) {
             context.pauseVideo = false;
             context.playTheVideo();
@@ -132,7 +179,7 @@ class VideoComponent extends PolymerElement {
 
     _pauseVideo(newValue) {
         var context = this;
-        var video = context.shadowRoot.querySelector("video");
+        var video = context.video;
         if (newValue) {
             context.playVideo = false;
             context.pauseTheVideo();
@@ -141,13 +188,13 @@ class VideoComponent extends PolymerElement {
 
     playTheVideo() {
         var context = this;
-        var video = context.shadowRoot.querySelector("video");
+        var video = context.video;
         video.play();
     }
 
     pauseTheVideo() {
         var context = this;
-        var video = context.shadowRoot.querySelector("video");
+        var video = context.video;
         video.pause();
     }
 
@@ -166,11 +213,30 @@ class VideoComponent extends PolymerElement {
       this.pauseVideo = false;
       this.muted = false;
       this.showControls = true;
+      this.youTube = false;
+    }
+
+    isHTML5(youTube) {
+        var context = this;
+        if (!youTube) {
+            return "block";
+        } else {
+            return "none";
+        }
+    }
+
+    isYouTube(youTube) {
+        var context = this;
+        if (youTube) {
+            return "block";
+        } else {
+            return "none";
+        }
     }
 
     showControlsBar(showControls) {
         var context = this;
-        var video = context.shadowRoot.querySelector("video");
+        var video = context.video;
         if (showControls) {
             video.controls = true;
             return "true";
@@ -236,6 +302,14 @@ class VideoComponent extends PolymerElement {
                 if (context.lastScale !== scale) {
                     context.width = adjWidth;
                     context.height = adjHeight;
+                    var youTube = context.shadowRoot.querySelector(".youTube");
+                    if (youTube && youTube.shadowRoot) {
+                        var container = youTube.shadowRoot.querySelector("#container");
+                        if (container) {
+                            container.style.width = adjWidth + "px";
+                            container.style.height = adjHeight + "px";
+                        }
+                    }
                     context.lastScale = scale;
                 }
             }
