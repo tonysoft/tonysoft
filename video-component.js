@@ -34,7 +34,7 @@ class VideoComponent extends PolymerElement {
                     <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
                 </span>
                 <span style="display: [[isYouTube(youTube)]];" >
-                    <google-youtube class="theVideo youTube" video-id="..." rel="0" autoplay="1"></google-youtube>
+                    <google-youtube class="theVideo youTube" video-id="..." rel="0" autoplay="1" on-state-changed="playStatus"></google-youtube>
                 </span>
         
             </div>
@@ -161,9 +161,9 @@ class VideoComponent extends PolymerElement {
         var context = this;
         context.dispatchEvent(new CustomEvent("playState", { 
             detail: { 
-                playing: (e.type === "play"),
-                paused: (e.type === "pause"),
-                state: (e.type === "play") ? "playing" : "paused"
+                playing: (e.type === "play") || (e.detail.value === 1),
+                paused: (e.type === "pause") || (e.detail.value === 2),
+                state: (e.type === "play") || (e.detail.value === 1) ? "playing" : "paused"
             }
         }));
     }
