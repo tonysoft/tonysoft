@@ -326,8 +326,8 @@ class VideoComponent extends PolymerElement {
                     }
                 }
                 if (context.lastScale !== scale) {
-                    context.width = adjWidth;
-                    context.height = adjHeight;
+                    context.width = adjWidth - 1;
+                    context.height = adjHeight - 1;
                     var youTube = context.shadowRoot.querySelector(".youTube");
                     if (youTube && youTube.shadowRoot) {
                         var container = youTube.shadowRoot.querySelector("#container");
