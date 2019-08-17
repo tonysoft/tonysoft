@@ -34,7 +34,7 @@ class VideoComponent extends PolymerElement {
                     <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
                 </span>
                 <span style="display: [[isYouTube(youTube)]];" >
-                    <google-youtube class="theVideo youTube" video-id="..." rel="0" on-state-changed="playStatus"></google-youtube>
+                    <google-youtube class="theVideo youTube" video-id="..." rel="0" on-state-changed="playStatus" on-google-youtube-ready="youTubeReady"></google-youtube>
                 </span>
         
             </div>
@@ -55,6 +55,10 @@ class VideoComponent extends PolymerElement {
         },
         top: {
             type: Number
+        },
+        playPosition: {
+            type: Number,
+            observer: "_playPosition"
         },
         src: {
             type: String,
@@ -97,12 +101,6 @@ class VideoComponent extends PolymerElement {
         var context = this;
         super.ready();
         context.setVideoType();
-        // context.video.autoplay = context.autoplay;
-        // if (context.youTube) {
-        //     context.video.videoId = context.src;
-        // } else {
-        //     context.video.src = context.src;
-        // }
         context.isReady = true;
         context.scaleIfNecessary();
     }
@@ -141,6 +139,9 @@ class VideoComponent extends PolymerElement {
         }
 
         if (context.youTube) {
+            if (context.autoplay) {
+                context.video.mute();
+            }
             context.video.autoplay = context.autoplay ? 1 : 0;
             context.video.videoId = context.src;
         } else {
@@ -148,6 +149,13 @@ class VideoComponent extends PolymerElement {
             context.video.src = context.src;
         }
     }
+
+    youTubeReady(e) {
+        var context = this;
+        if (context.autoplay) {
+            context.video.mute();
+        }
+}
 
     loaded(e) {
         var context = this;
@@ -179,10 +187,37 @@ class VideoComponent extends PolymerElement {
             }, 1000)
         }
     }
+    
+    _playPosition(targetTime) {
+        var context = this;
+        if (context.playPositionReadyInterval) {
+            clearInterval(context.playPositionReadyInterval);
+        }
+        context.playPositionReadyInterval = setInterval(function() {
+            if (context.isReady && (context.youTube !== undefined)) {
+                var video = context.video;
+                if (context.youTube) {
+                    var state = video.state;
+                    var currentTime = video.currenttime;
+                    if (currentTime === targetTime) {
+                        clearInterval(context.playPositionReadyInterval);
+                    } else {
+                        video.seekTo(targetTime, true);
+                    }
+                } else {
+                    video.currentTime = targetTime;
+                    clearInterval(context.playPositionReadyInterval);
+                }
+            }
+        }, 250);
+    }
 
     playStatus(e) {
         var context = this;
         var video = context.video;
+        if (!video) {
+            return;
+        }
         context.processingPlayStatus = true;
         switch (context.youTube) {
             case false:
@@ -282,7 +317,7 @@ class VideoComponent extends PolymerElement {
       this.pauseVideo = false;
       this.muted = false;
       this.showControls = true;
-      this.youTube = false;
+    //   this.youTube = false;
     }
 
     isHTML5(youTube) {
