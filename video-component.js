@@ -136,6 +136,8 @@ class VideoComponent extends PolymerElement {
         if (probablyYouTube) {
             context.youTube = true;
             context.setVideoType();
+        } else {
+            context.youTube = false;
         }
 
         if (context.youTube) {
@@ -189,6 +191,7 @@ class VideoComponent extends PolymerElement {
     }
     
     _playPosition(targetTime) {
+        targetTime = parseInt(targetTime);
         var context = this;
         if (context.playPositionReadyInterval) {
             clearInterval(context.playPositionReadyInterval);
@@ -226,6 +229,31 @@ class VideoComponent extends PolymerElement {
                 context.playState = (e.type === "play") ? "playing" : "paused";
                 break;
             case true:
+                if (context.seekWhenPaused) {
+                    video.pause();
+                    context.seekWhenPaused = false;
+                    context.processingPlayStatus = false;
+                    return;
+                }
+                if ((e.detail.value === 3) && (context.playPosition)) {
+                    if (!context.playVideo) {
+                        // context.seekWhenPaused = true;
+                        context.processingPlayStatus = false;
+                        var pauseInterval = setInterval(function() {
+                            var playPosition = parseInt(context.playPosition) || 0;
+                            if (playPosition === video.currenttime) {
+                                clearInterval(pauseInterval);
+                                setTimeout(function() {
+                                    context.playVideo = false;
+                                    context.pauseVideo = true;
+                                    context.processingPlayStatus = false;
+                                    video.pause();
+                                }, 500)
+                            }
+                        }, 50)
+                        return;
+                    }
+                }
                 context.playVideo = (e.detail.value === 1);
                 context.pauseVideo = (e.detail.value === 2);
                 context.playState = (e.detail.value === 1) ? "playing" : "paused";
