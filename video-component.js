@@ -192,6 +192,9 @@ class VideoComponent extends PolymerElement {
     
     _playPosition(targetTime) {
         targetTime = parseInt(targetTime);
+        if (targetTime < 0) {
+            return;
+        }
         var context = this;
         if (context.playPositionReadyInterval) {
             clearInterval(context.playPositionReadyInterval);
@@ -345,6 +348,7 @@ class VideoComponent extends PolymerElement {
       this.pauseVideo = false;
       this.muted = false;
       this.showControls = true;
+      this.playPosition = -1;
     //   this.youTube = false;
     }
 
