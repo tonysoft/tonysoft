@@ -209,10 +209,12 @@ class VideoComponent extends PolymerElement {
                         clearInterval(context.playPositionReadyInterval);
                     } else {
                         video.seekTo(targetTime, true);
+                        context.playPosition = -1;
                     }
                 } else {
-                    video.currentTime = targetTime;
                     clearInterval(context.playPositionReadyInterval);
+                    video.currentTime = targetTime;
+                    context.playPosition = -1;
                 }
             }
         }, 250);
