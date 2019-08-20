@@ -76,7 +76,7 @@ class VideoComponent extends PolymerElement {
         autoplay: {
             type: Boolean
         },
-        bottomMargin: {
+        bottomSpacing: {
             type: Number
         },
         muted: {
@@ -354,7 +354,7 @@ class VideoComponent extends PolymerElement {
       this.muted = false;
       this.showControls = true;
       this.playPosition = -1;
-      this.bottomMargin = 0;
+      this.bottomSpacing = 0;
     }
 
     isHTML5(youTube) {
@@ -419,7 +419,7 @@ class VideoComponent extends PolymerElement {
                     topOffset = context.offsetTop;
                 }
                 maxHeight -= topOffset;
-                maxHeight -= context.bottomMargin;
+                maxHeight -= context.bottomSpacing;
                 var scale = 1.0;
                 var adjWidth = 0;
                 var adjHeight = 0;
