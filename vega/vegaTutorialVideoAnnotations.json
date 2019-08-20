@@ -1,133 +1,133 @@
 [
     {
         "start": 0,
-        "end": 1,
+        "end": 3,
         "comment": "An Introduction to Vega Charting within the Remix Builder using the Vega Chart Component...",
         "pauseAtEnd": true
     },
     {
-        "start": 1,
-        "end": 4,
+        "start": 3,
+        "end": 8,
         "comment": "Select an App where you can start to explore Vega Charting...",
         "pauseAtEnd": true
     },
     {
-        "start": 4,
-        "end": 10,
+        "start": 8,
+        "end": 18,
         "comment": "Search for the Vega HowTo Screen and add it to your App...",
         "pauseAtEnd": true
     },
     {
-        "start": 10,
-        "end": 25,
+        "start": 18,
+        "end": 32,
         "comment": "Vega Charting is enabled through a Web Component...",
         "pauseAtEnd": true
     },
     {
-        "start": 25,
-        "end": 31,
+        "start": 32,
+        "end": 40,
         "comment": "Make sure that the Vega Chart Component is selected in your App...",
         "pauseAtEnd": true
     },
     {
-        "start": 31,
-        "end": 34,
+        "start": 40,
+        "end": 47,
         "comment": "Now let's start editing the Vega HowTo Screen...",
         "pauseAtEnd": true
     },
     {
-        "start": 34,
-        "end": 45,
+        "start": 47,
+        "end": 59,
         "comment": "The Vega Chart Component has some built-in Guidance presenting some useful links...",
         "pauseAtEnd": true
     },
     {
-        "start": 45,
-        "end": 50,
+        "start": 59,
+        "end": 65,
         "comment": "An important resource is the Vega Example Gallery (as well as the Vega-Lite Example Gallery...",
         "pauseAtEnd": true
     },
     {
-        "start": 50,
-        "end": 56,
+        "start": 65,
+        "end": 74,
         "comment": "Let's start with the Basics and pick a simple Bar Chart to explore...",
         "pauseAtEnd": true
     },
     {
-        "start": 56,
-        "end": 62,
+        "start": 74,
+        "end": 82,
         "comment": "Vega Charts are based on JSON specifications and the Vega Editor allows you to understand things work...",
         "pauseAtEnd": true
     },
     {
-        "start": 62,
-        "end": 69,
+        "start": 82,
+        "end": 89,
         "comment": "Without trying to understand Vega right now, let's just COPY a Specification to the Clipboard...",
         "pauseAtEnd": true
     },
     {
-        "start": 69,
-        "end": 73,
+        "start": 89,
+        "end": 96,
         "comment": "Now let's edit a Remix Function which has been configured to feed a Vega Specification into the Vega Chart Component...",
         "pauseAtEnd": true
     },
     {
-        "start": 73,
-        "end": 77,
+        "start": 96,
+        "end": 103,
         "comment": "Just PASTE the Vega Specification into the Function Body and return to the Screen Layout...",
         "pauseAtEnd": true
     },
     {
-        "start": 77,
-        "end": 83,
+        "start": 103,
+        "end": 111,
         "comment": "We now have a Vega Chart viewable within a Remix Screen...",
         "pauseAtEnd": true
     },
     {
-        "start": 83,
-        "end": 97,
+        "start": 111,
+        "end": 124,
         "comment": "Now let's go back in and make a modification to the Vega Specification...",
         "pauseAtEnd": true
     },
     {
-        "start": 97,
-        "end": 104,
+        "start": 124,
+        "end": 132,
         "comment": "We are going to remove the Data which was embedded in the Specification...",
         "pauseAtEnd": true
     },
     {
-        "start": 104,
-        "end": 110,
+        "start": 132,
+        "end": 139,
         "comment": "The results of doing this is clear.  We not longer see Bars in the Chart just the X and Y axes...",
         "pauseAtEnd": true
     },
     {
-        "start": 110,
-        "end": 120,
+        "start": 139,
+        "end": 146,
         "comment": "Now let's edit a Remix Function which has been configured to feed Data into the Vega Chart Component...",
         "pauseAtEnd": true
     },
     {
-        "start": 120,
-        "end": 124,
+        "start": 146,
+        "end": 157,
         "comment": "Data for Vega Charts typically is an Array of Object.  So let's make sure we the JSON for the Data is valid...",
         "pauseAtEnd": true
     },
     {
-        "start": 124,
-        "end": 129,
+        "start": 157,
+        "end": 164,
         "comment": "We now see how a Vega Specification combined with dynamic data renders a Chart...",
         "pauseAtEnd": true
     },
     {
-        "start": 129,
-        "end": 136,
+        "start": 164,
+        "end": 173,
         "comment": "See how we've configured the Output of the Function to bind to the vegaData Property...",
         "pauseAtEnd": true
     },
     {
-        "start": 136,
-        "end": 142,
+        "start": 173,
+        "end": 181,
         "comment": "And the Output of the first Function is bound to the vegaSpec Property...",
         "pauseAtEnd": true
     }
