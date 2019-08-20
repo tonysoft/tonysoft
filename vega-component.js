@@ -312,7 +312,7 @@ class VegaComponent extends PolymerElement {
       if (context.referenceItem && data.forEach) {
           data.push(context.referenceItem);
       }
-      if (context.vegaSpec && context.vegaSpec.data && contrext.vegaSpec.data.forEach) {
+      if (context.vegaSpec && context.vegaSpec.data && context.vegaSpec.data.forEach) {
         var dataSet = null;
         dataSet = context.vegaSpec.data[0];
         context.vegaSpec.data.forEach(function(set) {
