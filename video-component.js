@@ -56,6 +56,9 @@ class VideoComponent extends PolymerElement {
         top: {
             type: Number
         },
+        resumePlayPosition: {
+            type: Number
+        },
         playPosition: {
             type: Number,
             observer: "_playPosition"
@@ -193,7 +196,7 @@ class VideoComponent extends PolymerElement {
         }
     }
     
-    _playPosition(targetTime) {
+    _playPosition(targetTime, callback) {
         targetTime = parseInt(targetTime);
         if (targetTime < 0) {
             return;
@@ -210,12 +213,18 @@ class VideoComponent extends PolymerElement {
                     var currentTime = video.currenttime;
                     if (currentTime === targetTime) {
                         clearInterval(context.playPositionReadyInterval);
+                        if (callback) {
+                            callback();
+                        }
                     } else {
                         video.seekTo(targetTime, true);
                         context.playPosition = -1;
                     }
                 } else {
                     clearInterval(context.playPositionReadyInterval);
+                    if (callback) {
+                        callback();
+                    }
                     video.currentTime = targetTime;
                     context.playPosition = -1;
                 }
@@ -332,7 +341,14 @@ class VideoComponent extends PolymerElement {
     playTheVideo() {
         var context = this;
         var video = context.video;
-        video.play();
+        if (context.resumePlayPosition) {
+            this._playPosition(context.resumePlayPosition, function() {
+                context.resumePlayPosition = 0;
+                video.play();
+            })
+        } else {
+            video.play();
+        }
     }
 
     pauseTheVideo() {
@@ -358,6 +374,7 @@ class VideoComponent extends PolymerElement {
       this.showControls = true;
       this.playPosition = -1;
       this.spacingBottom = 0;
+      this.resumePlayPosition = 0;
     }
 
     isHTML5(youTube) {
