@@ -353,7 +353,7 @@ class VideoComponent extends PolymerElement {
     playTheVideo() {
         var context = this;
         var video = context.video;
-        if (context.resumePlayPosition) {
+        if (context.resumePlayPosition > 0) {
             this._playPosition(context.resumePlayPosition, function() {
                 context.resumePlayPosition = -1;
                 video.play();
