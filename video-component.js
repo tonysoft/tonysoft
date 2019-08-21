@@ -212,12 +212,16 @@ class VideoComponent extends PolymerElement {
         var context = this;
         context.playPositionHelper(targetTime);
     }
+
     playPositionHelper(targetTime, callback) {
-            targetTime = parseInt(targetTime);
+        var context = this;
+        targetTime = parseInt(targetTime);
         if (targetTime < 0) {
             return;
         }
-        var context = this;
+        if (targetTime === 0) {
+            context.resumePlayPosition = -1;
+        }
         if (context.playPositionReadyInterval) {
             clearInterval(context.playPositionReadyInterval);
         }
