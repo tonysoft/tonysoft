@@ -57,7 +57,8 @@ class VideoComponent extends PolymerElement {
             type: Number
         },
         resumePlayPosition: {
-            type: Number
+            type: Number,
+            observer: "_resumePlayPosition"
         },
         playPosition: {
             type: Number,
@@ -141,10 +142,10 @@ class VideoComponent extends PolymerElement {
         var probablyYouTube = (newValue.indexOf("/") < 0);
         if (probablyYouTube) {
             context.youTube = true;
-            context.setVideoType();
         } else {
             context.youTube = false;
         }
+        context.setVideoType();
 
         if (context.youTube) {
             if (context.autoplay) {
@@ -193,6 +194,17 @@ class VideoComponent extends PolymerElement {
             context.timeUpdateInterval = setInterval(function() {
                 context.dispatchPlayStatusEvent();
             }, 1000)
+        }
+    }
+
+    _resumePlayPosition(targetTime, oldValue) {
+        var context = this;
+        if (targetTime < 0) {
+            return;
+        } else {
+            if (targetTime === 0) {
+                context.resumePlayPosition = oldValue;
+            }
         }
     }
     
@@ -343,7 +355,7 @@ class VideoComponent extends PolymerElement {
         var video = context.video;
         if (context.resumePlayPosition) {
             this._playPosition(context.resumePlayPosition, function() {
-                context.resumePlayPosition = 0;
+                context.resumePlayPosition = -1;
                 video.play();
             })
         } else {
@@ -374,7 +386,7 @@ class VideoComponent extends PolymerElement {
       this.showControls = true;
       this.playPosition = -1;
       this.spacingBottom = 0;
-      this.resumePlayPosition = 0;
+      this.resumePlayPosition = -1;
     }
 
     isHTML5(youTube) {
