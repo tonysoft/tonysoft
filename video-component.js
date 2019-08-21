@@ -225,6 +225,9 @@ class VideoComponent extends PolymerElement {
 
     playStatus(e) {
         var context = this;
+        if ((context.youTube === undefined) && (context.src)) {
+            context.setSrc(context.src);
+        }
         var video = context.video;
         if (!video) {
             return;
