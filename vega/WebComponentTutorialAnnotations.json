@@ -1,0 +1,97 @@
+[{
+	"comment": "Intregrated use of Web Components to create a Dynamic Chart",
+	"date": "2019-08-22",
+	"end": 7,
+	"start": 0,
+	"time": "14:52:09",
+	"timeUTC": "Thu, 22 Aug 2019 14:52:09 GMT",
+	"timestamp": 1566485529817
+}, {
+	"comment": "This Tutorial will require some more Web Components in addition to the Vega Charting Component...",
+	"date": "2019-08-22",
+	"end": 15,
+	"start": 7,
+	"time": "14:54:36",
+	"timeUTC": "Thu, 22 Aug 2019 14:54:36 GMT",
+	"timestamp": 1566485676387
+}, {
+	"comment": "Let's review some work we did in another Tutorial to use as a base for this one...",
+	"date": "2019-08-22",
+	"end": 23,
+	"start": 15,
+	"time": "14:55:49",
+	"timeUTC": "Thu, 22 Aug 2019 14:55:49 GMT",
+	"timestamp": 1566485749886
+}, {
+	"comment": "Here we separate the Chart Specification from the Chart Data...",
+	"date": "2019-08-22",
+	"end": 51,
+	"start": 23,
+	"time": "14:57:13",
+	"timeUTC": "Thu, 22 Aug 2019 14:57:13 GMT",
+	"timestamp": 1566485833191
+}, {
+	"comment": "Let's bring in the Digital Clock Component and tell it to inform us of the Current Time every second...",
+	"date": "2019-08-22",
+	"end": 82,
+	"start": 51,
+	"time": "14:59:17",
+	"timeUTC": "Thu, 22 Aug 2019 14:59:17 GMT",
+	"timestamp": 1566485957432
+}, {
+	"comment": "You can easily extract the Payload from a Web Component Event into a Data Tile...",
+	"date": "2019-08-22",
+	"end": 114,
+	"start": 82,
+	"time": "15:02:28",
+	"timeUTC": "Thu, 22 Aug 2019 15:02:28 GMT",
+	"timestamp": 1566486148031
+}, {
+	"comment": "Let's expose some Properties of a Data Object and BIND them into the Chart Data Function...",
+	"date": "2019-08-22",
+	"end": 148,
+	"start": 114,
+	"time": "15:04:30",
+	"timeUTC": "Thu, 22 Aug 2019 15:04:30 GMT",
+	"timestamp": 1566486270290
+}, {
+	"comment": "Let's prepare the Bar Chart Data to render as a Digital Clock...",
+	"date": "2019-08-22",
+	"end": 184,
+	"start": 148,
+	"time": "15:07:05",
+	"timeUTC": "Thu, 22 Aug 2019 15:07:05 GMT",
+	"timestamp": 1566486425268
+}, {
+	"comment": "We now programmatically integrate the Dynamic Data from the Digital Clock Event into the Data for the Chart...",
+	"date": "2019-08-22",
+	"end": 256,
+	"start": 184,
+	"time": "15:10:39",
+	"timeUTC": "Thu, 22 Aug 2019 15:10:39 GMT",
+	"timestamp": 1566486639106
+}, {
+	"comment": "Note how the Bar Chart now changes everh second with the Data emitted by the Digital Clock...",
+	"date": "2019-08-22",
+	"end": 268,
+	"start": 256,
+	"time": "15:15:22",
+	"timeUTC": "Thu, 22 Aug 2019 15:15:22 GMT",
+	"timestamp": 1566486922140
+}, {
+	"comment": "Now we'll see how to add the Digital Clock Web Component to the Visible Screen...",
+	"date": "2019-08-22",
+	"end": 298,
+	"start": 268,
+	"time": "15:17:51",
+	"timeUTC": "Thu, 22 Aug 2019 15:17:51 GMT",
+	"timestamp": 1566487071654
+}, {
+	"comment": "Now we Save, Publish, and Preview our work to see Dynamic Data rendering in a Bar Chart",
+	"date": "2019-08-22",
+	"end": 322,
+	"start": 298,
+	"time": "15:19:46",
+	"timeUTC": "Thu, 22 Aug 2019 15:19:46 GMT",
+	"timestamp": 1566487186040
+}]
