@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-// import 'https://media.twiliocdn.com/sdk/js/client/v1.7/twilio.min.js';
+import 'https://unpkg.com/tonysoft@1.51.97/twilio.js';
 
 
 /**
@@ -13,12 +13,12 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 class TwilioCaller extends PolymerElement {
     static get properties() {
       return {
-        twilioCapabilityTokenEndpoint: {
+        capabilityTokenEndpoint: {
             type: String
         },
         callNumber: {
           type: String,
-          observer: "_hangupCall"
+          observer: "_callNumber"
         },
         hangupCall: {
           type: Boolean,
@@ -26,6 +26,9 @@ class TwilioCaller extends PolymerElement {
         },
         log: {
           type: Array
+        },
+        isReady: {
+          type: Boolean
         }
       }
     }
@@ -35,19 +38,41 @@ class TwilioCaller extends PolymerElement {
       this.callNumber = "";
       this.hangupCall = false;
       this.log = [];
-      this.twilioCapabilityTokenEndpoint = "https://cinereous-greyhound-5595.twil.io/capability-token";
+      this.capabilityTokenEndpoint = "";
+      this.isReady = false;
     }
 
     ready() {
         var context = this;
         super.ready();
+        context.isReady = true;
         context.getTwilioCapabilityToken();
+    }
+
+    _callNumber() {
+        var context = this;
+        if (context.callNumber && context.device) {
+            var params = {
+                To: context.callNumber
+            };
+          
+            context.logStatus('Calling ' + params.To + '...');
+            context.device.connect(params);
+        }
+    }
+
+    _hangupCall() {
+        var context = this;
+        if (context.hangupCall) {
+            context.logStatus('Hanging up ' + context.callNumber + '...');
+            context.device.disconnectAll();
+        }
     }
     
     getTwilioCapabilityToken() {
         var context = this;
-        if (context.twilioCapabilityTokenEndpoint) {
-            fetch(context.twilioCapabilityTokenEndpoint)
+        if (context.capabilityTokenEndpoint) {
+            fetch(context.capabilityTokenEndpoint)
             .then(res => res.json())
             .then(token => context.initTwilioVoice(token))
             .catch(err => context.logError("getTwilioCapabilityToken", err));
@@ -70,10 +95,52 @@ class TwilioCaller extends PolymerElement {
         context.device.on('ready', function() {
             context.twilioDeviceReady(context);
         });
+        context.device.on('connect', function (conn) {
+            context.logStatus('Successfully established call...');
+            context.dispatchEvent(new CustomEvent("callConnected", { 
+                detail: { "callNumber": context.callNumber }
+            }));
+        });
+        context.device.on('disconnect', function (conn) {
+            context.logStatus('Call disconnected...');
+            context.dispatchEvent(new CustomEvent("callDisonnected", { 
+                detail: { "callNumber": context.callNumber }
+            }));
+            context.callNumber = "";
+            context.hangupCall = false;
+        });
+        context.device.on('error', function (error) {
+            context.logError('Twilio.Device Error: ' + error.message);
+            if (error.code === 31205) {
+                setTimeout(function() {
+                    context.getTwilioCapabilityToken();
+                }, 100)
+                return;
+            }
+            context.dispatchEvent(new CustomEvent("deviceError", { 
+                detail: { "deviceError": error }
+            }));
+        });
+        device.on('incoming', function (conn) {
+            context.logStatus('Incoming connection from ' + conn.parameters.From);
+            context.dispatchEvent(new CustomEvent("incomingCall", { 
+                detail: { "callNumber": conn.parameters.From }
+            }));
+            if (true) {
+              conn.reject();
+            } else {
+              // accept the incoming connection and start two-way audio
+              conn.accept();
+            }
+        });
+    
     }
 
     twilioDeviceReady(context) {
-        context.logStatus("Got Twilio Device", context.device);
+        context.logStatus("Twilio Device Ready", context.device);
+        context.dispatchEvent(new CustomEvent("deviceReady", { 
+            detail: {}
+        }));
     }
 
     logStatus(status, data) {
