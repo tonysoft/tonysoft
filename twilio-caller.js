@@ -14,7 +14,8 @@ class TwilioCaller extends PolymerElement {
     static get properties() {
       return {
         capabilityTokenEndpoint: {
-            type: String
+            type: String,
+            observer: "_capabilityTokenEndpoint"
         },
         callNumber: {
           type: String,
@@ -58,6 +59,13 @@ class TwilioCaller extends PolymerElement {
           
             context.logStatus('Calling ' + params.To + '...');
             context.device.connect(params);
+        }
+    }
+
+    _capabilityTokenEndpoint() {
+        var context = this;
+        if (context.isReady && context.capabilityTokenEndpoint && !context.device) {
+            context.getTwilioCapabilityToken();
         }
     }
 
