@@ -106,13 +106,16 @@ class TwilioCaller extends PolymerElement {
         context.device.on('connect', function (conn) {
             context.logStatus('Successfully established call...');
             context.dispatchEvent(new CustomEvent("callConnected", { 
-                detail: { "callNumber": context.callNumber }
+                detail: { "connected": true, "callNumber": context.callNumber }
             }));
         });
         context.device.on('disconnect', function (conn) {
             context.logStatus('Call disconnected...');
+            context.dispatchEvent(new CustomEvent("callConnected", { 
+                detail: { "connected": false, "callNumber": context.callNumber }
+            }));
             context.dispatchEvent(new CustomEvent("callDisonnected", { 
-                detail: { "callNumber": context.callNumber }
+                detail: { "connected": false, "callNumber": context.callNumber }
             }));
             context.callNumber = "";
             context.hangupCall = false;
