@@ -150,7 +150,7 @@ class TwilioCaller extends PolymerElement {
     twilioDeviceReady(context) {
         context.logStatus("Twilio Device Ready", context.device);
         context.dispatchEvent(new CustomEvent("deviceReady", { 
-            detail: {}
+            detail: { "deviceReady": true }
         }));
     }
 
