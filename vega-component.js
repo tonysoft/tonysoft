@@ -306,9 +306,9 @@ class VegaComponent extends PolymerElement {
       if (!data) {
           return handled;
       }
-      if (!data.length) {
-        data = [];
-      }
+      // if (!data.length) {
+      //   data = [];
+      // }
       if (context.referenceItem && data.forEach) {
           data.push(context.referenceItem);
       }
@@ -316,15 +316,25 @@ class VegaComponent extends PolymerElement {
         var dataSet = null;
         dataSet = context.vegaSpec.data[0];
         context.vegaSpec.data.forEach(function(set) {
-          if (set.name === dataSetName) {
-            dataSet = set;
+          if (data.length) {
+            if (set.name === dataSetName) {
+              dataSet = set;
+            }
+          } else {
+            var dataName = set.name;
+            if (dataName && data[dataName]) {
+              delete set.url;
+              set.values = data[dataName];
+            }
           }
         })
-        if (dataSet && bRender) {
+        if (dataSet && data.length) {
           if (data.length) {
             delete dataSet.url;
             dataSet.values = data;
           }
+        }
+        if (bRender) {
           context.vegaRender(context.vegaSpec, undefined, callback);
         }
       }
