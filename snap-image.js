@@ -53,6 +53,10 @@ class SnapImage extends PolymerElement {
         reset: {
             type: Boolean,
             observer: "_reset"
+        },
+        stop: {
+            type: Boolean,
+            observer: "_stop"
         }
       }
     }
@@ -63,6 +67,7 @@ class SnapImage extends PolymerElement {
       this.height = 240;
       this.snap = false;
       this.reset = true;
+      this.stop = false;
     }
 
     ready() {
@@ -78,6 +83,22 @@ class SnapImage extends PolymerElement {
         }
         context.canvas = context.shadowRoot.querySelector("#canvas");
         context.context = context.canvas.getContext('2d');
+    }
+
+    detached() {
+        var context = this;
+        super.detached();
+        context._stop();
+    }
+
+    _stop() {
+        var context = this;
+        if (context.stop && context.video.srcObject) {
+            var tracks = context.video.srcObject.getTracks();
+            if (tracks.length) {
+                tracks[0].stop();
+            }
+        }
     }
 
     captureMode(reset) {
