@@ -83,6 +83,9 @@ class VideoComponent extends PolymerElement {
         spacingBottom: {
             type: Number
         },
+        spacingRight: {
+            type: Number
+        },
         muted: {
             type: Boolean
         },
@@ -394,6 +397,7 @@ class VideoComponent extends PolymerElement {
       this.showControls = true;
       this.playPosition = -1;
       this.spacingBottom = 0;
+      this.spacingRight = 0;
       this.resumePlayPosition = -1;
     }
 
@@ -446,6 +450,7 @@ class VideoComponent extends PolymerElement {
                 var maxHeight = window.innerHeight;
                 var remixAppParent = document.querySelector("remix-sg-viewer#inspector-out_2");
                 var topOffset = 0;
+                var leftOffset = 0;
                 if (!remixAppParent) {
                     remixAppParent = document.querySelector(".remix-app-parent");
                 }
@@ -454,12 +459,16 @@ class VideoComponent extends PolymerElement {
                     maxHeight = remixAppParent.offsetHeight;
                     var parentGroup = context.parentNode;
                     topOffset = parentGroup.offsetTop;
+                    leftOffset = parentGroup.offsetLeft;
                 }
                 else {
                     topOffset = context.offsetTop;
+                    leftOffset = context.offsetLeft;
                 }
                 maxHeight -= topOffset;
+                maxWidth -= leftOffset;
                 maxHeight -= context.spacingBottom;
+                maxWidth -= context.spacingRight;
                 var scale = 1.0;
                 var adjWidth = 0;
                 var adjHeight = 0;
