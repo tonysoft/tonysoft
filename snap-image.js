@@ -93,7 +93,7 @@ class SnapImage extends PolymerElement {
 
     _stop() {
         var context = this;
-        if (context.stop && context.video.srcObject) {
+        if (context && context.stop && context.video && context.video.srcObject) {
             var tracks = context.video.srcObject.getTracks();
             if (tracks.length) {
                 tracks[0].stop();
@@ -112,7 +112,7 @@ class SnapImage extends PolymerElement {
 
     _snap(snap) {
         var context = this;
-        if (snap) {
+        if (snap && context && context.context) {
             context.context.drawImage(context.video, 0, 0, context.width, context.height);
             context.reset = false;
             var dataUri = context.canvas.toDataURL();
