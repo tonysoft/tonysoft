@@ -29,6 +29,10 @@ class BluetoothConnect extends PolymerElement {
             type: Boolean,
             observer: "_connect"
         },
+        disconnect: {
+            type: Boolean,
+            observer: "_disconnect"
+        },
         isReady: {
             type: Boolean
         }
@@ -42,6 +46,7 @@ class BluetoothConnect extends PolymerElement {
       this.characteristics = null;
       this.config = null;
       this.connect = false;
+      this.disconnect = false;
       this.isReady = false;
     }
 
@@ -67,8 +72,28 @@ class BluetoothConnect extends PolymerElement {
         }
     }
 
+    _disconnect() {
+        var context = this;
+        if (context.disconnect) {
+            if (context.bluetoothDevice && context.bluetoothDevice.gatt.connected) {
+                context.bluetoothDevice.gatt.disconnect();
+                // console.log("Disonnected!");
+                // context.dispatchEvent(new CustomEvent("connected", { 
+                //     detail: { "connected": false, "deviceName": context.deviceName }
+                // }));
+            }
+            context.connect = false;
+            context.disconnect = false;
+        }
+    }
+
     requestDevice() {
         var context = this;
+        context.connect = false;
+        if (context.bluetoothDevice) {
+            context.bluetoothDevice = undefined;
+            // return context.connectDeviceAndCacheCharacteristics();
+        }
         console.log('Requesting Bluetooth Device(s)...');
         var acceptAllDevices = context.deviceName ? undefined : true;
         var filters = context.deviceName ? [{ name: [context.deviceName] }] : undefined;
@@ -80,7 +105,10 @@ class BluetoothConnect extends PolymerElement {
             context.bluetoothDevice.context = context;
             context.bluetoothDevice.addEventListener('gattserverdisconnected', context.onBluetoothConnectDisconnected);
             context.connectDeviceAndCacheCharacteristics().then(response => {
-                console.log("Connected!")
+                console.log("Connected!");
+                context.dispatchEvent(new CustomEvent("connected", { 
+                    detail: { "connected": true, "deviceName": context.deviceName }
+                }));
             })
             .catch(error => {
                 console.log('Error connect! ' + error);
@@ -98,14 +126,21 @@ class BluetoothConnect extends PolymerElement {
         }
       
         console.log('Connecting to GATT Server...');
-        return context.bluetoothDevice.gatt.connect();
-    }
+        return context.bluetoothDevice.gatt.connect()
+        .catch(error => {
+            console.log('Error Connect! ' + error);
+        });
+}
 
     onBluetoothConnectDisconnected(e) {
         var context = e.currentTarget.context;
         console.log('> Bluetooth Device disconnected');
-        reconnect();
-        function reconnect() {
+//        reconnect();
+        context.bluetoothDevice = null;
+        context.dispatchEvent(new CustomEvent("connected", { 
+            detail: { "connected": false, "deviceName": context.deviceName }
+        }));
+    function reconnect() {
             context.connectDeviceAndCacheCharacteristics().then(response => {
                   console.log("Reconnected!")
               })
