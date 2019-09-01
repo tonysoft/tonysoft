@@ -10,6 +10,28 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
  * @demo demo/index.html
  */
 class BluetoothConnect extends PolymerElement {
+    static get template() {
+        return html`
+        <style>
+            .noSelect {
+                user-select: none;
+            }
+            .main {
+                position: relative;
+            }
+            .isVisible: {
+                display: inline-block;
+            }
+            .isInvisible: {
+                display: none;
+            }
+        </style>
+        <div class="main noSelect" style="display: [[connectUiShow(connectUi)]];">
+            <button id="connect" style="display: [[connectButtonShow(deviceConnected)]]; cursor: pointer;" on-click="connectClick">Connect</button>
+            <button id="disconnect" style="display: [[disconnectButtonShow(deviceConnected)]]; cursor: pointer;" on-click="disconnectClick">Disconnect</button>
+        </div>
+        `;
+    }
     static get properties() {
       return {
         deviceName: {
@@ -33,6 +55,12 @@ class BluetoothConnect extends PolymerElement {
             type: Boolean,
             observer: "_disconnect"
         },
+        connectUi: {
+            type: Boolean
+        },
+        deviceConnected: {
+            type: Boolean
+        },
         isReady: {
             type: Boolean
         }
@@ -45,9 +73,11 @@ class BluetoothConnect extends PolymerElement {
       this.serviceId = "";
       this.characteristics = null;
       this.config = null;
+      this.connectUi = false;
       this.connect = false;
       this.disconnect = false;
       this.isReady = false;
+      this.deviceConnected = false;
     }
 
     ready() {
@@ -87,6 +117,47 @@ class BluetoothConnect extends PolymerElement {
         }
     }
 
+    connectUiShow(connectUi) {
+        var context = this;
+        if (connectUi) {
+            return "block";
+        } else {
+            return "none";
+        }
+    }
+
+    connectButtonShow(isConnected) {
+        var context = this;
+        if (isConnected) {
+            return "none";
+        } else {
+            return "block";
+        }
+    }
+
+    disconnectButtonShow(isConnected) {
+        var context = this;
+        if (isConnected) {
+            return "block";
+        } else {
+            return "none";
+        }
+    }
+
+    connectClick(e) {
+        var context = this;
+        e.stopPropagation();
+        context.disconnect = false;
+        context.connect = true;
+    }
+
+    disconnectClick(e) {
+        var context = this;
+        e.stopPropagation();
+        context.connect = false;
+        context.disconnect = true;
+    }
+
     requestDevice() {
         var context = this;
         context.connect = false;
@@ -106,8 +177,9 @@ class BluetoothConnect extends PolymerElement {
             context.bluetoothDevice.addEventListener('gattserverdisconnected', context.onBluetoothConnectDisconnected);
             context.connectDeviceAndCacheCharacteristics().then(response => {
                 console.log("Connected!");
+                context.deviceConnected = true;
                 context.dispatchEvent(new CustomEvent("connected", { 
-                    detail: { "connected": true, "deviceName": context.deviceName }
+                    detail: { "connected": context.deviceConnected, "deviceName": context.deviceName }
                 }));
             })
             .catch(error => {
@@ -137,10 +209,11 @@ class BluetoothConnect extends PolymerElement {
         console.log('> Bluetooth Device disconnected');
 //        reconnect();
         context.bluetoothDevice = null;
+        context.deviceConnected = false;
         context.dispatchEvent(new CustomEvent("connected", { 
-            detail: { "connected": false, "deviceName": context.deviceName }
+            detail: { "connected": context.deviceConnected, "deviceName": context.deviceName }
         }));
-    function reconnect() {
+        function reconnect() {
             context.connectDeviceAndCacheCharacteristics().then(response => {
                   console.log("Reconnected!")
               })
