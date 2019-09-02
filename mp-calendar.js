@@ -66,7 +66,7 @@ import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
-import './mp-calendar-theme.js';
+import 'https://unpkg.com/tonysoft@1.52.18/mp-calendar-theme.js';
 
 'use-strict';
 
@@ -552,7 +552,9 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
                 this._initCalandar(this.showDate.month, this.showDate.year);
                 this._fire('prevMonth');
             }
-            this._fire('dateSelected', this.date);
+            var eventDate = JSON.parse(JSON.stringify(this.date));
+            eventDate.day++;
+            this._fire('dateSelected', eventDate);
         }
 
         this.$.montSelection.value = this.showDate.month;
