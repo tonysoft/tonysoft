@@ -1,17 +1,17 @@
 /**
 
-    `mp-calendar` it's a web components providing calendar date functionality, events support build with Polymer 2.0.
+    `date-calendar` it's a web components providing calendar date functionality, events support build with Polymer 2.0.
 
     ### Example
 
-        <mp-calendar day-labels='["Su","Mo","Tu","We","Th","Fr","Sa"]'
+        <date-calendar day-labels='["Su","Mo","Tu","We","Th","Fr","Sa"]'
                      disable-prev-days
                      show-days-in-month=42
                      disabled-dates="[8, 17, 29]"
                      disabled-weeks="[5]"
                      disabled-days='["Tu"]'
                      events-data="events.json">
-        </mp-calendar>
+        </date-calendar>
 
     ### Properties
 
@@ -135,7 +135,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
     }
 
     static get is() {
-        return 'mp-calendar';
+        return 'date-calendar';
     }
 
     static get properties() {
