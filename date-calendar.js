@@ -162,11 +162,21 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
             * selected day, you also set a preselect day, format set to 'YYYY-MM-DD'.
             * ex. chosen="2017-06-23"
             */
-            chosen: {
+           chosen: {
                 type: String,
                 notify: true,
                 reflectToAttribute: true,
                 observer: "_chosenHandler"
+                },
+            /**
+            * selected day, you also set a preselect day, format set to 'YYYY-MM-DD'.
+            * ex. chosen="2017-06-23"
+            */
+           selectedDate: {
+                type: String,
+                notify: true,
+                reflectToAttribute: true,
+                observer: "_selectedDate"
             },
 
             /**
@@ -331,6 +341,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
         super();
         this.theme = "light-blue";
         this.showDaysInMonth = 42;
+        this.chosen = "";
     }
 
     connectedCallback() {
@@ -406,43 +417,64 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
 
     _checkChosen() {
         if (this.chosen !== "" && this.chosen !== undefined) {
-            var date = new Date(this.chosen);
-            this.showDate.year = date.getFullYear();
+            var dateSegments = this.chosen.split("-");
+            if (dateSegments.length < 3) {
+                return;
+            }
+            var chosenDate = new Date(this.chosen);
+            var chosenYear = parseInt(dateSegments[0]);
+            var chosenMonth = parseInt(dateSegments[1]);
+            var chosenDay = parseInt(dateSegments[2]);
+            this.showDate.year = chosenYear;
+            this.showDate.month = chosenMonth - 1;
 
             this.date = {
-                year: this.showDate.year,
-                month: date.getUTCMonth() + 1,
-                day: date.getDate(),
-                date: date,
+                year: chosenYear,
+                month: chosenMonth,
+                day: chosenDay,
+                date: chosenDate,
                 isoDate: this.chosen
             }
         }
     }
 
-    _selectionHandler(e) {
-        if (e.target.getAttribute('data-date') == null)
+    _selectionHandler(e, dataDate) {
+        if (e && e.target.getAttribute('data-date') == null) {
             return;
+        }
 
-        var dataDate = e.target.getAttribute("data-date");
+        dataDate = e ? e.target.getAttribute("data-date") : dataDate;
+        var dateSegments = dataDate.split("-");
         var dateObj = new Date(dataDate);
 
-        this.chosen = dataDate;
-        this.showDate.year = dateObj.getFullYear();
+        this.showDate.year = parseInt(dateSegments[0]);
         this.date = {
             year: this.showDate.year,
-            month: dateObj.getUTCMonth() + 1,
-            day: dateObj.getDate(),
+            month: parseInt(dateSegments[1]),
+            day: parseInt(dateSegments[2]),
             date: dateObj,
             isoDate: dataDate
         };
+        this.chosen = dataDate;
+    }
+
+    _selectedDate(e) {
+        if (e) {
+            this.chosen = e;
+        }
     }
 
     _chosenHandler(e) {
+        var dateSegments = e.split("-");
+        if (dateSegments.length < 3) {
+            return;
+        }
         var chosenDate = new Date(e);
-        chosenDate = new Date(chosenDate.toUTCString());
-        var chosenMonth = chosenDate.getUTCMonth();
+        var chosenYear = parseInt(dateSegments[0]);
+        var chosenMonth = parseInt(dateSegments[1]);
+        var chosenDay = parseInt(dateSegments[2]);
 
-        if (chosenMonth == this.date.date.getUTCMonth()) {
+        if ((chosenMonth == this.date.month) && (chosenYear == this.date.year)) {
             var selection = dom(this.$.cldDays).querySelector('.selected');
             if (selection) {
                 selection.classList.remove('selected');
@@ -459,14 +491,14 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
                         e.classList.add('selected');
                     }
                 });
-                this.date.day = chosenDate.getUTCDate();
+                this.date.day = chosenDay;
             }
         }
         else {
             this.showDate = {
                 month: chosenMonth,
-                day: chosenDate.getUTCDate() + 1,
-                year: chosenDate.getFullYear()
+                day: chosenDay,
+                year: chosenYear
             };
         }
     }
@@ -500,10 +532,10 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
     }
 
     setMonth(month) {
-        this._setShowDate = {
+        this._setShowDate({
             month: parseInt(month),
             year: this.showDate.year
-        };
+        });
 
         this.chosen = "";
         this._initCalandar(parseInt(month), parseInt(this.$.yearSelection.value));
@@ -511,10 +543,10 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
     }
 
     setYear(year) {
-        this._setShowDate = {
+        this._setShowDate({
             month: this.showDate.month - 1,
             year: parseInt(year)
-        };
+        });
 
         this.chosen = "";
         this._initCalandar(parseInt(this.$.montSelection.value), year);
@@ -562,7 +594,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
             eventDate.month = parseInt(isoDate[1]);
             eventDate.day = parseInt(isoDate[2]);
             this._fire('dateSelected', eventDate);
-            this._fire('date', eventDate.isoDate);
+            this._fire('dateString', eventDate.isoDate);
         }
 
         this.$.montSelection.value = this.showDate.month;
