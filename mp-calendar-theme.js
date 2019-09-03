@@ -80,7 +80,7 @@ $_documentContainer.innerHTML = `<dom-module id="mp-calendar-theme">
 
             #content {
                 width: 100%;
-                margin: 20px 0;
+                margin: 0;
                 background: var(--main-bg);
                 border: var(--border-width) solid var(--border-color);
                 border-radius: var(--border-radius);
