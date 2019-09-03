@@ -104,6 +104,12 @@ $_documentContainer.innerHTML = `<dom-module id="mp-calendar-theme">
             }
 
             /* month selection */
+            #montSelection {
+                text-align-last: center;
+            }
+            #yearSelection {
+                text-align-last: center;
+            }
             #montSelection, #yearSelection {
                 overflow: hidden;
                 background: none;
@@ -112,7 +118,6 @@ $_documentContainer.innerHTML = `<dom-module id="mp-calendar-theme">
                 font-size: 17px;
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;
                 font-weight: 300;
-                text-align-last: right;
                 cursor: pointer;
                 position: relative;
                 outline: 0;
@@ -151,9 +156,13 @@ $_documentContainer.innerHTML = `<dom-module id="mp-calendar-theme">
             .calendar-icon-left { margin: 0 0 0 5px }
             .calendar-icon-right { margin: 0 5px 0 0 }
 
+            .currentMonth {
+                text-align: center;
+            }
             .currentMonthDate, .todayDate {
                 vertical-align: middle;
                 position: relative;
+                text-align: center;
             }
 
                 .todayDate:hover {

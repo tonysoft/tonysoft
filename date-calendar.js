@@ -66,7 +66,7 @@ import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
-import 'https://unpkg.com/tonysoft@^1.52.24/mp-calendar-theme.js';
+import './mp-calendar-theme.js';
 
 'use-strict';
 
@@ -91,7 +91,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
                             </svg>
                         </div>
 
-                        <div id="currentMonth">
+                        <div id="currentMonth" class="currentMonth">
                             <span class="currentMonthDate">
                                 <select id="montSelection" value="{{monthValue::change}}" title="Click to change month">
                                     <template is="dom-repeat" items="[[monthLabels]]" as="month">
