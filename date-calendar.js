@@ -557,7 +557,10 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
                 this._fire('prevMonth');
             }
             var eventDate = JSON.parse(JSON.stringify(this.date));
-            eventDate.day++;
+            var isoDate = eventDate.isoDate.split("-");
+            eventDate.year = parseInt(isoDate[0]);
+            eventDate.month = parseInt(isoDate[1]);
+            eventDate.day = parseInt(isoDate[2]);
             this._fire('dateSelected', eventDate);
         }
 
