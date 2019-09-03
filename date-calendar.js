@@ -66,7 +66,7 @@ import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
-import 'https://unpkg.com/tonysoft@1.52.18/mp-calendar-theme.js';
+import 'https://unpkg.com/tonysoft@^1.52.24/mp-calendar-theme.js';
 
 'use-strict';
 
