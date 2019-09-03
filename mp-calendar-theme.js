@@ -84,10 +84,10 @@ $_documentContainer.innerHTML = `<dom-module id="mp-calendar-theme">
                 background: var(--main-bg);
                 border: var(--border-width) solid var(--border-color);
                 border-radius: var(--border-radius);
+                @apply(--no-selection);
             }
 
             #header {
-                @apply(--no-selection);
                 margin: 0;
                 font-size: 17px;
                 font-weight: bold;
