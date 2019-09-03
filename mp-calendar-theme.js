@@ -111,7 +111,7 @@ $_documentContainer.innerHTML = `<dom-module id="mp-calendar-theme">
                 color: var(--header-text-color);
                 font-size: 17px;
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;
-                font-weight: normal;
+                font-weight: 300;
                 text-align-last: right;
                 cursor: pointer;
                 position: relative;
@@ -132,7 +132,7 @@ $_documentContainer.innerHTML = `<dom-module id="mp-calendar-theme">
                 padding: 0;
                 background: var(--labels-bg);
                 color: var(--labels-color);
-                font-weight: normal;
+                font-weight: 300;
                 border-top: var(--border-top-width) solid var(--border-color);
 
                 @apply(--layout);
@@ -529,7 +529,7 @@ $_documentContainer.innerHTML = `<dom-module id="mp-calendar-theme">
                     .mp-cld-day .eventLeft h3 i {
                         font-size: 11px;
                         font-style: italic;
-                        font-weight: normal;
+                        font-weight: 300;
                         margin: 2px 0 0;
                         display: block;
                     }
