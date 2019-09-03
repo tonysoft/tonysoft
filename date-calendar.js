@@ -155,7 +155,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
             */
             showDaysInMonth: {
                 type: Number,
-                value: 35
+                value: 42
             },
 
             /**
@@ -329,6 +329,8 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
 
     constructor() {
         super();
+        this.theme = "light-blue";
+        this.showDaysInMonth = 42;
     }
 
     connectedCallback() {
