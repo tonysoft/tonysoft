@@ -26,8 +26,8 @@ class MarkdownEditor extends PolymerElement {
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;
             }
         </style>
-        <div class="main noSelect" on-click="openStackeditEvent" style="width: [[width]]px; height: [[height]]px;">
-            <div id="preview" title="Double Click to Edit"></div>
+        <div class="main noSelect" on-click="openStackeditEvent" title="[[dblClickOpen]]" style="width: [[width]]px; height: [[height]]px;">
+            <div id="preview"></div>
             <textarea id="editor" style="display: none;"></textarea>
         </div>
         `;
@@ -53,6 +53,9 @@ class MarkdownEditor extends PolymerElement {
         },
         openClosedState: {
             type: Boolean
+        },
+        dblClickOpen: {
+            type: String
         }
       }
     }
@@ -65,6 +68,7 @@ class MarkdownEditor extends PolymerElement {
       this.openClosedState = false;
       this.open = false;
       this.close = false;
+      this.dblClickOpen = "";
     }
 
     ready() {
@@ -101,9 +105,8 @@ class MarkdownEditor extends PolymerElement {
 
     _open(state) {
         var context = this;
-        if (state) {
-            openStackedit();
-
+        if (state && !context.openClosedState) {
+            context.openStackedit();
         }
     }
 
@@ -142,7 +145,9 @@ class MarkdownEditor extends PolymerElement {
         if (context.editDblClickTimer) {
             clearInterval(context.editDblClickTimer);
             context.editDblClickTimer = null;
-            context.openStackedit();
+            if (context.dblClickOpen) {
+                context.openStackedit();
+            }
         }
         else {
             context.editDblClickTimer = setTimeout(function() {
