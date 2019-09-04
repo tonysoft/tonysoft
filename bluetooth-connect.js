@@ -70,6 +70,10 @@ class BluetoothConnect extends PolymerElement {
         },
         isReady: {
             type: Boolean
+        },
+        writeValue: {
+            type: String,
+            observer: "_writeValue"
         }
       }
     }
@@ -87,6 +91,7 @@ class BluetoothConnect extends PolymerElement {
       this.isReady = false;
       this.deviceConnected = false;
       this.configUrl = "";
+      this.writeValue = "";
     }
 
     ready() {
@@ -310,6 +315,44 @@ class BluetoothConnect extends PolymerElement {
         rawCharacteristic.characteristic = characteristic;
     }
 
+    _writeValue(characteristicValue) {
+        if (!characteristicValue) {
+            return;
+        }
+        var context = this;
+        var segments = characteristicValue.split(":");
+        context.writeValue = "";
+        if (segments.length != 2) {
+            return;
+        }
+        if (!context.config) {
+            return;
+        }
+        if (!context.config.characteristics) {
+            return;
+        }
+        var rawCharacteristic = context.config.characteristics[segments[0]];
+        if (!rawCharacteristic) {
+            return;
+        }
+        var characteristic = rawCharacteristic.characteristic
+        var data = context.requestData(segments[1]);
+        return characteristic.writeValue(data)
+          .catch(err => console.log('Error writing Characteristic Value! ', err))
+          .then(() => {
+            console.log("Characteristic Value Written...");
+        });
+    }
+
+    requestData(charList) {
+        var uintArray = [];
+        for (var i = 0; i < charList.length; i++) {
+            uintArray.push(charList[i].charCodeAt(0));
+        }
+        let data = new Uint8Array(uintArray);
+        return data;
+    }
+    
     handleCharacteristicChanged(event) {
         var context = event.srcElement.service.device.context;
         var characteristic = event.srcElement;
