@@ -150,6 +150,13 @@ class BluetoothConnect extends PolymerElement {
     _connect() {
         var context = this;
         if (context.connect) {
+            if (context.deviceConnected) {
+                context.connect = false;
+                context.dispatchEvent(new CustomEvent("connected", { 
+                    detail: { "connected": context.deviceConnected, "deviceName": context.deviceName, "error": { message: "Device already connected."} }
+                }));   
+                return; 
+            }
             if (context.isReady === false) {
                 var isReadyInterval = setInterval(function() {
                     if (context.isReady) {
@@ -166,6 +173,13 @@ class BluetoothConnect extends PolymerElement {
     _disconnect() {
         var context = this;
         if (context.disconnect) {
+            if (!context.deviceConnected) {
+                context.disconnect = false;
+                context.dispatchEvent(new CustomEvent("connected", { 
+                    detail: { "connected": context.deviceConnected, "deviceName": context.deviceName, "error": { message: "Device already disconnected."} }
+                }));   
+                return; 
+            }
             if (context.bluetoothDevice && context.bluetoothDevice.gatt.connected) {
                 context.bluetoothDevice.gatt.disconnect();
             }
