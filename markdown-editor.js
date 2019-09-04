@@ -42,6 +42,17 @@ class MarkdownEditor extends PolymerElement {
         },
         height: {
             type: Number
+        },
+        open: {
+            type: Boolean,
+            observer: "_open"
+        },
+        close: {
+            type: Boolean,
+            observer: "_close"
+        },
+        openClosedState: {
+            type: Boolean
         }
       }
     }
@@ -51,6 +62,9 @@ class MarkdownEditor extends PolymerElement {
       this.markdown = "";
       this.width = 330;
       this.height = 220;
+      this.openClosedState = false;
+      this.open = false;
+      this.close = false;
     }
 
     ready() {
@@ -66,8 +80,15 @@ class MarkdownEditor extends PolymerElement {
         // openStackedit();
 
         // Listen to StackEdit events and apply the changes to the textarea.
+        context.stackedit.on('close', () => {
+            console.log("Editor Closed");
+            context.openClosedState = false;
+            context.dispatchEvent(new CustomEvent("editorOpened", { 
+                detail: false
+            }));
+        });
         context.stackedit.on('fileChange', (file) => {
-            context.markdown = context.el.value = file.content.text;
+                context.markdown = context.el.value = file.content.text;
             context.preview.innerHTML = file.content.html;
             context.dispatchEvent(new CustomEvent("markdown", { 
                 detail: file.content.text
@@ -76,6 +97,21 @@ class MarkdownEditor extends PolymerElement {
                 detail: file.content.html
             }));
         });
+    }
+
+    _open(state) {
+        var context = this;
+        if (state) {
+            openStackedit();
+
+        }
+    }
+
+    _close(state) {
+        var context = this;
+        if (state && context.openClosedState) {
+            context.stackedit.close();
+        }
     }
 
     openStackedit() {
@@ -91,8 +127,12 @@ class MarkdownEditor extends PolymerElement {
             var height = context.main.offsetHeight;
             stackedit.style.width = width + "px";
             stackedit.style.height = height + "px";
-            stackedit.style.top = "100px";
-            stackedit.style.left = "100px";
+            // stackedit.style.top = "100px";
+            // stackedit.style.left = "100px";
+            context.openClosedState = true;
+            context.dispatchEvent(new CustomEvent("editorOpened", { 
+                detail: true
+            }));
         }, 50);
     }
 
