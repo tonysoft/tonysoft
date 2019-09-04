@@ -326,7 +326,7 @@ class BluetoothConnect extends PolymerElement {
         var context = this;
         var segments = characteristicValue.split(":");
         context.writeValue = "";
-        if (segments.length != 2) {
+        if (segments.length < 2) {
             return;
         }
         if (!context.config) {
@@ -345,6 +345,10 @@ class BluetoothConnect extends PolymerElement {
           .catch(err => console.log('Error writing Characteristic Value! ', err))
           .then(() => {
             console.log("Characteristic Value Written...");
+            if (segments.length > 2) {
+                segments.splice(1, 1);
+                context.writeValue = segments.join(":");
+            }
         });
     }
 
