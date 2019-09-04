@@ -251,9 +251,8 @@ class BluetoothConnect extends PolymerElement {
             context.connectDevice();
         })
         .catch(error => {
-            context.deviceConnected = false;
             context.dispatchEvent(new CustomEvent("connected", { 
-                detail: { "connected": context.deviceConnected, "deviceName": context.deviceName, "error": error }
+                detail: { "connected": false, "deviceName": context.deviceName, "error": error }
             }));
             console.log('Error requestDevice! ' + error);
         });
