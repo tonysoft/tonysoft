@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/9.1.0/markdown-it.js'
+import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/9.1.0/markdown-it.min.js'
 
 /**
  * `markdown-markup`
@@ -84,7 +84,10 @@ class MarkdownMarkup extends PolymerElement {
         }
         var markup = context.converter.render(context.markdown);  
         context.markup.innerHTML = markup;
-    }
+        context.dispatchEvent(new CustomEvent("markup", { 
+            detail: markup
+        }));
+}
 
 }
 
