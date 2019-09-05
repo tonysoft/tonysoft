@@ -124,7 +124,7 @@ class MarkdownEditor extends PolymerElement {
                 text: context.markdown // and the Markdown content.
             }
         });
-        setTimeout(function() {
+        // setTimeout(function() {
             var stackedit = document.querySelector(".stackedit-container");
             var width = context.main.offsetWidth;
             var height = context.main.offsetHeight;
@@ -141,7 +141,7 @@ class MarkdownEditor extends PolymerElement {
             context.dispatchEvent(new CustomEvent("editorOpened", { 
                 detail: true
             }));
-        }, 50);
+        // }, 50);
     }
 
     openStackeditEvent(e) {
