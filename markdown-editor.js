@@ -124,24 +124,22 @@ class MarkdownEditor extends PolymerElement {
                 text: context.markdown // and the Markdown content.
             }
         });
-        // setTimeout(function() {
-            var stackedit = document.querySelector(".stackedit-container");
-            var width = context.main.offsetWidth;
-            var height = context.main.offsetHeight;
-            stackedit.style.width = width + "px";
-            stackedit.style.height = height + "px";
-            var remixAppParent = document.querySelector(".remix-app-parent");
-            if (remixAppParent && remixAppParent.parentNode) {
-                var top = remixAppParent.parentNode.offsetTop; 
-                var left = remixAppParent.parentNode.offsetLeft; 
-                stackedit.style.top = (top + 130) + "px";
-                stackedit.style.left = (left + 80) + "px";
-            }
-            context.openClosedState = true;
-            context.dispatchEvent(new CustomEvent("editorOpened", { 
-                detail: true
-            }));
-        // }, 50);
+        var stackedit = document.querySelector(".stackedit-container");
+        var width = context.main.offsetWidth;
+        var height = context.main.offsetHeight;
+        stackedit.style.width = Math.min(width, 500) + "px";
+        stackedit.style.height = height + "px";
+        var remixAppParent = document.querySelector(".remix-app-parent");
+        if (remixAppParent && remixAppParent.parentNode) {
+            var top = remixAppParent.parentNode.offsetTop; 
+            var left = remixAppParent.parentNode.offsetLeft; 
+            stackedit.style.top = (top + 150) + "px";
+            stackedit.style.left = (left + 180) + "px";
+        }
+        context.openClosedState = true;
+        context.dispatchEvent(new CustomEvent("editorOpened", { 
+            detail: true
+        }));
     }
 
     openStackeditEvent(e) {
