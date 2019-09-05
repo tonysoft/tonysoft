@@ -29,7 +29,7 @@ class MarkdownMarkup extends PolymerElement {
             }
         </style>
         <div class="main noSelect" style="max-width: [[maxWidth]]px; height: [[height]]px;">
-            <div class="markup">NOTHING</div>
+            <div class="markup">NOTHING TO SHOW</div>
         </div>
         `;
     }
@@ -60,7 +60,7 @@ class MarkdownMarkup extends PolymerElement {
         super.ready();
         context.isReady = true;
         context.markup = context.shadowRoot.querySelector('.markup');
-        // context.converter = new showdown.Converter();
+        context.converter = new showdown.Converter();
     }
 
     _markdown(markdown) {
