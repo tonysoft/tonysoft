@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-//import 'https://unpkg.com/tonysoft@1.52.51/js/showdown.js'
+import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/9.1.0/markdown-it.js'
 
 /**
  * `markdown-markup`
@@ -60,7 +60,7 @@ class MarkdownMarkup extends PolymerElement {
         super.ready();
         context.isReady = true;
         context.markup = context.shadowRoot.querySelector('.markup');
-        context.converter = new showdown.Converter();
+        context.converter = new markdownit();
     }
 
     _markdown(markdown) {
@@ -82,7 +82,7 @@ class MarkdownMarkup extends PolymerElement {
         if (!context.converter) {
             return;
         }
-        var markup = context.converter.makeHtml(context.markdown);  
+        var markup = context.converter.render(context.markdown);  
         context.markup.innerHTML = markup;
     }
 
