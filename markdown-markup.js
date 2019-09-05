@@ -1,7 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-try {
-    import 'https://unpkg.com/tonysoft@1.52.51/js/showdown.js'
-} catch(e) {};
+//import 'https://unpkg.com/tonysoft@1.52.51/js/showdown.js'
 
 /**
  * `markdown-markup`
