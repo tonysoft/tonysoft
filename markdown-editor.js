@@ -19,7 +19,6 @@ class MarkdownEditor extends PolymerElement {
             .main {
                 border: 1px solid black;
                 cursor: pointer;
-                position: relative;
             }
             #preview {
                 padding: 10px;
