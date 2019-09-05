@@ -26,7 +26,7 @@ class MarkdownEditor extends PolymerElement {
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;
             }
         </style>
-        <div class="main noSelect" on-click="openStackeditEvent" title="[[dblClickOpen]]" style="width: [[width]]px; height: [[height]]px;">
+        <div class="main noSelect" on-click="openStackeditEvent" title="[[dblClickOpen]]" style="max-width: [[maxWidth]]px; height: [[height]]px;">
             <div id="preview"></div>
             <textarea id="editor" style="display: none;"></textarea>
         </div>
@@ -37,7 +37,7 @@ class MarkdownEditor extends PolymerElement {
         markdown: {
             type: String
         },
-        width: {
+        maxWidth: {
             type: Number
         },
         height: {
@@ -63,7 +63,7 @@ class MarkdownEditor extends PolymerElement {
     constructor() {
       super();
       this.markdown = "";
-      this.width = 330;
+      this.maxWidth = 330;
       this.height = 220;
       this.openClosedState = false;
       this.open = false;
@@ -127,8 +127,9 @@ class MarkdownEditor extends PolymerElement {
         var stackedit = document.querySelector(".stackedit-container");
         var width = context.main.offsetWidth;
         var height = context.main.offsetHeight;
-        stackedit.style.width = Math.max(width, 500) + "px";
-        stackedit.style.height = height + "px";
+        stackedit.style.maxWidth = (Math.max(width, context.maxWidth) - 2) + "px";
+        stackedit.style.height = (height - 2) + "px";
+        stackedit.style.border = "1px solid black";
         var remixAppParent = document.querySelector(".remix-app-parent");
         if (remixAppParent && remixAppParent.parentNode) {
             var top = remixAppParent.parentNode.offsetTop; 
