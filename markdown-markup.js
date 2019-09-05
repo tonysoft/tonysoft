@@ -29,7 +29,7 @@ class MarkdownMarkup extends PolymerElement {
             }
         </style>
         <div class="main noSelect" style="max-width: [[maxWidth]]px; height: [[height]]px;">
-            <div class="markup"></div>
+            <div class="markup">NOTHING</div>
         </div>
         `;
     }
@@ -60,7 +60,7 @@ class MarkdownMarkup extends PolymerElement {
         super.ready();
         context.isReady = true;
         context.markup = context.shadowRoot.querySelector('.markup');
-        context.converter = new showdown.Converter();
+        // context.converter = new showdown.Converter();
     }
 
     _markdown(markdown) {
@@ -79,6 +79,9 @@ class MarkdownMarkup extends PolymerElement {
 
     convertMarkdown(markdown) {
         var context = this;
+        if (!context.converter) {
+            return;
+        }
         var markup = context.converter.makeHtml(context.markdown);  
         context.markup.innerHTML = markup;
     }
