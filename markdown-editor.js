@@ -134,8 +134,8 @@ class MarkdownEditor extends PolymerElement {
             if (remixAppParent && remixAppParent.parentNode) {
                 var top = remixAppParent.parentNode.offsetTop; 
                 var left = remixAppParent.parentNode.offsetLeft; 
-                stackedit.style.top = top + "px";
-                stackedit.style.left = left + "px";
+                stackedit.style.top = (top + 100) + "px";
+                stackedit.style.left = (left + 80) + "px";
             }
             context.openClosedState = true;
             context.dispatchEvent(new CustomEvent("editorOpened", { 
