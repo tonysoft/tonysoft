@@ -127,7 +127,7 @@ class MarkdownEditor extends PolymerElement {
         var stackedit = document.querySelector(".stackedit-container");
         var width = context.main.offsetWidth;
         var height = context.main.offsetHeight;
-        stackedit.style.maxWidth = (Math.max(width, context.maxWidth) - 2) + "px";
+        stackedit.style.width = stackedit.style.maxWidth = (Math.max(width, context.maxWidth) - 2) + "px";
         stackedit.style.height = (height - 2) + "px";
         stackedit.style.border = "1px solid black";
         var remixAppParent = document.querySelector(".remix-app-parent");
