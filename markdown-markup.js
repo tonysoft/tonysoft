@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-// import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/9.1.0/markdown-it.min.js'
+import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/9.1.0/markdown-it.min.js'
 
 /**
  * `markdown-markup`
