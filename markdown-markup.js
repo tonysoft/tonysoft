@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/9.1.0/markdown-it.min.js'
+import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/9.1.0/markdown-it.js'
 
 /**
  * `markdown-markup`
@@ -29,7 +29,7 @@ class MarkdownMarkup extends PolymerElement {
             }
         </style>
         <div class="main noSelect" style="max-width: [[maxWidth]]px; height: [[height]]px;">
-            <div class="markup">NOTHING TO SHOW</div>
+            <div class="markup"></div>
         </div>
         `;
     }
@@ -44,15 +44,19 @@ class MarkdownMarkup extends PolymerElement {
         },
         height: {
             type: Number
+        },
+        onReadyProps: {
+            type: Object
         }
       }
     }
 
     constructor() {
       super();
-      this.markdown = "";
+      this.markdown = null;
       this.maxWidth = 330;
       this.height = 220;
+      this.onReadyProps = {};
     }
 
     ready() {
@@ -61,20 +65,29 @@ class MarkdownMarkup extends PolymerElement {
         context.isReady = true;
         context.markup = context.shadowRoot.querySelector('.markup');
         context.converter = new markdownit();
+        for (var prop in context.onReadyProps) {
+            context[prop] = context.onReadyProps[prop];
+        }
     }
 
     _markdown(markdown) {
         var context = this;
-        if (!context.isReady) {
-            var waitTilReady = setInterval(function() {
-                if (context.isReady) {
-                    clearInterval(waitTilReady);
-                    context.convertMarkdown(markdown);
-                }
-            })
-        } else {
+        if (context.checkIsReady("markdown", markdown, null)) {
             context.convertMarkdown(markdown);
         }
+    }
+
+    checkIsReady(name, value, noValue) {
+        var context = this;
+        if (value === noValue) {
+            return false;
+        }
+        if (!context.isReady) {
+            context.onReadyProps[name] = value;
+            context[name] = noValue;
+            return false;
+        }
+        return true;
     }
 
     convertMarkdown(markdown) {
@@ -84,10 +97,7 @@ class MarkdownMarkup extends PolymerElement {
         }
         var markup = context.converter.render(context.markdown);  
         context.markup.innerHTML = markup;
-        context.dispatchEvent(new CustomEvent("markup", { 
-            detail: markup
-        }));
-}
+    }
 
 }
 
