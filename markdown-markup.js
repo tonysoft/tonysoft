@@ -97,6 +97,9 @@ class MarkdownMarkup extends PolymerElement {
         }
         var markup = context.converter.render(context.markdown);  
         context.markup.innerHTML = markup;
+        context.dispatchEvent(new CustomEvent("markup", { 
+            detail: markup
+        }));
     }
 
 }
