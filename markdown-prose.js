@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import "https://unpkg.com/tonysoft@^1.52.63/js/prosemirror.js?module";
+import "https://unpkg.com/tonysoft@^1.52.65/js/prosemirror.js?module";
 import "https://unpkg.com/tonysoft@^1.52.63/js/proseMirrorHelpers.js?module";
 
 /**
