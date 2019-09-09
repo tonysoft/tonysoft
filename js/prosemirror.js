@@ -7816,10 +7816,11 @@
             }
 
             function o(t, e) {
-                var n = document.getElementById(b + "-collection");
-                n || ((n = document.createElementNS(y, "svg")).id = b + "-collection", n.style.display = "none", document.body.insertBefore(n, document.body.firstChild));
-                var r = document.createElementNS(y, "symbol");
-                r.id = t, r.setAttribute("viewBox", "0 0 " + e.width + " " + e.height), r.appendChild(document.createElementNS(y, "path")).setAttribute("d", e.path), n.appendChild(r)
+                // console.log(b + b + "-collection***************");
+                // var n = document.getElementById(b + "-collection");
+                // n || ((n = document.createElementNS(y, "svg")).id = b + "-collection", n.style.display = "none", document.body.insertBefore(n, document.body.firstChild));
+                // var r = document.createElementNS(y, "symbol");
+                // r.id = t, r.setAttribute("viewBox", "0 0 " + e.width + " " + e.height), r.appendChild(document.createElementNS(y, "path")).setAttribute("d", e.path), n.appendChild(r)
             }
 
             function i(t, e) {
