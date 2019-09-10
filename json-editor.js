@@ -67,7 +67,16 @@ class JsonEditor extends PolymerElement {
         super.ready();
         context.isReady = true;
         context.jsonEditor = context.shadowRoot.querySelector('.jsonEditor');
-        var options = { mode: context.mode };
+        var options = { 
+            mode: context.mode,
+            onEvent: function(node, event) {
+                if (event.type === 'click') {
+                    context.dispatchEvent(new CustomEvent("node", { 
+                        detail: node
+                    }));
+                }
+            }
+        };
         context.editor = new JSONEditor(context.jsonEditor, options)
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
