@@ -64,7 +64,7 @@ class MarkdownMarkup extends PolymerElement {
         super.ready();
         context.isReady = true;
         context.markup = context.shadowRoot.querySelector('.markup');
-        context.converter = new markdownit();
+        context.converter = new markdownit({ "html": true });
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
         }
