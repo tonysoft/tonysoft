@@ -17,9 +17,12 @@ class MarkdownMarkup extends PolymerElement {
                 user-select: none;
             }
             .main {
-                border: 1px solid black;
                 cursor: pointer;
-                overflow-y: auto;
+                overflow: auto;
+            }
+            .border {
+                border: 2px solid #888888;
+                border-radius: 5px;
             }
             .markup {
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;
@@ -28,7 +31,7 @@ class MarkdownMarkup extends PolymerElement {
                 
             }
         </style>
-        <div class="main noSelect" style="max-width: [[maxWidth]]px; height: [[height]]px;">
+        <div class$="main noSelect [[hasBorder(border)]]" style="max-width: [[maxWidth]]px; height: [[height]]px;">
             <div class="markup"></div>
         </div>
         `;
@@ -45,6 +48,9 @@ class MarkdownMarkup extends PolymerElement {
         height: {
             type: Number
         },
+        border: {
+            type: Boolean
+        },
         onReadyProps: {
             type: Object
         }
@@ -57,6 +63,7 @@ class MarkdownMarkup extends PolymerElement {
       this.maxWidth = 330;
       this.height = 220;
       this.onReadyProps = {};
+      this.border = false;
     }
 
     ready() {
@@ -67,6 +74,14 @@ class MarkdownMarkup extends PolymerElement {
         context.converter = new markdownit({ "html": true });
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
+        }
+    }
+
+    hasBorder(border) {
+        if (border) {
+            return "border";
+        } else {
+            return "";
         }
     }
 
