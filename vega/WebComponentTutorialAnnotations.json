@@ -7,14 +7,6 @@
 	"timeUTC": "Thu, 22 Aug 2019 14:52:09 GMT",
 	"timestamp": 1566485529817
 }, {
-	"comment": "This Tutorial will require some more Web Components in addition to the Vega Charting Component...",
-	"date": "2019-08-22",
-	"end": 15,
-	"start": 7,
-	"time": "14:54:36",
-	"timeUTC": "Thu, 22 Aug 2019 14:54:36 GMT",
-	"timestamp": 1566485676387
-}, {
 	"comment": "Let's review some work we did in another Tutorial to use as a base for this one...",
 	"date": "2019-08-22",
 	"end": 23,
