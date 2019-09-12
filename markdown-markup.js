@@ -31,7 +31,7 @@ class MarkdownMarkup extends PolymerElement {
                 
             }
         </style>
-        <div class$="main noSelect [[hasBorder(border)]]" style="max-width: [[setMaxWidth(maxWidth)]]; height: [[height]]px;">
+        <div class$="main noSelect [[hasBorder(border)]]" style="width: [[setMaxWidth(maxWidth)]];max-width: [[setMaxWidth(maxWidth)]]; height: [[height]]px;">
             <div class="markup"></div>
         </div>
         `;
