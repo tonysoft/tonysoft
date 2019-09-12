@@ -1,5 +1,6 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/9.1.0/markdown-it.js'
+import 'https://unpkg.com/tonysoft@^1.52.88/js/turndown.js'
 
 /**
  * `markdown-markup`
@@ -31,7 +32,7 @@ class MarkdownMarkup extends PolymerElement {
                 
             }
         </style>
-        <div class$="main noSelect [[hasBorder(border)]]" style="width: [[setMaxWidth(maxWidth)]];max-width: [[setMaxWidth(maxWidth)]]; height: [[height]]px;">
+        <div class$="main noSelect [[hasBorder(border)]]" style="width: [[setWidth(width)]];max-width: [[setMaxWidth(maxWidth)]]; height: [[height]]px;">
             <div class="markup"></div>
         </div>
         `;
@@ -42,10 +43,17 @@ class MarkdownMarkup extends PolymerElement {
             type: String,
             observer: "_markdown"
         },
+        markup: {
+            type: String,
+            observer: "_markup"
+        },
         maxWidth: {
             type: Number
         },
         height: {
+            type: Number
+        },
+        width: {
             type: Number
         },
         border: {
@@ -60,8 +68,10 @@ class MarkdownMarkup extends PolymerElement {
     constructor() {
       super();
       this.markdown = null;
+      this.markup = null;
       this.maxWidth = 330;
       this.height = 220;
+      this.width = 0;
       this.onReadyProps = {};
       this.border = false;
     }
@@ -70,7 +80,7 @@ class MarkdownMarkup extends PolymerElement {
         var context = this;
         super.ready();
         context.isReady = true;
-        context.markup = context.shadowRoot.querySelector('.markup');
+        context.markupDest = context.shadowRoot.querySelector('.markup');
         context.converter = new markdownit({ "html": true });
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
@@ -96,10 +106,27 @@ class MarkdownMarkup extends PolymerElement {
         }
     }
 
+    setWidth(width) {
+        var context = this;
+        if (!width) {
+            return "";
+        }
+        else {
+            return width + "px";
+        }
+    }
+
     _markdown(markdown) {
         var context = this;
         if (context.checkIsReady("markdown", markdown, null)) {
             context.convertMarkdown(markdown);
+        }
+    }
+
+    _markup(markup) {
+        var context = this;
+        if (context.checkIsReady("markup", markup, null)) {
+            context.convertMarkup(markup);
         }
     }
 
@@ -116,13 +143,24 @@ class MarkdownMarkup extends PolymerElement {
         return true;
     }
 
+    convertMarkup(markup) {
+        var context = this;
+        if (!context.reverseConverter) {
+            context.reverseConverter = new TurndownService({ "headingStyle": "atx"});
+        }
+        var markdown = context.reverseConverter.turndown(markup);  
+        context.dispatchEvent(new CustomEvent("convertedMarkdown", { 
+            detail: markdown
+        }));
+    }
+
     convertMarkdown(markdown) {
         var context = this;
         if (!context.converter) {
             return;
         }
         var markup = context.converter.render(context.markdown);  
-        context.markup.innerHTML = markup;
+        context.markupDest.innerHTML = markup;
         context.dispatchEvent(new CustomEvent("markup", { 
             detail: markup
         }));
