@@ -32,7 +32,7 @@ class MarkdownMarkup extends PolymerElement {
                 
             }
         </style>
-        <div class$="main noSelect [[hasBorder(border)]]" style="width: [[setWidth(width)]];max-width: [[setMaxWidth(maxWidth)]]; height: [[height]]px;">
+        <div class$="main noSelect [[hasBorder(border)]]" style="display: [[isHidden(hidden)]]; width: [[setWidth(width)]];max-width: [[setMaxWidth(maxWidth)]]; height: [[height]]px;">
             <div class="markup"></div>
         </div>
         `;
@@ -61,6 +61,9 @@ class MarkdownMarkup extends PolymerElement {
         },
         onReadyProps: {
             type: Object
+        },
+        hidden: {
+            type: Boolean
         }
       }
     }
@@ -72,6 +75,7 @@ class MarkdownMarkup extends PolymerElement {
       this.maxWidth = 330;
       this.height = 220;
       this.width = 0;
+      this.hidden = false;
       this.onReadyProps = {};
       this.border = false;
     }
@@ -84,6 +88,15 @@ class MarkdownMarkup extends PolymerElement {
         context.converter = new markdownit({ "html": true });
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
+        }
+    }
+
+    isHidden(hidden) {
+        var context = this;
+        if (!hidden) {
+            return "block";
+        } else {
+            return "none";
         }
     }
 
