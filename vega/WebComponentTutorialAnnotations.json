@@ -7,6 +7,14 @@
 	"timeUTC": "Thu, 22 Aug 2019 14:52:09 GMT",
 	"timestamp": 1566485529817
 }, {
+	"comment": "This Tutorial will require some more Web Components in addition to the Vega Charting Component...",
+	"date": "2019-08-22",
+	"end": 15,
+	"start": 7,
+	"time": "14:54:36",
+	"timeUTC": "Thu, 22 Aug 2019 14:54:36 GMT",
+	"timestamp": 1566485676387
+}, {
 	"comment": "Let's review some work we did in another Tutorial to use as a base for this one...",
 	"date": "2019-08-22",
 	"end": 23,
@@ -19,6 +27,14 @@
 	"date": "2019-08-22",
 	"end": 51,
 	"start": 23,
+	"time": "14:57:13",
+	"timeUTC": "Thu, 22 Aug 2019 14:57:13 GMT",
+	"timestamp": 1566485833191
+}, {
+	"comment": "Vega Specs CAN include embedded associated with Datasets...",
+	"date": "2019-08-22",
+	"end": 40,
+	"start": 30,
 	"time": "14:57:13",
 	"timeUTC": "Thu, 22 Aug 2019 14:57:13 GMT",
 	"timestamp": 1566485833191
