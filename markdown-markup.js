@@ -22,7 +22,7 @@ class MarkdownMarkup extends PolymerElement {
                 overflow: auto;
             }
             .border {
-                border: 2px solid #888888;
+                border: 1px solid #888888;
                 border-radius: 5px;
             }
             .markup {
@@ -85,7 +85,7 @@ class MarkdownMarkup extends PolymerElement {
         super.ready();
         context.isReady = true;
         context.markupDest = context.shadowRoot.querySelector('.markup');
-        context.converter = new markdownit({ "html": true });
+        // context.converter = new markdownit({ "html": true });
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
         }
@@ -171,8 +171,9 @@ class MarkdownMarkup extends PolymerElement {
         if (!context.reverseConverter) {
             context.reverseConverter = new TurndownService({ "headingStyle": "atx"});
         }
+        context.markupDest.innerHTML = markup;
         var markdown = context.reverseConverter.turndown(markup);  
-        context.dispatchEvent(new CustomEvent("markdown", { 
+        context.dispatchEvent(new CustomEvent("convertedMarkdown", { 
             detail: markdown
         }));
     }
@@ -180,7 +181,7 @@ class MarkdownMarkup extends PolymerElement {
     convertMarkdown(markdown) {
         var context = this;
         if (!context.converter) {
-            return;
+            context.converter = new markdownit({ "html": true });
         }
         var markup = context.converter.render(context.markdown);  
         context.markupDest.innerHTML = markup;

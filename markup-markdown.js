@@ -171,6 +171,7 @@ class MarkupMarkdown extends PolymerElement {
         if (!context.reverseConverter) {
             context.reverseConverter = new TurndownService({ "headingStyle": "atx"});
         }
+        context.markupDest.innerHTML = markup;
         var markdown = context.reverseConverter.turndown(markup);  
         context.dispatchEvent(new CustomEvent("markdown", { 
             detail: markdown
