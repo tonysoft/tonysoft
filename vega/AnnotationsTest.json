@@ -31,6 +31,22 @@
 	"timeUTC": "Thu, 22 Aug 2019 14:57:13 GMT",
 	"timestamp": 1566485833191
 }, {
+	"comment": "Vega Specs CAN include embedded associated with Datasets...",
+	"date": "2019-08-22",
+	"end": 40,
+	"start": 30,
+	"time": "14:57:13",
+	"timeUTC": "Thu, 22 Aug 2019 14:57:13 GMT",
+	"timestamp": 1566485833191
+}, {
+	"comment": "Now you can see we've separated the Data from the Specification ...",
+	"date": "2019-08-22",
+	"end": 54,
+	"start": 44,
+	"time": "14:57:13",
+	"timeUTC": "Thu, 22 Aug 2019 14:57:13 GMT",
+	"timestamp": 1566485833191
+}, {
 	"comment": "Let's bring in the Digital Clock Component and tell it to inform us of the Current Time every second...",
 	"date": "2019-08-22",
 	"end": 82,

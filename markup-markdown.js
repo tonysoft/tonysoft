@@ -3,14 +3,14 @@ import 'https://cdnjs.cloudflare.com/ajax/libs/markdown-it/9.1.0/markdown-it.js'
 import 'https://unpkg.com/tonysoft@^1.52.88/js/turndown.js'
 
 /**
- * `markdown-markup`
+ * `markup-markdown`
  * Connect to Bluetooth Device, Service, and Characteristics and Send and Receive Data.
  *
  * @customElement
  * @polymer
  * @demo demo/index.html
  */
-class MarkdownMarkup extends PolymerElement {
+class MarkupMarkdown extends PolymerElement {
     static get template() {
         return html`
         <style>
@@ -191,5 +191,5 @@ class MarkdownMarkup extends PolymerElement {
 
 }
 
-window.customElements.define('markdown-markup', MarkdownMarkup);
-export { MarkdownMarkup }
+window.customElements.define('markup-markdown', MarkupMarkdown);
+export { MarkupMarkdown }
