@@ -18,9 +18,11 @@ class VideoComponent extends PolymerElement {
                 user-select: none;
             }
             .main {
-                border-radius: 5px;
-                border: 1px solid black;
                 overflow: hidden;
+            }
+            .border {
+                border: 1px solid #888888;
+                border-radius: 5px;
             }
             .theVideo {
                 width:100%;
@@ -28,17 +30,15 @@ class VideoComponent extends PolymerElement {
                 outline: none;
             }
           </style>
-          <div style="position: relative; width: [[width]]px; height: [[height]]px;">
-            <div class="main noSelect" style="position: absolute; top: [[top]]px; left: [[left]]px; width: [[width]]px; height: [[height]]px;">
-                <span style="display: [[isHTML5(youTube)]];" >
-                    <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
-                </span>
-                <span style="display: [[isYouTube(youTube)]];" >
-                    <google-youtube class="theVideo youTube" video-id="..." rel="0" on-state-changed="playStatus" on-google-youtube-ready="youTubeReady"></google-youtube>
-                </span>
-        
-            </div>
-          </div>
+        <div class$="main noSelect [[hasBorder(border)]]" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]];">
+            <span style="display: [[isHTML5(youTube)]];" >
+                <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
+            </span>
+            <span style="display: [[isYouTube(youTube)]];" >
+                <google-youtube class="theVideo youTube" video-id="..." rel="0" on-state-changed="playStatus" on-google-youtube-ready="youTubeReady"></google-youtube>
+            </span>
+    
+        </div>
         `;
       }
   
@@ -55,6 +55,9 @@ class VideoComponent extends PolymerElement {
         },
         top: {
             type: Number
+        },
+        border: {
+            type: Boolean
         },
         resumePlayPosition: {
             type: Number,
@@ -107,12 +110,69 @@ class VideoComponent extends PolymerElement {
     }
 
 
-    ready() {
+    constructor() {
+        super();
+        this.width = 0;
+        this.height = 0;
+        this.left = 0;
+        this.top = 0;
+        this.src = "";
+        this.bestFit = false;
+        this.centered = "";
+        this.autoplay = false;
+        this.isReady = false;
+        this.playVideo = false;
+        this.pauseVideo = false;
+        this.muted = false;
+        this.showControls = true;
+        this.playPosition = -1;
+        this.spacingBottom = 0;
+        this.spacingRight = 0;
+        this.resumePlayPosition = -1;
+      }
+  
+      ready() {
         var context = this;
         super.ready();
         context.setVideoType();
         context.isReady = true;
+        if (!context.width || !context.height) {
+            var markdownMarkups = document.querySelectorAll("video-component");
+            markdownMarkups.forEach(function(markdownMarkup) {
+                markdownMarkup.style.width = "inherit";
+                markdownMarkup.style.height = "inherit";
+            })
+        }
         context.scaleIfNecessary();
+    }
+
+    hasBorder(border) {
+        var context = this;
+        if (border) {
+            return "border";
+        } else {
+            return "";
+        }
+    }
+
+    setWidth(width) {
+        var context = this;
+        if (!width) {
+            return "100%";
+        }
+        else {
+            return width + "px";
+        }
+    }
+
+    setHeight(height) {
+        var context = this;
+        if (!height) {
+            return "100%";
+        }
+        else {
+            return height + "px";
+        }
     }
 
     setVideoType() {
@@ -167,7 +227,7 @@ class VideoComponent extends PolymerElement {
         if (context.autoplay) {
             context.video.mute();
         }
-}
+    }
 
     loaded(e) {
         var context = this;
@@ -378,27 +438,6 @@ class VideoComponent extends PolymerElement {
         var context = this;
         var video = context.video;
         video.pause();
-    }
-
-    constructor() {
-      super();
-      this.width = 320;
-      this.height = 180;
-      this.left = 0;
-      this.top = 0;
-      this.src = "";
-      this.bestFit = false;
-      this.centered = "";
-      this.autoplay = false;
-      this.isReady = false;
-      this.playVideo = false;
-      this.pauseVideo = false;
-      this.muted = false;
-      this.showControls = true;
-      this.playPosition = -1;
-      this.spacingBottom = 0;
-      this.spacingRight = 0;
-      this.resumePlayPosition = -1;
     }
 
     isHTML5(youTube) {
