@@ -50,6 +50,9 @@ class MarkdownProseEditor extends PolymerElement {
         height: {
             type: Number
         },
+        width: {
+            type: Number
+        },
         border: {
             type: Boolean
         },
@@ -79,6 +82,13 @@ class MarkdownProseEditor extends PolymerElement {
         super.ready();
         context.isReady = true;
         context.place = context.shadowRoot.querySelector('#editor');
+        if (!context.width || !context.height) {
+            var markdownMarkups = document.querySelectorAll("markdown-prose");
+            markdownMarkups.forEach(function(markdownMarkup) {
+                markdownMarkup.style.width = "inherit";
+                markdownMarkup.style.height = "inherit";
+            })
+        }
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
         }
