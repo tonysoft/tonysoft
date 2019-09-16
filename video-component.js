@@ -387,8 +387,6 @@ class VideoComponent extends PolymerElement {
         context.dispatchEvent(new CustomEvent("playState", { 
             detail: { 
                 playing: context.playVideo,
-                paused: context.pauseVideo,
-                state: context.playState,
                 currentTime: parseInt(video[currentTimeProperty])
             }
         }));
