@@ -116,7 +116,7 @@ class VideoComponent extends PolymerElement {
         this.height = 0;
         this.left = 0;
         this.top = 0;
-        this.src = "";
+        this.src = "http://NoVideo";
         this.bestFit = false;
         this.centered = "";
         this.autoplay = false;
