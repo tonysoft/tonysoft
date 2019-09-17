@@ -400,7 +400,7 @@ class VideoComponent extends PolymerElement {
         var currentTime = parseInt(video[currentTimeProperty]);
         var playing = (context.playState === "playing");
 
-        if (context.isYouTube && (video.state === -1)) {  // YouTube gets confused if you choose a playPosition before the first play
+        if (context.youTube && (video.state === -1)) {  // YouTube gets confused if you choose a playPosition before the first play
             video.pause();
         }
         context.dispatchEvent(new CustomEvent("playState", { 
@@ -564,6 +564,20 @@ class VideoComponent extends PolymerElement {
             context.resizeInterval = setInterval(function() {
                 doScale();
             }, 1000);
+        } else {
+            if (context.youTube) {
+                var main = context.shadowRoot.querySelector(".main");
+                var width = main.offsetWidth;
+                var height = main.offsetHeight;
+                var youTube = context.shadowRoot.querySelector(".youTube");
+                if (youTube && youTube.shadowRoot) {
+                    var container = youTube.shadowRoot.querySelector("#container");
+                    if (container) {
+                        container.style.width = width + "px";
+                        container.style.height = height + "px";
+                    }
+                }
+        }
         }
     }
 
