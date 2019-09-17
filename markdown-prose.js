@@ -3,7 +3,7 @@ import "https://unpkg.com/tonysoft@^1.53.11/js/prosemirror.js?module";
 import "https://unpkg.com/tonysoft@^1.52.70/js/proseMirrorHelpers.js?module";
 
 /**
- * `markdown-prose`
+ * `markdown-prose` 
  * Connect to Bluetooth Device, Service, and Characteristics and Send and Receive Data.
  *
  * @customElement
