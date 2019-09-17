@@ -226,6 +226,15 @@ class VideoComponent extends PolymerElement {
         var context = this;
         if (context.autoplay) {
             context.video.mute();
+        } else {
+            // setTimeout(function() {
+            //     context.ignoreDispatch = true;
+            //     context.playVideo = true;
+            //     setTimeout(function() {
+            //         // context.video.pause();
+            //         // context.playPosition = 0;
+            //     }, 2000);
+            // }, 1000);
         }
     }
 
@@ -378,16 +387,26 @@ class VideoComponent extends PolymerElement {
 
     dispatchPlayStatusEvent() {
         var context = this;
+        if (context.ignoreDispatch) {
+            context.ignoreDispatch = false;  // For YouTube Startup Hack.
+            return;
+        }
         var video = context.video;
         if (context.pauseVideo && context.timeUpdateInterval) {
             clearInterval(context.timeUpdateInterval);
             context.timeUpdateInterval = 0;
         }
         var currentTimeProperty = context.youTube ? "currenttime" : "currentTime";
+        var currentTime = parseInt(video[currentTimeProperty]);
+        var playing = (context.playState === "playing");
+
+        if (context.isYouTube && (video.state === -1)) {  // YouTube gets confused if you choose a playPosition before the first play
+            video.pause();
+        }
         context.dispatchEvent(new CustomEvent("playState", { 
             detail: { 
-                playing: context.playVideo,
-                currentTime: parseInt(video[currentTimeProperty])
+                playing: playing,
+                currentTime: currentTime
             }
         }));
     }
