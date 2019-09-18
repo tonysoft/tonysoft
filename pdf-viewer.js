@@ -31,7 +31,7 @@ class PdfViewer extends PolymerElement {
 
         </style>
         <div id="editor" on-click="focusOnEditor" class="main noSelect" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: hidden;">
-            <canvas id="the-canvas" class="border" style="display: none; margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas
+            <canvas id="the-canvas" class="border" style="margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas
         </div>
       `;
     }
@@ -146,14 +146,15 @@ class PdfViewer extends PolymerElement {
 
     initView(src) {
         var context = this;
-        if (!src) {
-            context.canvas.style.display = "none";
-            context.numPages = 0;
-        }
-        context.canvas.style.display = "block";
         if (context.loadingTask) {
             context.loadingTask.destroy();
+            context.numPages = 0;
         }
+        if (!src) {
+            context.canvas.style.display = "none";
+            return;
+        }
+        context.canvas.style.display = "block";
         context.loadDocument(src);
     }
 
@@ -181,7 +182,17 @@ class PdfViewer extends PolymerElement {
             context.loadPage(context.pageNumber);
         }, function (reason) {
             // PDF loading error
-            console.error(reason);
+            context.loadingTask.destroy();
+            context.numPages = 0;
+            context.dispatchEvent(new CustomEvent("documentLoaded", { 
+                detail: { 
+                    src: src,
+                    numPages: 0,
+                    currentPage: 0,
+                    error: reason
+                }
+            }));
+             console.error(reason);
         }); 
     }   
 
