@@ -97,6 +97,12 @@ class PdfViewer extends PolymerElement {
         }
         context.baseHeight = context.container.offsetHeight;
         context.baseWidth = context.container.offsetWidth;
+        if (!context.baseWidth) {
+            context.baseWidth = parseInt(window.innerWidth * .4);
+        }
+        if (!context.baseHeight) {
+            context.baseHeight = window.innerHeight * context.baseWidth / window.innerWidth;
+        }
         var borderAdj = context.border ? 2 : 0;
         context.baseHeight -= (borderAdj + (context.margin * 2));
         context.baseWidth -= (borderAdj + (context.margin * 2));
