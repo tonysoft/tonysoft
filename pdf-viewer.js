@@ -31,7 +31,7 @@ class PdfViewer extends PolymerElement {
 
         </style>
         <div id="editor" on-click="focusOnEditor" class="main noSelect" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: hidden;">
-            <canvas id="the-canvas" class="border" style="margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas
+            <canvas id="the-canvas" class="border" style="display: none; margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas
         </div>
       `;
     }
@@ -184,6 +184,7 @@ class PdfViewer extends PolymerElement {
             // PDF loading error
             context.loadingTask.destroy();
             context.numPages = 0;
+            context.canvas.style.display = "none";
             context.dispatchEvent(new CustomEvent("documentLoaded", { 
                 detail: { 
                     src: src,
@@ -223,17 +224,31 @@ class PdfViewer extends PolymerElement {
             if (canvas.width > canvas.height) {
                 var contWidth = context.baseWidth;
                 var contHeight = parseInt(context.baseWidth * canvas.height / canvas.width);
+                if (contHeight > context.baseHeight) {
+                    contHeight = context.baseHeight - 2;
+                    contWidth = parseInt(contHeight * canvas.width / canvas.height);
+                    canvas.style.top = "0px";
+                    canvas.style.left = Math.max(((context.baseWidth - contWidth) / 2)) + "px";
+                } else {
+                    canvas.style.left = "0px";
+                    canvas.style.top = Math.max(((context.baseHeight - contHeight) / 2), 0) + "px";
+                }
                 canvas.style.width = contWidth + "px";
                 canvas.style.height = contHeight + "px";
-                canvas.style.left = "0px";
-                canvas.style.top = Math.max(((context.baseHeight - contHeight) / 2)) + "px";
             } else {
                 var contWidth = parseInt(context.baseHeight * canvas.width / canvas.height);
                 var contHeight = context.baseHeight;
+                if (contWidth > context.baseWidth) {
+                    contWidth = context.baseWidth - 2;
+                    contHeight = parseInt(contWidth * canvas.height / canvas.width);
+                    canvas.style.left = "0px";
+                    canvas.style.top = Math.max(((context.baseHeight - contHeight) / 2), 0) + "px";
+                } else {
+                    canvas.style.top = "0px";
+                    canvas.style.left = Math.max(((context.baseWidth - contWidth) / 2), 0) + "px";
+                }
                 canvas.style.width = contWidth + "px";
                 canvas.style.height = contHeight + "px";
-                canvas.style.top = "0px";
-                canvas.style.left = Math.max(((context.baseWidth - contWidth) / 2), 0) + "px";
             }
 
             // Render PDF page into canvas context
