@@ -30,8 +30,8 @@ class PdfViewer extends PolymerElement {
             }
 
         </style>
-        <div id="editor" on-click="focusOnEditor" class$="main noSelect [[hasBorder(border)]]" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: hidden;">
-            <canvas id="the-canvas" class$="[[hasBorder(border)]]" style="display: none; margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; border: 1px solid #999999;" ></canvas>
+        <div id="editor" on-click="focusOnEditor" class="main noSelect" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: hidden;">
+            <canvas id="the-canvas" class="border" style="display: none; margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas
         </div>
       `;
     }
