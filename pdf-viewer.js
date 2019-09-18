@@ -226,14 +226,14 @@ class PdfViewer extends PolymerElement {
                 canvas.style.width = contWidth + "px";
                 canvas.style.height = contHeight + "px";
                 canvas.style.left = "0px";
-                canvas.style.top = ((context.baseHeight - contHeight) / 2) + "px";
+                canvas.style.top = Math.max(((context.baseHeight - contHeight) / 2)) + "px";
             } else {
                 var contWidth = parseInt(context.baseHeight * canvas.width / canvas.height);
                 var contHeight = context.baseHeight;
                 canvas.style.width = contWidth + "px";
                 canvas.style.height = contHeight + "px";
                 canvas.style.top = "0px";
-                canvas.style.left = ((context.baseWidth - contWidth) / 2) + "px";
+                canvas.style.left = Math.max(((context.baseWidth - contWidth) / 2), 0) + "px";
             }
 
             // Render PDF page into canvas context
