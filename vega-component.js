@@ -1,6 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import 'https://cdn.jsdelivr.net/npm/vega@5';
-// import '@polymer/iron-icon/iron-icon.js';
 
 
 /**
@@ -19,8 +18,8 @@ class VegaComponent extends PolymerElement {
                 user-select: none;
             }
           </style>
-          <div class="main noSelect">
-            <div id="content"><div on-click="guidance" style="cursor: pointer;">Click for Guidance on using the <b>vega-component</b>...</div>
+          <div class="main noSelect" style="width: 100%; height: 100%;">
+            <div id="content"><div on-click="guidance" style="cursor: pointer; width: 100%; height: 100%;">Click for Guidance on using the <b>vega-component</b>...</div>
           </div>
         `;
       }
@@ -145,15 +144,37 @@ class VegaComponent extends PolymerElement {
       this.updateDataMapJSON = {};
       this.vegaDataMap = {};
       this.resizeInterval = 0;
-      this.width = 330;
-      this.height = 330;
+      this.width = 0;
+      this.height = 0;
       this.bestFit = false;
       this.internalEvents = false;
       this.hideGuidance = false;
       this.guidanceMarkup = "https://tonysoft.github.io/vegaTest/guidance.html";
     }
 
-    _vegaSpecUrlChanged(newValue) {
+    ready() {
+      var context = this;
+      super.ready();
+      context.isReady = true;
+      if (!context.width || !context.height) {
+          var elements = document.querySelectorAll("vega-component");
+          elements.forEach(function(element) {
+              element.style.width = "inherit";
+              element.style.height = "inherit";
+          })
+          var wrapper = context.shadowRoot.querySelector('.main');
+          if (!context.width) {
+            context.width = wrapper.offsetWidth ? wrapper.offsetWidth : 330;
+          }
+          if (!context.height) {
+            context.height = wrapper.offsetHeight ? wrapper.offsetHeight : 330;
+          }
+      }
+      for (var prop in context.onReadyProps) {
+          context[prop] = context.onReadyProps[prop];
+      }
+  }
+  _vegaSpecUrlChanged(newValue) {
       var context = this;
       var vegaTarget = context.shadowRoot.querySelector("#content");
       if (vegaTarget && newValue) {
