@@ -176,6 +176,9 @@ class VegaComponent extends PolymerElement {
         }
       }
       context.vegaRender(spec, vegaTarget);
+      context.dispatchEvent(new CustomEvent("specChanged", { 
+        detail: true
+      }));
     }
 
     _updateDataMapChanged(newValue) {
