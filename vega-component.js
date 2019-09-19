@@ -1,6 +1,6 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import 'https://cdn.jsdelivr.net/npm/vega@5';
-import '@polymer/iron-icon/iron-icon.js';
+// import '@polymer/iron-icon/iron-icon.js';
 
 
 /**
