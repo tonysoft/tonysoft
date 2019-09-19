@@ -145,6 +145,8 @@ class VegaComponent extends PolymerElement {
       this.updateDataMapJSON = {};
       this.vegaDataMap = {};
       this.resizeInterval = 0;
+      this.width = 330;
+      this.height = 330;
       this.bestFit = false;
       this.internalEvents = false;
       this.hideGuidance = false;
