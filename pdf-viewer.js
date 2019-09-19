@@ -31,7 +31,9 @@ class PdfViewer extends PolymerElement {
 
         </style>
         <div id="editor" on-click="focusOnEditor" class="main noSelect" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: hidden;">
-            <canvas id="the-canvas" class="border" style="display: none; margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas
+            <a href="[[src]]" title="View Document in a New Tab" style="pointer-events: [[hasBrowserLink(browserLink)]];" target="_blank">
+                <canvas id="the-canvas" class="border" style="display: none; margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas>
+            </a>
         </div>
       `;
     }
@@ -62,6 +64,9 @@ class PdfViewer extends PolymerElement {
         page: {
             type: Number,
             observer: "_page"
+        },
+        browserLink: {
+            type: Boolean
         }
       }
     }
@@ -77,6 +82,7 @@ class PdfViewer extends PolymerElement {
       this.margin = 0;
       this.page = 0;
       this.src = null;
+      this.browserLink = false;
       this.onReadyProps = {};
     }
 
@@ -117,6 +123,15 @@ class PdfViewer extends PolymerElement {
             return "border";
         } else {
             return "";
+        }
+    }
+
+    hasBrowserLink(browserLink)  {
+        var context = this;
+        if (browserLink) {
+            return "all";
+        } else {
+            return "none";
         }
     }
 
@@ -268,7 +283,9 @@ class PdfViewer extends PolymerElement {
                 context.dispatchEvent(new CustomEvent("pageLoaded", { 
                     detail: { 
                         numPages: context.numPages,
-                        currentPage: pageNumber
+                        currentPage: pageNumber,
+                        width: 1,
+                        height: canvas.height / canvas.width
                     }
                 }));
             });
