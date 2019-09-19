@@ -244,7 +244,7 @@ class PdfViewer extends PolymerElement {
             canvas.width = viewport.width;
 
             if (canvas.width > canvas.height) {
-                var contWidth = context.baseWidth;
+                var contWidth = context.baseWidth - context.margin;
                 var contHeight = parseInt(context.baseWidth * canvas.height / canvas.width) - context.margin;
                 if (contHeight > context.baseHeight) {
                     contHeight = context.baseHeight - 2;
@@ -259,7 +259,7 @@ class PdfViewer extends PolymerElement {
                 canvas.style.height = contHeight + "px";
             } else {
                 var contWidth = parseInt(context.baseHeight * canvas.width / canvas.height) - context.margin;
-                var contHeight = context.baseHeight;
+                var contHeight = context.baseHeight - context.margin;
                 if (contWidth > context.baseWidth) {
                     contWidth = context.baseWidth - 2;
                     contHeight = parseInt(contWidth * canvas.height / canvas.width) - context.margin;
