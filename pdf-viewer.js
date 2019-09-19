@@ -179,13 +179,30 @@ class PdfViewer extends PolymerElement {
         context.loadDocument(src);
     }
 
+    getPageFromUrl(src) {
+        var page = src.match(/page=([^&]+)/g);
+        if (page && (page.length === 1)) {
+            page = page[0].split("=");
+        }
+        if (page && page.length > 1) {
+            page = decodeURIComponent(page[1]);
+        } else {
+            page = 0;
+        }
+        page = parseInt(page);
+        if (!page) {
+            page = 0;
+        }
+        return page;
+    }
+
     loadDocument(src) {
         var context = this;
         if (context.loadingTask) {
             context.loadingTask.destroy();
             context.numPages = 0;
         }
-        context.page = 0;
+        context.page = context.getPageFromUrl(src);
         context.loadingTask = context.pdfjsLib.getDocument(src);
         context.loadingTask.promise.then(function(pdf) {
             console.log('PDF loaded');
