@@ -41,6 +41,12 @@ class VegaComponent extends PolymerElement {
         height: {
             type: Number
         },
+        chartWidth: {
+            type: Number
+        },
+        chartHeight: {
+            type: Number
+        },
         internalInteractionMap: {
             type: Object
         },
@@ -146,6 +152,9 @@ class VegaComponent extends PolymerElement {
       this.resizeInterval = 0;
       this.width = 0;
       this.height = 0;
+      this.chartWidth = 0;
+      this.chartHeight = 0;
+      this.height = 0;
       this.bestFit = false;
       this.internalEvents = false;
       this.hideGuidance = false;
@@ -156,23 +165,37 @@ class VegaComponent extends PolymerElement {
       var context = this;
       super.ready();
       context.isReady = true;
+      context.chartWidth = context.chartWidth ? context.chartWidth : 330;
+      context.chartHeight = context.chartHeight ? context.chartHeight : 330;
       if (!context.width || !context.height) {
           var elements = document.querySelectorAll("vega-component");
           elements.forEach(function(element) {
               if (!element.style.width) {
-                element.style.width = "inherit";
+                element.style.width = "100%";
               }
               if (!element.style.height) {
-                element.style.height = "inherit";
+                element.style.height = "100%";
               }
           })
           var wrapper = context.shadowRoot.querySelector('.main');
           if (!context.width) {
-            context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : 330), 330);
+            context.width = Math.min((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth);
+            context.width = Math.max(200, context.width);
+          } else {
+            context.chartWidth = context.width;
           }
           if (!context.height) {
-            context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 220), 220);
+            context.height = Math.min((wrapper.offsetHeight ? wrapper.offsetHeight : context.chartHeight), context.chartHeight);
+            context.height = Math.max(200, context.height);
+          } else {
+            context.chartHeight = context.height;
           }
+      }
+      if (context.chartWidth > context.width) {
+        context.chartWidth = context.width;
+      }
+      if (context.chartHeight > context.height) {
+        context.chartHeight = context.height;
       }
       for (var prop in context.onReadyProps) {
           context[prop] = context.onReadyProps[prop];
@@ -424,11 +447,11 @@ class VegaComponent extends PolymerElement {
     vegaRender(spec, vegaTarget, callback) {
       var context = this;
       context.vegaSpec = spec;
-      if (context.width) {
-        context.vegaSpec.width = context.width;
+      if (context.chartWidth) {
+        context.vegaSpec.width = context.chartWidth;
       }
-      if (context.height) {
-        context.vegaSpec.height = context.height;
+      if (context.chartHeight) {
+        context.vegaSpec.height = context.chartHeight;
       }
       if (spec.internalInteractionMap) {
           context.internalInteractionMap = spec.internalInteractionMap;
