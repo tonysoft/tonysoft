@@ -261,11 +261,11 @@ class PdfViewer extends PolymerElement {
             canvas.width = viewport.width;
 
             if (canvas.width > canvas.height) {
-                var contWidth = context.baseWidth - context.margin;
-                var contHeight = parseInt(context.baseWidth * canvas.height / canvas.width) - context.margin;
+                var contWidth = context.baseWidth; // - context.margin;
+                var contHeight = parseInt(context.baseWidth * canvas.height / canvas.width);// - context.margin;
                 if (contHeight > context.baseHeight) {
-                    contHeight = context.baseHeight - 2;
-                    contWidth = parseInt(contHeight * canvas.width / canvas.height) - context.margin;
+                    contHeight = context.baseHeight; // - 2;
+                    contWidth = parseInt(contHeight * canvas.width / canvas.height); // - context.margin;
                     canvas.style.top = "0px";
                     canvas.style.left = Math.max(((context.baseWidth - contWidth) / 2)) + "px";
                 } else {
@@ -275,11 +275,11 @@ class PdfViewer extends PolymerElement {
                 canvas.style.width = contWidth + "px";
                 canvas.style.height = contHeight + "px";
             } else {
-                var contWidth = parseInt(context.baseHeight * canvas.width / canvas.height) - context.margin;
-                var contHeight = context.baseHeight - context.margin;
+                var contWidth = parseInt(context.baseHeight * canvas.width / canvas.height); // - context.margin;
+                var contHeight = context.baseHeight; // - context.margin;
                 if (contWidth > context.baseWidth) {
-                    contWidth = context.baseWidth - 2;
-                    contHeight = parseInt(contWidth * canvas.height / canvas.width) - context.margin;
+                    contWidth = context.baseWidth; // - 2;
+                    contHeight = parseInt(contWidth * canvas.height / canvas.width); // - context.margin;
                     canvas.style.left = "0px";
                     canvas.style.top = Math.max(((context.baseHeight - contHeight) / 2), 0) + "px";
                 } else {
