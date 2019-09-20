@@ -148,10 +148,10 @@ class VideoComponent extends PolymerElement {
             })
             var wrapper = context.shadowRoot.querySelector('.main');
             if (!context.width) {
-              context.width = wrapper.offsetWidth ? wrapper.offsetWidth : 360;
+              context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : 360), 360);
             }
             if (!context.height) {
-              context.height = wrapper.offsetHeight ? wrapper.offsetHeight : 203;
+              context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 203), 203);
             }
         }
         context.scaleIfNecessary();
