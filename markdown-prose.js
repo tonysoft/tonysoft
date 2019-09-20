@@ -97,7 +97,7 @@ class MarkdownProseEditor extends PolymerElement {
               context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : 330), 330);
             }
             if (!context.height) {
-              context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 330), 200);
+              context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 330), 120);
             }
         }
         for (var prop in context.onReadyProps) {

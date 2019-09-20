@@ -106,12 +106,12 @@ class PdfViewer extends PolymerElement {
             })
             var wrapper = context.shadowRoot.querySelector('.main');
             if (!context.width) {
-              context.width = wrapper.offsetWidth ? wrapper.offsetWidth : 330;
+              context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : 330), 330);
             }
             if (!context.height) {
-              context.height = wrapper.offsetHeight ? wrapper.offsetHeight : 330;
+              context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 330), 330);
             }
-          }
+        }
         context.baseHeight = context.container.offsetHeight;
         context.baseWidth = context.container.offsetWidth;
         if (!context.baseWidth) {
