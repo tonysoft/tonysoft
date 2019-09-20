@@ -95,12 +95,23 @@ class PdfViewer extends PolymerElement {
         context.canvas = context.shadowRoot.querySelector('#the-canvas');
         context.container = context.shadowRoot.querySelector('.main'); 
         if (!context.width || !context.height) {
-            var markdownMarkups = document.querySelectorAll("pdf-viewer");
-            markdownMarkups.forEach(function(markdownMarkup) {
-                markdownMarkup.style.width = "inherit";
-                markdownMarkup.style.height = "inherit";
+            var elements = document.querySelectorAll("pdf-viewer");
+            elements.forEach(function(element) {
+                if (!element.style.width) {
+                  element.style.width = "inherit";
+                }
+                if (!element.style.height) {
+                  element.style.height = "inherit";
+                }
             })
-        }
+            var wrapper = context.shadowRoot.querySelector('.main');
+            if (!context.width) {
+              context.width = wrapper.offsetWidth ? wrapper.offsetWidth : 330;
+            }
+            if (!context.height) {
+              context.height = wrapper.offsetHeight ? wrapper.offsetHeight : 330;
+            }
+          }
         context.baseHeight = context.container.offsetHeight;
         context.baseWidth = context.container.offsetWidth;
         if (!context.baseWidth) {
