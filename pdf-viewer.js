@@ -18,7 +18,7 @@ class PdfViewer extends PolymerElement {
                 user-select: none;
             }
             .main {
-                positionx: relative;
+                position: relative;
             }
             .border {
                 border: 1px solid #888888 !important;
@@ -30,7 +30,7 @@ class PdfViewer extends PolymerElement {
             }
 
         </style>
-        <div id="editor" on-click="focusOnEditor" class="main noSelect" style="position: relative; width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: hidden;">
+        <div id="editor" on-click="focusOnEditor" class="main noSelect" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: hidden;">
             <a href="[[src]]" title="View Document in a New Tab" style="position: relative; pointer-events: [[hasBrowserLink(browserLink)]];" target="_blank">
                 <canvas id="the-canvas" class="border" style="display: none; margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas>
             </a>
@@ -97,20 +97,14 @@ class PdfViewer extends PolymerElement {
         if (!context.width || !context.height) {
             var elements = document.querySelectorAll("pdf-viewer");
             elements.forEach(function(element) {
+                var parentNode = element.parentNode;
                 if (!element.style.width) {
-                  element.style.width = "inherit";
+                    element.style.width = "100%";
                 }
                 if (!element.style.height) {
-                  element.style.height = "inherit";
+                    element.style.height = "100%";
                 }
             })
-            var wrapper = context.shadowRoot.querySelector('.main');
-            if (!context.width) {
-              context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : 330), 330);
-            }
-            if (!context.height) {
-              context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 330), 330);
-            }
         }
         context.baseHeight = context.container.offsetHeight;
         context.baseWidth = context.container.offsetWidth;

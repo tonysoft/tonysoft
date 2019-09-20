@@ -20,6 +20,7 @@ class MarkdownMarkup extends PolymerElement {
             .main {
                 cursor: pointer;
                 overflow: auto;
+                position: relative; 
             }
             .border {
                 border: 1px solid #888888;
@@ -88,20 +89,14 @@ class MarkdownMarkup extends PolymerElement {
         if (!context.width || !context.height) {
             var elements = document.querySelectorAll("markdown-markup");
             elements.forEach(function(element) {
+                var parentNode = element.parentNode;
                 if (!element.style.width) {
-                  element.style.width = "inherit";
+                    element.style.width = "100%";
                 }
                 if (!element.style.height) {
-                  element.style.height = "inherit";
+                    element.style.height = "100%";
                 }
             })
-            var wrapper = context.shadowRoot.querySelector('.main');
-            if (!context.width) {
-              context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : 330), 330);
-            }
-            if (!context.height) {
-              context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 330), 120);
-            }
         }
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
