@@ -87,10 +87,10 @@ class MarkdownProseEditor extends PolymerElement {
             elements.forEach(function(element) {
                 var parentNode = element.parentNode;
                 if (!element.style.width) {
-                    element.style.width = "inherit";
+                    element.style.width = "100%";
                 }
                 if (!element.style.height) {
-                    element.style.height = "inherit";
+                    element.style.height = "100%";
                 }
             })
             var wrapper = context.shadowRoot.querySelector('.main');
