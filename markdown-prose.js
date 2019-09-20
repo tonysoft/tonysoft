@@ -90,14 +90,14 @@ class MarkdownProseEditor extends PolymerElement {
                     if (parentNode.style.width) {
                         element.style.width = "inherit";
                     } else {
-                        element.style.width = parentNode.offsetWidth - (context.border ? 4 : 2) + "px";
+                        element.style.width = parentNode.offsetWidth - (context.border ? 8 : 6) + "px";
                     }
                 }
                 if (!element.style.height) {
                     if (parentNode.style.height) {
                         element.style.height = "inherit";
                     } else {
-                        element.style.height = parentNode.offsetHeight - (context.border ? 4 : 2) + "px";
+                        element.style.height = parentNode.offsetHeight - (context.border ? 8 : 6) + "px";
                     }
                 }
             })
