@@ -177,21 +177,21 @@ class VegaComponent extends PolymerElement {
           })
           var wrapper = context.shadowRoot.querySelector('.main');
           if (!context.width) {
-            context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth, 200);
+            //context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth, 200);
           } else {
             context.chartWidth = context.width;
           }
           if (!context.height) {
-            context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : context.chartHeight), context.chartHeight, 150);
+            //context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : context.chartHeight), context.chartHeight, 150);
           } else {
             context.chartHeight = context.height;
           }
       }
       if (!context.chartWidth) {
-        context.chartWidth = context.width;
+        context.chartWidth = context.width ? context.width: 200;
       }
       if (!context.chartHeight) {
-        context.chartHeight = context.height;
+        context.chartHeight = context.height ? context.height: 150;
       }
       for (var prop in context.onReadyProps) {
           context[prop] = context.onReadyProps[prop];
