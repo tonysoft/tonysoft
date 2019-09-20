@@ -83,11 +83,22 @@ class MarkdownProseEditor extends PolymerElement {
         context.isReady = true;
         context.place = context.shadowRoot.querySelector('#editor');
         if (!context.width || !context.height) {
-            var markdownMarkups = document.querySelectorAll("markdown-prose");
-            markdownMarkups.forEach(function(markdownMarkup) {
-                markdownMarkup.style.width = "inherit";
-                markdownMarkup.style.height = "inherit";
+            var elements = document.querySelectorAll("markdown-prose");
+            elements.forEach(function(element) {
+                if (!element.style.width) {
+                  element.style.width = "inherit";
+                }
+                if (!element.style.height) {
+                  element.style.height = "inherit";
+                }
             })
+            var wrapper = context.shadowRoot.querySelector('.main');
+            if (!context.width) {
+              context.width = wrapper.offsetWidth ? wrapper.offsetWidth : 330;
+            }
+            if (!context.height) {
+              context.height = wrapper.offsetHeight ? wrapper.offsetHeight : 330;
+            }
         }
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];

@@ -137,11 +137,22 @@ class VideoComponent extends PolymerElement {
         context.setVideoType();
         context.isReady = true;
         if (!context.width || !context.height) {
-            var markdownMarkups = document.querySelectorAll("video-component");
-            markdownMarkups.forEach(function(markdownMarkup) {
-                markdownMarkup.style.width = "inherit";
-                markdownMarkup.style.height = "inherit";
+            var elements = document.querySelectorAll("video-component");
+            elements.forEach(function(element) {
+                if (!element.style.width) {
+                  element.style.width = "inherit";
+                }
+                if (!element.style.height) {
+                  element.style.height = "inherit";
+                }
             })
+            var wrapper = context.shadowRoot.querySelector('.main');
+            if (!context.width) {
+              context.width = wrapper.offsetWidth ? wrapper.offsetWidth : 360;
+            }
+            if (!context.height) {
+              context.height = wrapper.offsetHeight ? wrapper.offsetHeight : 203;
+            }
         }
         context.scaleIfNecessary();
     }
