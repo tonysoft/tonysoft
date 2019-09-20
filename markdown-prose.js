@@ -95,10 +95,10 @@ class MarkdownProseEditor extends PolymerElement {
             })
             var wrapper = context.shadowRoot.querySelector('.main');
             if (!context.width) {
-                context.width = (wrapper.offsetWidth >= 330) ? 0 : 330;
+                //context.width = (wrapper.offsetWidth >= 330) ? 0 : 330;
             }
             if (!context.height) {
-                context.height = (wrapper.offsetHeight >= 120) ? 0 : 120;
+                //context.height = (wrapper.offsetHeight >= 120) ? 0 : 120;
             }
         }
         for (var prop in context.onReadyProps) {
