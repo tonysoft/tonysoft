@@ -165,8 +165,8 @@ class VegaComponent extends PolymerElement {
       var context = this;
       super.ready();
       context.isReady = true;
-      context.chartWidth = context.chartWidth ? context.chartWidth : 330;
-      context.chartHeight = context.chartHeight ? context.chartHeight : 330;
+      context.chartWidth = context.chartWidth ? context.chartWidth : 200;
+      context.chartHeight = context.chartHeight ? context.chartHeight : 150;
       if (!context.width || !context.height) {
           var elements = document.querySelectorAll("vega-component");
           elements.forEach(function(element) {
@@ -179,14 +179,12 @@ class VegaComponent extends PolymerElement {
           })
           var wrapper = context.shadowRoot.querySelector('.main');
           if (!context.width) {
-            context.width = Math.min((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth);
-            context.width = Math.max(200, context.width);
+            context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth);
           } else {
             context.chartWidth = context.width;
           }
           if (!context.height) {
-            context.height = Math.min((wrapper.offsetHeight ? wrapper.offsetHeight : context.chartHeight), context.chartHeight);
-            context.height = Math.max(200, context.height);
+            context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : context.chartHeight), context.chartHeight);
           } else {
             context.chartHeight = context.height;
           }
