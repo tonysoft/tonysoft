@@ -90,24 +90,24 @@ class MarkdownProseEditor extends PolymerElement {
                     if (parentNode.style.width) {
                         element.style.width = "inherit";
                     } else {
-                        element.style.width = parentNode.offsetWidth - (context.border ? 12 : 10) + "px";
+                        element.style.width = parentNode.offsetWidth + "px";
                     }
                 }
                 if (!element.style.height) {
                     if (parentNode.style.height) {
                         element.style.height = "inherit";
                     } else {
-                        element.style.height = parentNode.offsetHeight - (context.border ? 12 : 10) + "px";
+                        element.style.height = parentNode.offsetHeight + "px";
                     }
                 }
             })
-            var wrapper = context.shadowRoot.querySelector('.main');
-            if (!context.width) {
-              context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : 330), 330);
-            }
-            if (!context.height) {
-              context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 330), 120);
-            }
+            // var wrapper = context.shadowRoot.querySelector('.main');
+            // if (!context.width) {
+            //   context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : 330), 330);
+            // }
+            // if (!context.height) {
+            //   context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 330), 120);
+            // }
         }
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
