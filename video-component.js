@@ -31,13 +31,13 @@ class VideoComponent extends PolymerElement {
                 outline: none;
             }
           </style>
-        <div class$="main noSelect [[hasBorder(border)]]" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]];">
-            <span style="display: [[isHTML5(youTube)]];" >
+        <div class$="main noSelect [[hasBorder(border)]]" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]]; line-height: [[setHeight(height)]];">
+            <div style="display: [[isHTML5(youTube)]];" >
                 <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
-            </span>
-            <span style="display: [[isYouTube(youTube)]];" >
+            </div>
+            <div style="display: [[isYouTube(youTube)]];" >
                 <google-youtube class="theVideo youTube" video-id="..." rel="0" on-state-changed="playStatus" on-google-youtube-ready="youTubeReady"></google-youtube>
-            </span>
+            </div>
     
         </div>
         `;
@@ -129,7 +129,7 @@ class VideoComponent extends PolymerElement {
         this.playPosition = -1;
         this.spacingBottom = 0;
         this.spacingRight = 0;
-        this.border = true;
+        this.border = false;
         this.resumePlayPosition = -1;
       }
   
