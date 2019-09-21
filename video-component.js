@@ -22,7 +22,7 @@ class VideoComponent extends PolymerElement {
                 position: relative;
             }
             .border {
-                border: 1px solid #888888;
+                border: 1px solid #cccccc;
                 border-radius: 5px;
             }
             .theVideo {
@@ -31,11 +31,11 @@ class VideoComponent extends PolymerElement {
                 outline: none;
             }
           </style>
-        <div class$="main noSelect [[hasBorder(border)]]" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]]; line-height: [[setHeight(height)]];">
-            <div style="display: [[isHTML5(youTube)]];" >
+        <div class$="main noSelect" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]];">
+            <div class$="[[hasBorder(border)]]" style="display: [[isHTML5(youTube)]];" >
                 <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
             </div>
-            <div style="display: [[isYouTube(youTube)]];" >
+            <div class$="[[hasBorder(border)]]" style="display: [[isYouTube(youTube)]];" >
                 <google-youtube class="theVideo youTube" video-id="..." rel="0" on-state-changed="playStatus" on-google-youtube-ready="youTubeReady"></google-youtube>
             </div>
     
@@ -129,7 +129,7 @@ class VideoComponent extends PolymerElement {
         this.playPosition = -1;
         this.spacingBottom = 0;
         this.spacingRight = 0;
-        this.border = false;
+        this.border = true;
         this.resumePlayPosition = -1;
       }
   
