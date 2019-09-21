@@ -19,6 +19,7 @@ class VideoComponent extends PolymerElement {
             }
             .main {
                 overflow: hidden;
+                position: relative;
             }
             .border {
                 border: 1px solid #888888;
@@ -139,20 +140,14 @@ class VideoComponent extends PolymerElement {
         if (!context.width || !context.height) {
             var elements = document.querySelectorAll("video-component");
             elements.forEach(function(element) {
+                var parentNode = element.parentNode;
                 if (!element.style.width) {
-                  element.style.width = "inherit";
+                    element.style.width = "100%";
                 }
                 if (!element.style.height) {
-                  element.style.height = "inherit";
+                    element.style.height = "100%";
                 }
             })
-            var wrapper = context.shadowRoot.querySelector('.main');
-            if (!context.width) {
-              context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : 360), 360);
-            }
-            if (!context.height) {
-              context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 203), 203);
-            }
         }
         context.scaleIfNecessary();
     }
