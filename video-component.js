@@ -18,7 +18,7 @@ class VideoComponent extends PolymerElement {
                 user-select: none;
             }
             .main {
-                overflow: hidden;
+                overflowx: hidden;
                 position: relative;
             }
             .border {
@@ -129,6 +129,7 @@ class VideoComponent extends PolymerElement {
         this.playPosition = -1;
         this.spacingBottom = 0;
         this.spacingRight = 0;
+        this.border = true;
         this.resumePlayPosition = -1;
       }
   
