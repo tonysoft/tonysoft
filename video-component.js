@@ -22,8 +22,8 @@ class VideoComponent extends PolymerElement {
                 position: relative;
             }
             .border {
-                border: 1px solid #cccccc;
-                border-radius: 10px;
+                border: 1px solid #dddddd;
+                border-radiusx: 10px;
             }
             .theVideo {
                 width:100%;
@@ -31,7 +31,7 @@ class VideoComponent extends PolymerElement {
                 outline: none;
             }
           </style>
-        <div class$="main noSelect" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]];">
+        <div class$="main noSelect" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]]; font-height: [[setHeight(height)]];">
             <div class$="[[hasBorder(border)]]" style="display: [[isHTML5(youTube)]];" >
                 <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
             </div>
@@ -129,7 +129,7 @@ class VideoComponent extends PolymerElement {
         this.playPosition = -1;
         this.spacingBottom = 0;
         this.spacingRight = 0;
-        this.border = false;
+        this.border = true;
         this.resumePlayPosition = -1;
       }
   
@@ -476,7 +476,7 @@ class VideoComponent extends PolymerElement {
     isYouTube(youTube) {
         var context = this;
         if (youTube) {
-            return "block";
+            return "inline-block";
         } else {
             return "none";
         }
