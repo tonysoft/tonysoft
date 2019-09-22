@@ -23,7 +23,7 @@ class VideoComponent extends PolymerElement {
             }
             .border {
                 border: 1px solid #cccccc;
-                border-radius: 5px;
+                border-radius: 10px;
             }
             .theVideo {
                 width:100%;
