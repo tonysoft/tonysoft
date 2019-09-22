@@ -31,7 +31,7 @@ class VideoComponent extends PolymerElement {
                 outline: none;
             }
           </style>
-        <div class$="main noSelect" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]];">
+        <div class="main noSelect" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]];">
             <div style="display: [[isHTML5(youTube)]];" >
                 <video src="" class$="theVideo [[hasBorder(border)]]" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
             </div>
@@ -143,10 +143,10 @@ class VideoComponent extends PolymerElement {
             elements.forEach(function(element) {
                 var parentNode = element.parentNode;
                 if (!element.style.width) {
-                    element.style.width = "inherit";
+                    element.style.width = "100%";
                 }
                 if (!element.style.height) {
-                    element.style.height = "inherit";
+                    element.style.height = "100%";
                 }
             })
         }
