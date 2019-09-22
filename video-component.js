@@ -589,9 +589,17 @@ class VideoComponent extends PolymerElement {
                                 }
                                 var componentAspect = width / height;
                                 if (componentAspect < context.youTubeAspect) {
+                                    var proposedHeight = height;
                                     height = width / context.youTubeAspect;
+                                    container.style.position = "relative";
+                                    container.style.left = "0px";
+                                    container.style.top = (proposedHeight - height) / 2 + "px";
                                 } else {
+                                    var proposedWidth = width;
                                     width = height * context.youTubeAspect;
+                                    container.style.position = "relative";
+                                    container.style.top = "0px";
+                                    container.style.left = (proposedWidth - width) / 2 + "px";
                                 }
                                 container.style.width = width + "px";
                                 container.style.height = height + "px";
