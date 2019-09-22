@@ -31,7 +31,7 @@ class VideoComponent extends PolymerElement {
                 outline: none;
             }
           </style>
-        <div class$="main noSelect" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]]; font-height: [[setHeight(height)]];">
+        <div class$="main noSelect" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]]; font-heightx: [[setHeight(height)]];">
             <div class$="[[hasBorder(border)]]" style="display: [[isHTML5(youTube)]];" >
                 <video src="" class="theVideo" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
             </div>
@@ -467,7 +467,7 @@ class VideoComponent extends PolymerElement {
     isHTML5(youTube) {
         var context = this;
         if (!youTube) {
-            return "block";
+            return "inline-block";
         } else {
             return "none";
         }
