@@ -143,10 +143,10 @@ class VideoComponent extends PolymerElement {
             elements.forEach(function(element) {
                 var parentNode = element.parentNode;
                 if (!element.style.width) {
-                    element.style.width = "100%";
+                    element.style.width = "inherit";
                 }
                 if (!element.style.height) {
-                    element.style.height = "100%";
+                    element.style.height = "inherit";
                 }
             })
         }
