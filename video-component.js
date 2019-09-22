@@ -632,7 +632,7 @@ class VideoComponent extends PolymerElement {
             var waitIntervale = context.youTube ? 1 : 500;
             setTimeout(function() {
                 doScale();
-            }, 100);
+            }, waitIntervale);
             context.resizeInterval = setInterval(function() {
                 doScale();
             }, 1000);
