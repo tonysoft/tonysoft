@@ -129,7 +129,7 @@ class VideoComponent extends PolymerElement {
         this.playPosition = -1;
         this.spacingBottom = 0;
         this.spacingRight = 0;
-        this.border = true;
+        this.border = false;
         this.resumePlayPosition = -1;
       }
   
@@ -572,14 +572,14 @@ class VideoComponent extends PolymerElement {
                 doScale();
             }, 1000);
         } else {
-            if (context.youTube) {
-                function doScale() {
-                    var main = context.shadowRoot.querySelector(".main");
-                    var width = main.offsetWidth;
-                    var height = main.offsetHeight;
-                    if ((width !== context.originalWidth) || (height !== context.originalHeight)) {
-                        context.originalWidth = main.offsetWidth;
-                        context.originalHeight = main.offsetHeight;
+            function doScale() {
+                var main = context.shadowRoot.querySelector(".main");
+                var width = main.offsetWidth;
+                var height = main.offsetHeight;
+                if ((width !== context.originalWidth) || (height !== context.originalHeight)) {
+                    context.originalWidth = main.offsetWidth;
+                    context.originalHeight = main.offsetHeight;
+                    if (context.youTube) {
                         var youTube = context.shadowRoot.querySelector(".youTube");
                         if (youTube && youTube.shadowRoot) {
                             var container = youTube.shadowRoot.querySelector("#container");
@@ -605,13 +605,37 @@ class VideoComponent extends PolymerElement {
                                 container.style.height = height + "px";
                             }
                         }
-                    }
-                }
-                doScale();
-                context.resizeInterval = setInterval(function() {
-                    doScale();
-                }, 1000);
+                    } else {
+                        var container = context.shadowRoot.querySelector("video").parentNode;
+                        if (!context.videoAspect) {
+                            context.videoAspect = container.offsetWidth / container.offsetHeight;
+                        }
+                        var componentAspect = width / height;
+                        if (componentAspect < context.videoAspect) {
+                            var proposedHeight = height;
+                            height = width / context.videoAspect;
+                            container.style.position = "relative";
+                            container.style.left = "0px";
+                            container.style.top = (proposedHeight - height) / 2 + "px";
+                        } else {
+                            var proposedWidth = width;
+                            width = height * context.videoAspect;
+                            container.style.position = "relative";
+                            container.style.top = "0px";
+                            container.style.left = (proposedWidth - width) / 2 + "px";
+                        }
+                        container.style.width = width + "px";
+                        container.style.height = height + "px";
             }
+                }
+            }
+            var waitIntervale = context.youTube ? 1 : 500;
+            setTimeout(function() {
+                doScale();
+            }, 100);
+            context.resizeInterval = setInterval(function() {
+                doScale();
+            }, 1000);
         }
     }
 
