@@ -18,7 +18,7 @@ class VideoComponent extends PolymerElement {
                 user-select: none;
             }
             .main {
-                overflowx: hidden;
+                overflow: hidden;
                 position: relative;
             }
             .border {
@@ -467,7 +467,7 @@ class VideoComponent extends PolymerElement {
     isHTML5(youTube) {
         var context = this;
         if (!youTube) {
-            return "inline-block";
+            return "block";
         } else {
             return "none";
         }
@@ -476,7 +476,7 @@ class VideoComponent extends PolymerElement {
     isYouTube(youTube) {
         var context = this;
         if (youTube) {
-            return "inline-block";
+            return "block";
         } else {
             return "none";
         }
