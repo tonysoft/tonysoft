@@ -32,11 +32,11 @@ class VideoComponent extends PolymerElement {
             }
           </style>
         <div class$="main noSelect" style="top: [[top]]px; left: [[left]]px; width: [[setWidth(width)]]; height: [[setHeight(height)]];">
-            <div style="display: [[isHTML5(youTube)]]; height: 100%;" >
+            <div style="display: [[isHTML5(youTube)]];" >
                 <video src="" class$="theVideo [[hasBorder(border)]]" on-canplay="loaded" on-loadedmetadata="metadataLoaded" on-play="playStatus" on-pause="playStatus" muted></video>
             </div>
-            <div style="display: [[isYouTube(youTube)]]; height: 100%;" >
-                <google-youtube class$="theVideo youTube" [[hasBorder(border)]]" video-id="..." rel="0" on-state-changed="playStatus" on-google-youtube-ready="youTubeReady"></google-youtube>
+            <div style="display: [[isYouTube(youTube)]];" >
+                <google-youtube class$="theVideo youTube [[hasBorder(border)]]" video-id="..." rel="0" on-state-changed="playStatus" on-google-youtube-ready="youTubeReady"></google-youtube>
             </div>
     
         </div>
