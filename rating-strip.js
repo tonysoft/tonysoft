@@ -1,5 +1,4 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-// import '@polymer/polymer/lib/elements/dom-repeat.js';
 // import '@polymer/iron-icon/iron-icon.js';
 // import 'https://unpkg.com/tonysoft@1.53.21/iron-icons.js?module'
 
@@ -7,17 +6,6 @@ class RatingStrip extends PolymerElement {
 
   static get properties() {
     return {
-
-        toggleIcon: {
-            type: String
-        },
-
-        pressed: {
-            type: Boolean,
-            value: false,
-            notify: true,
-            reflectToAttribute: true
-        },
 
         variousIcons: {
             type: Array,
@@ -32,6 +20,7 @@ class RatingStrip extends PolymerElement {
                 ];
             }
         },
+
         ratingValue: {
             type: Number
         }
@@ -87,9 +76,13 @@ class RatingStrip extends PolymerElement {
     var icon = e.srcElement;
     var id = icon.id;
     context.ratingValue = parseInt(id);
+    context.dispatchEvent(new CustomEvent("ratingValue", { 
+        detail: context.ratingValue
+    }));
   }
   
   toggleState(value, index) {
+    var context = this;
     if (index === 0) {
         switch (value) {
             case 0:
