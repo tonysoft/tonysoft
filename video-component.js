@@ -212,6 +212,13 @@ class VideoComponent extends PolymerElement {
         var probablyYouTube = (newValue.indexOf("/") < 0);
         if (probablyYouTube) {
             context.youTube = true;
+            var wrapper = context.shadowRoot.querySelector('.main');
+            if (!context.width) {
+              context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : 360), 360);
+            }
+            if (!context.height) {
+              context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : 203), 203);
+            }
         } else {
             context.youTube = false;
         }
