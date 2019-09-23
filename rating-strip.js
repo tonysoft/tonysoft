@@ -11,7 +11,7 @@ class RatingStrip extends PolymerElement {
             type: Array,
             value() {
             return [
-                    {symbol: 'arrow-downward'},
+                    {symbol: 'block'},
                     {symbol: 'star'},
                     {symbol: 'star'},
                     {symbol: 'star'},
@@ -37,6 +37,9 @@ class RatingStrip extends PolymerElement {
           --icon-toggle-pressed-color: #f0f000;
           --icon-toggle-color: rgba(0,0,0,0);
           --icon-no-rating: #aaaaaa;
+          --icon-no-rating-stroke: #888888;
+          --icon-no-rating-off: #aaaaaa66;
+          --icon-no-rating-off-stroke: #88888866;
           }
           iron-icon {
           fill: var(--icon-toggle-color, rgba(0,0,0,0));
@@ -47,6 +50,11 @@ class RatingStrip extends PolymerElement {
           }
           .noRating {
             fill: var(--icon-no-rating, currentcolor);
+            stroke: var(--icon-no-rating, currentcolor);
+          }
+          .noRatingOff {
+            fill: var(--icon-no-rating-off, currentcolor);
+            stroke: var(--icon-no-rating-off, currentcolor);
           }
           .toggleOff {
             fill: var(--icon-toggle-color, currentcolor);
@@ -89,7 +97,7 @@ class RatingStrip extends PolymerElement {
                 return "noRating";
                 break;
             default:
-                return "toggleOff";
+                return "noRatingOff";
         }
     }
     if (value >= index) {
