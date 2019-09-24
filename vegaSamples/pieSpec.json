@@ -28,14 +28,6 @@
   "data": [
     {
       "name": "table",
-      "values": [
-        {"id": 1, "sliceValue": 4},
-        {"id": 2, "sliceValue": 6},
-        {"id": 3, "sliceValue": 10},
-        {"id": 4, "sliceValue": 3},
-        {"id": 5, "sliceValue": 7},
-        {"id": 6, "sliceValue": 8}
-      ],
       "transform": [
         {
           "type": "pie",
