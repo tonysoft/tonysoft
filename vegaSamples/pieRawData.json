@@ -1,0 +1,10 @@
+{
+    "table": [
+        {"product": 1, "monthlySales": 4},
+        {"product": 2, "monthlySales": 6},
+        {"product": 3, "monthlySales": 10},
+        {"product": 4, "monthlySales": 3},
+        {"product": 5, "monthlySales": 7},
+        {"product": 6, "monthlySales": 8}
+    ]
+}
