@@ -1,6 +1,6 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-icon/iron-icon.js';
-import 'tonysoft/iron-icons.js'
+// import '@polymer/iron-icon/iron-icon.js';
+// import 'tonysoft/iron-icons.js'
 
 /**
  * `digit-cell`
