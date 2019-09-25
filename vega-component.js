@@ -169,10 +169,10 @@ class VegaComponent extends PolymerElement {
           var elements = document.querySelectorAll("vega-component");
           elements.forEach(function(element) {
               if (!element.style.width) {
-                element.style.width = "inherit";
+                element.style.width = "100%";
               }
               if (!element.style.height) {
-                element.style.height = "inherit";
+                element.style.height = "100%";
               }
           })
           var wrapper = context.shadowRoot.querySelector('.main');
