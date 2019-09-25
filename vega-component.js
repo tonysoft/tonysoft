@@ -10,7 +10,7 @@ import 'https://cdn.jsdelivr.net/npm/vega@5';
  * @polymer
  * @demo demo/index.html
  */
-class VegaComponent extends PolymerElement {
+class VegaComponent2 extends PolymerElement {
     static get template() {
         return html`
         <style>
@@ -18,8 +18,8 @@ class VegaComponent extends PolymerElement {
                 user-select: none;
             }
           </style>
-          <div class="main noSelect" style="width: 100%; height: 100%;">
-            <div id="content"><div on-click="guidance" style="cursor: pointer; width: 100%; height: 100%;">Click for Guidance on using the <b>vega-component</b>...</div>
+          <div class="main noSelect" style="width: 100%; height: 100%; background-color: inherit;">
+            <div id="content"><div on-click="guidance" style="cursor: pointer; width: 100%; height: 100%; background-color: inherit;">Click for Guidance on using the <b>vega-component</b>...</div>
           </div>
         `;
       }
@@ -640,9 +640,9 @@ class VegaComponent extends PolymerElement {
         } else {
           if (!context.resizeInterval) {
             context.resizeInterval = setInterval(function() {
-//              context.adjustWidthHeight(true);
-          }, 1000);
-        }
+              context.adjustWidthHeight(true);
+            }, 1000);
+          }
         }
     }
     _hideGuidance(newValue) {
@@ -683,5 +683,5 @@ class VegaComponent extends PolymerElement {
 }
 
 
-window.customElements.define('vega-component', VegaComponent);
-export { VegaComponent }
+window.customElements.define('vega-component2', VegaComponent2);
+export { VegaComponent2 }

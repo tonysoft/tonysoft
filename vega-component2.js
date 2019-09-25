@@ -18,8 +18,8 @@ class VegaComponent2 extends PolymerElement {
                 user-select: none;
             }
           </style>
-          <div class="main noSelect" style="width: 100%; height: 100%;">
-            <div id="content"><div on-click="guidance" style="cursor: pointer; width: 100%; height: 100%;">Click for Guidance on using the <b>vega-component</b>...</div>
+          <div class="main noSelect" style="width: 100%; height: 100%; background-color: inherit;">
+            <div id="content"><div on-click="guidance" style="cursor: pointer; width: 100%; height: 100%; background-color: inherit;">Click for Guidance on using the <b>vega-component</b>...</div>
           </div>
         `;
       }
