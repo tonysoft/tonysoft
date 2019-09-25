@@ -165,38 +165,52 @@ class VegaComponent extends PolymerElement {
       var context = this;
       super.ready();
       context.isReady = true;
-      if (!context.width || !context.height) {
-          var elements = document.querySelectorAll("vega-component");
-          elements.forEach(function(element) {
-              if (!element.style.width) {
-                element.style.width = "100%";
-              }
-              if (!element.style.height) {
-                element.style.height = "100%";
-              }
-          })
-          var wrapper = context.shadowRoot.querySelector('.main');
-          if (!context.width) {
-            context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth, 200);
-          } else {
-            context.chartWidth = context.width;
-          }
-          if (!context.height) {
-            context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : context.chartHeight), context.chartHeight, 150);
-          } else {
-            context.chartHeight = context.height;
-          }
-      }
-      if (!context.chartWidth) {
-        context.chartWidth = context.width;
-      }
-      if (!context.chartHeight) {
-        context.chartHeight = context.height;
-      }
+      context.adjustWidthHeight(false);
       for (var prop in context.onReadyProps) {
           context[prop] = context.onReadyProps[prop];
       }
   }
+
+  adjustWidthHeight(bRender) {
+    var context = this;
+    var origChartWidth = context.chartWidth;
+    var origChartHeight = context.chartHeight;
+    if (!context.width || !context.height) {
+      var elements = document.querySelectorAll("vega-component");
+      elements.forEach(function(element) {
+          if (!element.style.width) {
+            element.style.width = "100%";
+          }
+          if (!element.style.height) {
+            element.style.height = "100%";
+          }
+      })
+      var wrapper = context.shadowRoot.querySelector('.main');
+      if (!context.width || bRender) {
+        context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth, 200);
+      } else {
+        context.chartWidth = context.width;
+      }
+      if (!context.height || bRender) {
+        context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : context.chartHeight), context.chartHeight, 150);
+      } else {
+        context.chartHeight = context.height;
+      }
+    }
+    if (!context.chartWidth || bRender) {
+      context.chartWidth = context.width;
+    }
+    if (!context.chartHeight || bRender) {
+      context.chartHeight = context.height;
+    }
+    if (bRender) {
+      if ((origChartHeight !== context.chartHeight) || (origChartWidth !== context.chartWidth)) {
+        var vegaTarget = context.shadowRoot.querySelector("#content");
+        context.vegaRender(context.vegaSpec, vegaTarget);
+      }
+    }
+  }
+
   _vegaSpecUrlChanged(newValue) {
       var context = this;
       var vegaTarget = context.shadowRoot.querySelector("#content");
@@ -616,6 +630,12 @@ class VegaComponent extends PolymerElement {
             context.resizeInterval = setInterval(function() {
                 doScale();
             }, 1000);
+        } else {
+          if (!context.resizeInterval) {
+            context.resizeInterval = setInterval(function() {
+              context.adjustWidthHeight(true);
+          }, 1000);
+        }
         }
     }
     _hideGuidance(newValue) {
