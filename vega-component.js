@@ -640,7 +640,7 @@ class VegaComponent extends PolymerElement {
         } else {
           if (!context.resizeInterval) {
             context.resizeInterval = setInterval(function() {
-              context.adjustWidthHeight(true);
+//              context.adjustWidthHeight(true);
           }, 1000);
         }
         }
