@@ -10,7 +10,7 @@ import 'https://cdn.jsdelivr.net/npm/vega@5';
  * @polymer
  * @demo demo/index.html
  */
-class VegaComponent2 extends PolymerElement {
+class VegaComponent extends PolymerElement {
     static get template() {
         return html`
         <style>
@@ -683,5 +683,5 @@ class VegaComponent2 extends PolymerElement {
 }
 
 
-window.customElements.define('vega-component2', VegaComponent2);
-export { VegaComponent2 }
+window.customElements.define('vega-component', VegaComponent);
+export { VegaComponent }
