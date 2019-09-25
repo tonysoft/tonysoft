@@ -201,10 +201,14 @@ class VegaComponent extends PolymerElement {
       }
     }
     if (!context.chartWidth || bRender) {
-      context.chartWidth = context.width;
+      if (Math.abs(context.chartWidth - context.width) > 3) {
+        context.chartWidth = context.width;
+      }
     }
     if (!context.chartHeight || bRender) {
-      context.chartHeight = context.height;
+      if (Math.abs(context.chartHeight - context.height) > 3) {
+        context.chartHeight = context.height;
+      }
     }
     if (bRender) {
       if ((origChartHeight !== context.chartHeight) || (origChartWidth !== context.chartWidth)) {
