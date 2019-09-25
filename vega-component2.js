@@ -3,7 +3,7 @@ import 'https://cdn.jsdelivr.net/npm/vega@5';
 
 
 /**
- * `vega-component`
+ * `vega-component` 
  * A generic-container which also allows Vega Visualizations to be rendered within it.
  *
  * @customElement
