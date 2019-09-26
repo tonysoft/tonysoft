@@ -19,16 +19,30 @@ class JsonEditor extends PolymerElement {
             }
             .main {
                 border: 1px solid black;
-                cursor: pointer;
                 overflow-y: auto;
-                position: relative; 
+                position: absolute; 
+            }
+            .buttonActive {
+                opacity: 1.0;
+                pointer-events: all;
+                cursor: pointer;
+            }
+            .buttonInactive {
+                opacity: 0.4;
+                pointer-events: none;
+                cursor: default;
             }
             .jsonEditor {
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;
                 font-weight: 300;              
             }
         </style>
-        <div class="main noSelect jsonEditor" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; ">
+        <div style="position: relative; width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; ">
+            <div class="main noSelect jsonEditor" style="position: absolute; top: 0px; left:0px; width: 100%; height: 100%;">
+            </div>
+            <button on-click="getJsonPayload" class="buttonActive" style="position: absolute; bottom: 3px; right:3px;">Get</button>
+            <button on-click="setTreeMode" class$="[[editorMode(mode, 'tree')]]" style="position: absolute; bottom: 3px; right:63px;">Tree</button>
+            <button on-click="setTextMode" class$="[[editorMode(mode, 'text')]]" style="position: absolute; bottom: 3px; right:123px;">Text</button>
         </div>
         `;
     }
@@ -39,16 +53,18 @@ class JsonEditor extends PolymerElement {
             observer: "_json"
         },
         mode: {
-            type: String
-        },
-        maxWidth: {
-            type: Number
+            type: String,
+            observer: "_mode"
         },
         height: {
             type: Number
         },
         width: {
             type: Number
+        },
+        getJson: {
+            type: Boolean,
+            observer: "_getJson"
         },
         onReadyProps: {
             type: Object
@@ -64,6 +80,7 @@ class JsonEditor extends PolymerElement {
       this.width = 0;
       this.mode = "tree";
       this.json = null;
+      this.getJson = false;
       this.onReadyProps = {};
     }
 
@@ -84,7 +101,7 @@ class JsonEditor extends PolymerElement {
             })
         }
         context.jsonEditor = context.shadowRoot.querySelector('.jsonEditor');
-        var options = { 
+        context.options = { 
             mode: context.mode,
             onEvent: function(node, event) {
                 if (event.type === 'click') {
@@ -94,7 +111,7 @@ class JsonEditor extends PolymerElement {
                 }
             }
         };
-        context.editor = new JSONEditor(context.jsonEditor, options)
+        context.editor = new JSONEditor(context.jsonEditor, context.options);
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
         }
@@ -107,6 +124,14 @@ class JsonEditor extends PolymerElement {
         }
         else {
             return maxWidth + "px";
+        }
+    }
+
+    editorMode(mode, whichMode) {
+        if (mode === whichMode) {
+            return "buttonInactive";
+        } else {
+            return "buttonActive";
         }
     }
 
@@ -130,6 +155,47 @@ class JsonEditor extends PolymerElement {
         }
     }
 
+    _mode(mode) {
+        var context = this;
+        if (context.checkIsReady("mode", mode, null)) {
+            context.setMode(mode);
+        }
+    }
+
+    _getJson(state) {
+        var context = this;
+        if (state && context.editor) {
+            context.getJson = false;
+            var json = context.editor.get();
+            context.dispatchEvent(new CustomEvent("json", { 
+                detail: json
+            }));
+        }
+    }
+
+    getJsonPayload() {
+        var context = this;
+        context._getJson(true);
+    }
+
+    setTreeMode() {
+        var context = this;
+        context.mode = "tree";
+    }
+
+    setTextMode() {
+        var context = this;
+        context.mode = "text";
+    }
+
+    setMode(mode) {
+        var context = this;
+        if (mode !== context.options.mode) {
+            var json = context.editor.get();
+            context.setJSON(json, mode);
+        }
+    }
+
     _json(json) {
         var context = this;
         if (context.checkIsReady("json", json, null)) {
@@ -150,15 +216,17 @@ class JsonEditor extends PolymerElement {
         return true;
     }
 
-    setJSON(json) {
+    setJSON(json, newMode) {
         var context = this;
         if (!context.editor) {
             return;
         }
+        if (newMode) {
+            context.jsonEditor.innerHTML = "";
+            context.options.mode = newMode;
+            context.editor = new JSONEditor(context.jsonEditor, context.options);
+        }
         context.editor.set(json);
-        context.dispatchEvent(new CustomEvent("json", { 
-            detail: context.editor.get()
-        }));
     }
 
 }
