@@ -3,7 +3,7 @@ import 'https://cdn.jsdelivr.net/npm/vega@5';
 
 
 /**
- * `vega-component`
+ * `vega-component` 
  * A generic-container which also allows Vega Visualizations to be rendered within it.
  *
  * @customElement
@@ -201,14 +201,10 @@ class VegaComponent extends PolymerElement {
       }
     }
     if (!context.chartWidth || bRender) {
-      if (Math.abs(context.chartWidth - context.width) > 3) {
-        context.chartWidth = context.width;
-      }
+      context.chartWidth = context.width;
     }
     if (!context.chartHeight || bRender) {
-      if (Math.abs(context.chartHeight - context.height) > 3) {
         context.chartHeight = context.height;
-      }
     }
     if (bRender) {
       if ((origChartHeight !== context.chartHeight) || (origChartWidth !== context.chartWidth)) {
@@ -465,10 +461,14 @@ class VegaComponent extends PolymerElement {
       var context = this;
       context.vegaSpec = spec;
       if (context.chartWidth) {
-        context.vegaSpec.width = context.chartWidth;
+        if (Math.abs(context.chartWidth - context.vegaSpec.width) > 3) {
+          context.vegaSpec.width = context.chartWidth;
+        }
       }
       if (context.chartHeight) {
-        context.vegaSpec.height = context.chartHeight;
+        if (Math.abs(context.chartHeight - context.vegaSpec.height) > 3) {
+          context.vegaSpec.height = context.chartHeight;
+        }
       }
       if (spec.internalInteractionMap) {
           context.internalInteractionMap = spec.internalInteractionMap;
@@ -640,7 +640,7 @@ class VegaComponent extends PolymerElement {
         } else {
           if (!context.resizeInterval) {
             context.resizeInterval = setInterval(function() {
-              //context.adjustWidthHeight(true);
+              context.adjustWidthHeight(true);
             }, 1000);
           }
         }
