@@ -37,7 +37,7 @@ class JsonEditor extends PolymerElement {
                 font-weight: 300;              
             }
         </style>
-        <div style="position: relative; width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; ">
+        <div style="position: relative; width: [[setWidth(width)]]; min-height: [[minHeight]]px; height: [[setHeight(height)]]; ">
             <div class="main noSelect jsonEditor" style="width: 100%; height: 100%;">
             </div>
             <button on-click="getJsonPayload" class="buttonActive" style="position: absolute; bottom: 3px; right:3px;">Get</button>
@@ -62,6 +62,9 @@ class JsonEditor extends PolymerElement {
         width: {
             type: Number
         },
+        minHeight: {
+            type: Number
+        },
         getJson: {
             type: Boolean,
             observer: "_getJson"
@@ -81,6 +84,7 @@ class JsonEditor extends PolymerElement {
       this.mode = "tree";
       this.json = null;
       this.getJson = false;
+      this.minHeight = 300;
       this.onReadyProps = {};
     }
 
