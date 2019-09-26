@@ -173,52 +173,49 @@ class VegaComponent2 extends PolymerElement {
 
   adjustWidthHeight(bRender) {
     var context = this;
-    var waitTime = bRender ? 1 : 800;
-    setTimeout(function() {
-      var origChartWidth = context.chartWidth;
-      var origChartHeight = context.chartHeight;
-      if (bRender) {
-        context.chartWidth = context.chartHeight = 0;
+    var origChartWidth = context.chartWidth;
+    var origChartHeight = context.chartHeight;
+    if (bRender) {
+      context.chartWidth = context.chartHeight = 0;
+    }
+    if (!context.width || !context.height || bRender) {
+      var elements = document.querySelectorAll("vega-component2");
+      elements.forEach(function(element) {
+          if (!element.style.width) {
+            element.style.width = "100%";
+          }
+          if (!element.style.height) {
+            element.style.height = "100%";
+          }
+      })
+      var wrapper = context.shadowRoot.querySelector('.main');
+      if (!context.width || bRender) {
+        context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth, 50);
+      } else {
+        context.chartWidth = context.width;
       }
-      if (!context.width || !context.height || bRender) {
-        var elements = document.querySelectorAll("vega-component2");
-        elements.forEach(function(element) {
-            if (!element.style.width) {
-              element.style.width = "100%";
-            }
-            if (!element.style.height) {
-              element.style.height = "100%";
-            }
-        })
-        var wrapper = context.shadowRoot.querySelector('.main');
-        if (!context.width || bRender) {
-          context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth, 50);
-        } else {
-          context.chartWidth = context.width;
-        }
-        if (!context.height || bRender) {
-          context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : context.chartHeight), context.chartHeight, 50);
-        } else {
-          context.chartHeight = context.height;
-        }
+      if (!context.height || bRender) {
+        context.height = Math.max((wrapper.offsetHeight ? wrapper.offsetHeight : context.chartHeight), context.chartHeight, 50);
+      } else {
+        context.chartHeight = context.height;
       }
-      if (!context.chartWidth || bRender) {
-        if (Math.abs(context.chartWidth - context.width) > 3) {
-          context.chartWidth = context.width;
-        }
+    }
+    if (!context.chartWidth || bRender) {
+      if (Math.abs(context.chartWidth - context.width) > 3) {
+        context.chartWidth = context.width;
       }
-      if (!context.chartHeight || bRender) {
-        if (Math.abs(context.chartHeight - context.height) > 3) {
-          context.chartHeight = context.height;
-        }
+    }
+    if (!context.chartHeight || bRender) {
+      if (Math.abs(context.chartHeight - context.height) > 3) {
+        context.chartHeight = context.height;
       }
-      if (bRender) {
-        if ((origChartHeight !== context.chartHeight) || (origChartWidth !== context.chartWidth)) {
-          var vegaTarget = context.shadowRoot.querySelector("#content");
-          context.vegaRender(context.vegaSpec, vegaTarget);
-        }
+    }
+    if (bRender) {
+      if ((origChartHeight !== context.chartHeight) || (origChartWidth !== context.chartWidth)) {
+        var vegaTarget = context.shadowRoot.querySelector("#content");
+        context.vegaRender(context.vegaSpec, vegaTarget);
       }
-    }, 50)
+    }
   }
 
   _vegaSpecUrlChanged(newValue) {
