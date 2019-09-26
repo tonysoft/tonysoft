@@ -84,7 +84,7 @@ class JsonEditor extends PolymerElement {
       this.mode = "tree";
       this.json = null;
       this.getJson = false;
-      this.minHeight = 300;
+      this.minHeight = 250;
       this.onReadyProps = {};
     }
 
