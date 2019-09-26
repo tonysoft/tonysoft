@@ -201,14 +201,10 @@ class VegaComponent2 extends PolymerElement {
       }
     }
     if (!context.chartWidth || bRender) {
-      if (Math.abs(context.chartWidth - context.width) > 3) {
-        context.chartWidth = context.width;
-      }
+      context.chartWidth = context.width;
     }
     if (!context.chartHeight || bRender) {
-      if (Math.abs(context.chartHeight - context.height) > 3) {
         context.chartHeight = context.height;
-      }
     }
     if (bRender) {
       if ((origChartHeight !== context.chartHeight) || (origChartWidth !== context.chartWidth)) {
@@ -465,10 +461,14 @@ class VegaComponent2 extends PolymerElement {
       var context = this;
       context.vegaSpec = spec;
       if (context.chartWidth) {
-        context.vegaSpec.width = context.chartWidth;
+        if (Math.abs(context.chartWidth - context.vegaSpec.width) > 3) {
+          context.vegaSpec.width = context.chartWidth;
+        }
       }
       if (context.chartHeight) {
-        context.vegaSpec.height = context.chartHeight;
+        if (Math.abs(context.chartHeight - context.vegaSpec.height) > 3) {
+          context.vegaSpec.height = context.chartHeight;
+        }
       }
       if (spec.internalInteractionMap) {
           context.internalInteractionMap = spec.internalInteractionMap;
