@@ -173,12 +173,13 @@ class VegaComponent2 extends PolymerElement {
 
   adjustWidthHeight(bRender) {
     var context = this;
+    var waitTime = bRender ? 1 : 800;
     setTimeout(function() {
       var origChartWidth = context.chartWidth;
       var origChartHeight = context.chartHeight;
-      // if (bRender) {
-      //   context.chartWidth = context.chartHeight = 0;
-      // }
+      if (bRender) {
+        context.chartWidth = context.chartHeight = 0;
+      }
       if (!context.width || !context.height || bRender) {
         var elements = document.querySelectorAll("vega-component");
         elements.forEach(function(element) {
