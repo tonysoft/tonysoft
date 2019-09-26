@@ -40,9 +40,9 @@ class JsonEditor extends PolymerElement {
         <div style="position: relative; width: [[setWidth(width)]]; min-height: [[minHeight]]px; height: [[setHeight(height)]]; ">
             <div class="main noSelect jsonEditor" style="width: 100%; height: 100%;">
             </div>
-            <button on-click="getJsonPayload" class="buttonActive" style="position: absolute; bottom: 3px; right:3px;">Get</button>
-            <button on-click="setTreeMode" class$="[[editorMode(mode, 'tree')]]" style="position: absolute; bottom: 3px; right:63px;">Tree</button>
-            <button on-click="setTextMode" class$="[[editorMode(mode, 'text')]]" style="position: absolute; bottom: 3px; right:123px;">Text</button>
+            <button on-click="getJsonPayload" class="buttonActive" style="position: absolute; bottom: 3px; right:23px;">Get</button>
+            <button on-click="setTreeMode" class$="[[editorMode(mode, 'tree')]]" style="position: absolute; bottom: 3px; right:83px;">Tree</button>
+            <button on-click="setTextMode" class$="[[editorMode(mode, 'text')]]" style="position: absolute; bottom: 3px; right:143px;">Text</button>
         </div>
         `;
     }
