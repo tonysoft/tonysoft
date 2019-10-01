@@ -2,8 +2,8 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "width": 200,
   "height": 200,
-  "autosize": "fit",
-  "default": true,
+  "autosize": "none",
+
   "signals": [
     {
       "name": "startAngle", "value": 0
@@ -15,7 +15,7 @@
       "name": "padAngle", "value": 0
     },
     {
-      "name": "innerRadius", "value": 0
+      "name": "innerRadius", "value": 60
     },
     {
       "name": "cornerRadius", "value": 0
@@ -29,17 +29,17 @@
     {
       "name": "table",
       "values": [
-        {"id": 1, "sliceValue": 4},
-        {"id": 2, "sliceValue": 6},
-        {"id": 3, "sliceValue": 10},
-        {"id": 4, "sliceValue": 3},
-        {"id": 5, "sliceValue": 7},
-        {"id": 6, "sliceValue": 8}
-    ],
+        {"id": 1, "field": 4},
+        {"id": 2, "field": 6},
+        {"id": 3, "field": 10},
+        {"id": 4, "field": 3},
+        {"id": 5, "field": 7},
+        {"id": 6, "field": 8}
+      ],
       "transform": [
         {
           "type": "pie",
-          "field": "sliceValue",
+          "field": "field",
           "startAngle": {"signal": "startAngle"},
           "endAngle": {"signal": "endAngle"},
           "sort": {"signal": "sort"}
@@ -53,7 +53,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "table", "field": "id"},
-      "range": {"scheme": "category20"}
+      "range": {"scheme": "stages"}
     }
   ],
 
@@ -73,14 +73,11 @@
           "padAngle": {"signal": "padAngle"},
           "innerRadius": {"signal": "innerRadius"},
           "outerRadius": {"signal": "width / 2"},
-          "fill": {"scale": "color", "field": "id"},
+          "cornerRadius": {"signal": "cornerRadius"},
           "tooltip": {
-            "signal": "{\"ID\": ''+datum[\"id\"], \"Value\": format(datum[\"sliceValue\"], \"\")}"
-          },
-          "tooltipx": {"signal": "datum.sliceValue"},
-          "cornerRadius": {"signal": "cornerRadius"}
-        },
-        "hoverx": {"fill": {"value": "#fff000"}}
+            "signal": "{\"ID\": ''+datum[\"id\"], \"Value\": format(datum[\"field\"], \"\")}"
+          }
+        }
       }
     }
   ]

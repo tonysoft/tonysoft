@@ -67,6 +67,10 @@ class VegaComponent extends PolymerElement {
           type: String,
           observer: '_vegaSpecUrlChanged'
         },
+        vegaColorScheme: {
+          type: Object,
+          observer: '_vegaColorScheme'
+        },
         vegaSpec: {
           type: Object,
           observer: '_vegaSpecJsonChanged'
@@ -158,6 +162,7 @@ class VegaComponent extends PolymerElement {
       this.bestFit = false;
       this.internalEvents = false;
       this.hideGuidance = false;
+      this.vegaColorScheme = null;
       this.guidanceMarkup = "https://tonysoft.github.io/vegaTest/guidance.html";
     }
 
@@ -211,6 +216,13 @@ class VegaComponent extends PolymerElement {
         var vegaTarget = context.shadowRoot.querySelector("#content");
         context.vegaRender(context.vegaSpec, vegaTarget);
       }
+    }
+  }
+
+  _vegaColorScheme(scheme) {
+    var context = this;
+    for (var schemeName in scheme) {
+      vega.scheme(schemeName, scheme[schemeName]);
     }
   }
 
