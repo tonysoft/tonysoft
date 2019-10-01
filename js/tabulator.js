@@ -14371,9 +14371,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			listEl.style.padding = "2px";
 			listEl.style.border = "1px solid black";
 			listEl.style.backgroundColor = "#f8f8f8";
-			listEl.style.fontSize = "80%";
+			listEl.style.fontSize = "90%";
 			listEl.style.fontFamily = "inherit";
-			
+
 
 
 			onRendered(function () {
@@ -14781,7 +14781,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			listEl.style.padding = "2px";
 			listEl.style.border = "1px solid black";
 			listEl.style.backgroundColor = "#f8f8f8";
-			listEl.style.fontSize = "80%";
+			listEl.style.fontSize = "90%";
 			listEl.style.fontFamily = "inherit";
 
 			onRendered(function () {
