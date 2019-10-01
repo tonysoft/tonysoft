@@ -14365,6 +14365,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			//style list element
 			listEl = document.createElement("div");
 			listEl.classList.add("tabulator-edit-select-list");
+			listEl.style.position = "absolute";
+			listEl.style.left = "0px";
+			listEl.style.top = "0px";
+			listEl.style.padding = "2px";
+			listEl.style.border = "1px solid black";
+			listEl.style.backgroundColor = "#f8f8f8";
+			listEl.style.fontSize = "80%";
+			listEl.style.fontFamily = "inherit";
+			
+
 
 			onRendered(function () {
 				input.style.height = "100%";
@@ -14765,6 +14775,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			//style list element
 			listEl = document.createElement("div");
 			listEl.classList.add("tabulator-edit-select-list");
+			listEl.style.position = "absolute";
+			listEl.style.left = "0px";
+			listEl.style.top = "0px";
+			listEl.style.padding = "2px";
+			listEl.style.border = "1px solid black";
+			listEl.style.backgroundColor = "#f8f8f8";
+			listEl.style.fontSize = "80%";
+			listEl.style.fontFamily = "inherit";
 
 			onRendered(function () {
 				input.style.height = "100%";
