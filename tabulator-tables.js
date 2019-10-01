@@ -127,6 +127,7 @@ class TabulatorTables extends PolymerElement {
     initTable() {
         var context = this;
         context.table = new Tabulator(context.tableDest, context.options);
+        context.table.component = context;
     }
 
 
@@ -164,9 +165,6 @@ class TabulatorTables extends PolymerElement {
     _options(options) {
         var context = this;
         if (context.checkIsReady("options", options, null)) {
-            if (options.cellEdited) {
-                options.cellEdited = context.cellEdited;
-            }
             var path = "$.[?(@.editor)]";
             var editors = context.JSONPath(path, options);
             editors.forEach(function(parentNode) {
@@ -178,13 +176,26 @@ class TabulatorTables extends PolymerElement {
                     }
                 }
             })
+            options.cellEdited = context.cellEdited;
             context.initTable();
         }
     }
 
     cellEdited(cell) {
-        var context = this;
-        console.log(cell);
+        var table = this;
+        var context = table.component;
+        var row = cell._cell.row.data;
+        var field = cell._cell.column.field;
+        var value = cell._cell.value;
+        var oldValue = cell._cell.oldValue;
+        context.dispatchEvent(new CustomEvent("cellEdited", { 
+            detail: {
+                field: field,
+                value: value,
+                oldValue: oldValue,
+                row: row
+            }
+        }));
     }
 
     _data(data) {
