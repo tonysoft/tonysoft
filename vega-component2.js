@@ -475,7 +475,7 @@ class VegaComponent2 extends PolymerElement {
       var widthDifferential = 0;
       var heightDifferential = 0;
       var svgMarks = context.shadowRoot.querySelector("svg.marks");
-      if (svgMarks) {
+      if (svgMarks && context.chartWidth && context.chartHeight) {
         var svgWidth = svgMarks.getAttribute("width");
         var svgHeight = svgMarks.getAttribute("height");
         widthDifferential = Math.abs(svgWidth - context.chartWidth);
