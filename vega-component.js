@@ -473,12 +473,12 @@ class VegaComponent extends PolymerElement {
       var context = this;
       context.vegaSpec = spec;
       if (context.chartWidth) {
-        if (Math.abs(context.chartWidth - context.vegaSpec.width) > 6) {
+        if (Math.abs(context.chartWidth - context.vegaSpec.width) > 30) {
           context.vegaSpec.width = context.chartWidth;
         }
       }
       if (context.chartHeight) {
-        if (Math.abs(context.chartHeight - context.vegaSpec.height) > 6) {
+        if (Math.abs(context.chartHeight - context.vegaSpec.height) > 30) {
           context.vegaSpec.height = context.chartHeight;
         }
       }
