@@ -250,7 +250,9 @@ class VegaComponent2 extends PolymerElement {
           context.vegaData = null;
         }
       }
-      context.vegaRender(spec, vegaTarget);
+      context.vegaSpec = spec;
+      context.adjustWidthHeight(true);
+      // context.vegaRender(spec, vegaTarget);
       context.dispatchEvent(new CustomEvent("specChanged", { 
         detail: true
       }));
