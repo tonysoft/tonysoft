@@ -187,6 +187,7 @@ class VegaComponent2 extends PolymerElement {
     if (bRender) {
       context.chartWidth = context.chartHeight = 0;
     }
+    var wrapper = context.shadowRoot.querySelector('.main');
     if (!context.width || !context.height || bRender) {
       var elements = document.querySelectorAll("vega-component2");
       elements.forEach(function(element) {
@@ -197,7 +198,6 @@ class VegaComponent2 extends PolymerElement {
             element.style.height = "100%";
           }
       })
-      var wrapper = context.shadowRoot.querySelector('.main');
       if (!context.width || bRender) {
         context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth, 50);
       } else {
@@ -215,7 +215,7 @@ class VegaComponent2 extends PolymerElement {
     if (!context.chartHeight || bRender) {
         context.chartHeight = context.height;
     }
-    if (bRender) {
+    if (bRender && wrapper.offsetHeight) {
       if ((origChartHeight !== context.chartHeight) || (origChartWidth !== context.chartWidth)) {
         var vegaTarget = context.shadowRoot.querySelector("#content");
         context.vegaRender(context.vegaSpec, vegaTarget);
