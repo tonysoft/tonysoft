@@ -481,15 +481,13 @@ class VegaComponent2 extends PolymerElement {
         widthDifferential = Math.abs(svgWidth - context.chartWidth);
         heightDifferential = Math.abs(svgHeight - context.chartHeight);
       }
-      widthDifferential += 3;
-      heightDifferential += 3;
       if (context.chartWidth) {
-        if (Math.abs(context.chartWidth - context.vegaSpec.width) > widthDifferential) {
+        if (Math.abs(context.chartWidth - context.vegaSpec.width) >= widthDifferential) {
           context.vegaSpec.width = context.chartWidth;
         }
       }
       if (context.chartHeight) {
-        if (Math.abs(context.chartHeight - context.vegaSpec.height) > heightDifferential) {
+        if (Math.abs(context.chartHeight - context.vegaSpec.height) >= heightDifferential) {
           context.vegaSpec.height = context.chartHeight;
         }
       }
