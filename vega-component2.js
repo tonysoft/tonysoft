@@ -183,6 +183,7 @@ class VegaComponent2 extends PolymerElement {
 
   adjustWidthHeight(bRender) {
     var context = this;
+    var thisAdjustment = 0;
     var origChartWidth = context.chartWidth;
     var origChartHeight = context.chartHeight;
     if (bRender) {
@@ -223,8 +224,10 @@ class VegaComponent2 extends PolymerElement {
       if ((origChartHeight !== context.chartHeight) || (origChartWidth !== context.chartWidth)) {
         var vegaTarget = context.shadowRoot.querySelector("#content");
         context.vegaRender(context.vegaSpec, vegaTarget);
+        thisAdjustment = context.chartHeight;
       }
     }
+    return thisAdjustment;
   }
 
   _vegaColorScheme(scheme) {
@@ -668,7 +671,10 @@ class VegaComponent2 extends PolymerElement {
           if (!context.resizeInterval) {
             context.resizeInterval = setInterval(function() {
               if (context.senseSize && context.internalSenseSize) {
-                context.adjustWidthHeight(true);
+                var thisAdjustment = context.adjustWidthHeight(true);
+                if (thisAdjustment && context.lastAdjustment) {
+                  context.lastAdjustment = thisAdjustment;
+                }
               }
             }, 1000);
           }
