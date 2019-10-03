@@ -167,6 +167,7 @@ class VegaComponent2 extends PolymerElement {
       this.hideGuidance = false;
       this.vegaColorScheme = null;
       this.senseSize = false;
+      this.internalSenseSize = true;
       this.guidanceMarkup = "https://tonysoft.github.io/vegaTest/guidance.html";
     }
 
@@ -188,6 +189,9 @@ class VegaComponent2 extends PolymerElement {
       context.chartWidth = context.chartHeight = 0;
     }
     var wrapper = context.shadowRoot.querySelector('.main');
+    if (!bRender && !wrapper.offsetWidth) {
+      context.internalSenseSize = false;
+    }
     if (!context.width || !context.height || bRender) {
       var elements = document.querySelectorAll("vega-component2");
       elements.forEach(function(element) {
@@ -663,7 +667,7 @@ class VegaComponent2 extends PolymerElement {
         } else {
           if (!context.resizeInterval) {
             context.resizeInterval = setInterval(function() {
-              if (context.senseSize) {
+              if (context.senseSize && context.internalSenseSize) {
                 context.adjustWidthHeight(true);
               }
             }, 1000);
