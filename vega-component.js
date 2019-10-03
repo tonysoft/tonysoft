@@ -273,7 +273,9 @@ class VegaComponent extends PolymerElement {
       if (newValue && newValue.length) {
         try {
           newValue = context.vegaSpec = JSON.parse(newValue);
-        } catch(e) {};
+        } catch(e) {
+          console.log(e);
+        };
       }
       if (!newValue || !newValue["$schema"]) {
         return;
