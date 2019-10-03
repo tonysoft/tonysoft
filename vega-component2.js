@@ -673,7 +673,7 @@ class VegaComponent2 extends PolymerElement {
               if (context.senseSize && context.internalSenseSize) {
                 var thisAdjustment = context.adjustWidthHeight(true);
                 if (thisAdjustment && context.lastAdjustment) {
-                  internalSenseSize = false;
+                  context.internalSenseSize = false;
                 }
                 context.lastAdjustment = thisAdjustment;
               }
