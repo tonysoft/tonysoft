@@ -19,7 +19,7 @@ class VegaComponent2 extends PolymerElement {
             }
           </style>
           <div class="main noSelect" style="width: 100%; height: 100%; background-color: inherit;">
-            <div id="content"><div on-click="guidance" style="cursor: pointer; width: 100%; height: 100%; background-color: inherit;">Click for Guidance on using the <b>vega-component</b>...</div>
+            <div id="content" style="width: 100%; height: 100%;"><div on-click="guidance" style="cursor: pointer; width: 100%; height: 100%; background-color: inherit;">Click for Guidance on using the <b>vega-component</b>...</div>
           </div>
         `;
       }
@@ -484,24 +484,14 @@ class VegaComponent2 extends PolymerElement {
         return;
       }
       context.vegaSpec = spec;
-      var widthDifferential = 0;
-      var heightDifferential = 0;
       var svgMarks = context.shadowRoot.querySelector("svg.marks");
-      if (svgMarks && context.chartWidth && context.chartHeight) {
-        var svgWidth = svgMarks.getAttribute("width");
-        var svgHeight = svgMarks.getAttribute("height");
-        widthDifferential = Math.abs(svgWidth - context.chartWidth);
-        heightDifferential = Math.abs(svgHeight - context.chartHeight);
+      var svgWidth = svgMarks ? svgMarks.getAttribute("width") : 0;
+      var svgHeight = svgMarks ? svgMarks.getAttribute("height") : 0;
+      if (Math.abs(context.chartWidth - svgWidth) > 3) {
+        context.vegaSpec.width = context.chartWidth;
       }
-      if (context.chartWidth) {
-        if (Math.abs(context.chartWidth - context.vegaSpec.width) >= widthDifferential) {
-          context.vegaSpec.width = context.chartWidth;
-        }
-      }
-      if (context.chartHeight) {
-        if (Math.abs(context.chartHeight - context.vegaSpec.height) >= heightDifferential) {
-          context.vegaSpec.height = context.chartHeight;
-        }
+      if (Math.abs(context.chartHeight - svgWidth) > 3) {
+        context.vegaSpec.height = context.chartHeight;
       }
       if (spec.internalInteractionMap) {
           context.internalInteractionMap = spec.internalInteractionMap;
