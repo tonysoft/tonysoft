@@ -26,9 +26,8 @@ class VegaComponent2 extends PolymerElement {
   
     static get properties() {
       return {
-        style: {
-          type: Object,
-          observer: '_style'
+        senseSize: {
+          type: Boolean
         },
         id: {
           type: String
@@ -167,6 +166,7 @@ class VegaComponent2 extends PolymerElement {
       this.internalEvents = false;
       this.hideGuidance = false;
       this.vegaColorScheme = null;
+      this.senseSize = false;
       this.guidanceMarkup = "https://tonysoft.github.io/vegaTest/guidance.html";
     }
 
@@ -178,16 +178,6 @@ class VegaComponent2 extends PolymerElement {
       for (var prop in context.onReadyProps) {
           context[prop] = context.onReadyProps[prop];
       }
-  }
-
-  _style(newValue) {
-    var context = this;
-    if (newValue && newValue.width) {
-      context.styleWidth = (newValue.width.indexOf("px") > 0) ? parseInt(newValue.width.replace("px", "")) : 0;
-    }
-    if (newValue && newValue.height) {
-      context.styleHeight = (newValue.height.indexOf("px") > 0) ? parseInt(newValue.height.replace("px", "")) : 0;
-    }
   }
 
   adjustWidthHeight(bRender) {
@@ -683,7 +673,7 @@ class VegaComponent2 extends PolymerElement {
         } else {
           if (!context.resizeInterval) {
             context.resizeInterval = setInterval(function() {
-              if (context.styleWidth && context.styleHeight) {
+              if (context.senseSize) {
                 context.adjustWidthHeight(true);
               }
             }, 1000);
