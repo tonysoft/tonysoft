@@ -6,19 +6,19 @@
 
   "signals": [
     {
-      "name": "startAngle", "value": 0
+      "name": "startAngle", "value": 0.02
     },
     {
-      "name": "endAngle", "value": 6.29
+      "name": "endAngle", "value": 6.27
     },
     {
-      "name": "padAngle", "value": 0
+      "name": "padAngle", "value": 0.02
     },
     {
       "name": "innerRadius", "value": 60
     },
     {
-      "name": "cornerRadius", "value": 0
+      "name": "cornerRadius", "value": 4
     },
     {
       "name": "sort", "value": false
@@ -53,7 +53,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "table", "field": "id"},
-      "range": {"scheme": "stages"}
+      "range": {"scheme": "category20"}
     }
   ],
 
@@ -64,6 +64,7 @@
       "encode": {
         "enter": {
           "fill": {"scale": "color", "field": "id"},
+          "stroke": {"value": "#999"},
           "x": {"signal": "width / 2"},
           "y": {"signal": "height / 2"}
         },
