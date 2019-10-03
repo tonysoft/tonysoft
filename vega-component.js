@@ -472,13 +472,22 @@ class VegaComponent extends PolymerElement {
     vegaRender(spec, vegaTarget, callback) {
       var context = this;
       context.vegaSpec = spec;
+      var widthDifferential = 0;
+      var heightDifferential = 0;
+      var svgMarks = context.shadowRoot.querySelector("svg.marks");
+      if (svgMarks && context.chartWidth && context.chartHeight) {
+        var svgWidth = svgMarks.getAttribute("width");
+        var svgHeight = svgMarks.getAttribute("height");
+        widthDifferential = Math.abs(svgWidth - context.chartWidth);
+        heightDifferential = Math.abs(svgHeight - context.chartHeight);
+      }
       if (context.chartWidth) {
-        if (Math.abs(context.chartWidth - context.vegaSpec.width) > 30) {
+        if (Math.abs(context.chartWidth - context.vegaSpec.width) >= widthDifferential) {
           context.vegaSpec.width = context.chartWidth;
         }
       }
       if (context.chartHeight) {
-        if (Math.abs(context.chartHeight - context.vegaSpec.height) > 30) {
+        if (Math.abs(context.chartHeight - context.vegaSpec.height) >= heightDifferential) {
           context.vegaSpec.height = context.chartHeight;
         }
       }
