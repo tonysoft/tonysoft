@@ -189,7 +189,7 @@ class VegaComponent2 extends PolymerElement {
       context.chartWidth = context.chartHeight = 0;
     }
     var wrapper = context.shadowRoot.querySelector('.main');
-    if (!wrapper.offsetHeight) {
+    if (!wrapper.offsetHeight < 40) {
       context.internalSenseSize = false;
     }
     if (!context.width || !context.height || bRender) {
