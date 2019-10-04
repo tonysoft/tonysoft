@@ -167,7 +167,7 @@ class VegaComponent extends PolymerElement {
       this.internalEvents = false;
       this.hideGuidance = false;
       this.vegaColorScheme = null;
-      this.senseSize = false;
+      this.senseSize = true;
       this.internalSenseSize = true;
       this.guidanceMarkup = "https://tonysoft.github.io/vegaTest/guidance.html";
     }
@@ -493,20 +493,23 @@ class VegaComponent extends PolymerElement {
     vegaRender(spec, vegaTarget, callback) {
       var context = this;
       context.vegaSpec = spec;
-      var widthDifferential = 0;
-      var heightDifferential = 0;
-      if (!context.chartWidth || !context.chartHeight) {
-        return;
-      }
-      context.vegaSpec = spec;
-      var svgMarks = context.shadowRoot.querySelector("svg.marks");
-      var svgWidth = svgMarks ? svgMarks.getAttribute("width") : 0;
-      var svgHeight = svgMarks ? svgMarks.getAttribute("height") : 0;
-      if (Math.abs(context.chartWidth - svgWidth) > 3) {
-        context.vegaSpec.width = context.chartWidth;
-      }
-      if (Math.abs(context.chartHeight - svgWidth) > 3) {
-        context.vegaSpec.height = context.chartHeight;
+      if (!context.vegaSpec.fixedSize || !context.vegaSpec.width || !context.vegaSpec.height) {
+        context.senseSize = true;
+        if (!context.chartWidth || !context.chartHeight) {
+          return;
+        }
+        context.vegaSpec = spec;
+        var svgMarks = context.shadowRoot.querySelector("svg.marks");
+        var svgWidth = svgMarks ? svgMarks.getAttribute("width") : 0;
+        var svgHeight = svgMarks ? svgMarks.getAttribute("height") : 0;
+        if (Math.abs(context.chartWidth - svgWidth) > 3) {
+          context.vegaSpec.width = context.chartWidth;
+        }
+        if (Math.abs(context.chartHeight - svgWidth) > 3) {
+          context.vegaSpec.height = context.chartHeight;
+        }
+      } else {
+        context.senseSize = false;
       }
       if (spec.internalInteractionMap) {
           context.internalInteractionMap = spec.internalInteractionMap;
