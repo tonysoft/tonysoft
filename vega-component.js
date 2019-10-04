@@ -601,12 +601,12 @@ class VegaComponent extends PolymerElement {
         }
         context.dispatchEvent(new CustomEvent(interaction, { 
           detail: { 
-            chartId: context.id,
-            itemId: itemId,
-            category: context.category,
-            interaction: interaction,
+            chartId: context.id || "",
+            itemId: itemId || "",
+            category: context.category || "",
+            interaction: interaction || "",
             item: item,
-            items: context.vegaDataMap
+            items: context.vegaDataMap || {}
           }
         }));
       }
