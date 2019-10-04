@@ -27,7 +27,8 @@ class VegaComponent2 extends PolymerElement {
     static get properties() {
       return {
         senseSize: {
-          type: Boolean
+          type: Boolean,
+          observer: '_senseSize'
         },
         id: {
           type: String
@@ -179,6 +180,13 @@ class VegaComponent2 extends PolymerElement {
       for (var prop in context.onReadyProps) {
           context[prop] = context.onReadyProps[prop];
       }
+  }
+
+  _senseSize(newValue, oldValue) {
+    var context = this;
+    if (newValue && !oldValue) {
+      context.internalSenseSize = true;
+    }
   }
 
   adjustWidthHeight(bRender) {
