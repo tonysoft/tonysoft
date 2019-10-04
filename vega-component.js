@@ -19,13 +19,17 @@ class VegaComponent extends PolymerElement {
             }
           </style>
           <div class="main noSelect" style="width: 100%; height: 100%; background-color: inherit;">
-            <div id="content"><div on-click="guidance" style="cursor: pointer; width: 100%; height: 100%; background-color: inherit;">Click for Guidance on using the <b>vega-component</b>...</div>
+            <div id="content" style="width: 100%; height: 100%;"><div on-click="guidance" style="cursor: pointer; width: 100%; height: 100%; background-color: inherit;">Click for Guidance on using the <b>vega-component</b>...</div>
           </div>
         `;
       }
   
     static get properties() {
       return {
+        senseSize: {
+          type: Boolean,
+          observer: '_senseSize'
+        },
         id: {
           type: String
         },
@@ -163,6 +167,8 @@ class VegaComponent extends PolymerElement {
       this.internalEvents = false;
       this.hideGuidance = false;
       this.vegaColorScheme = null;
+      this.senseSize = false;
+      this.internalSenseSize = true;
       this.guidanceMarkup = "https://tonysoft.github.io/vegaTest/guidance.html";
     }
 
@@ -176,12 +182,24 @@ class VegaComponent extends PolymerElement {
       }
   }
 
+  _senseSize(newValue, oldValue) {
+    var context = this;
+    if (newValue && !oldValue) {
+      context.internalSenseSize = true;
+    }
+  }
+
   adjustWidthHeight(bRender) {
     var context = this;
+    var thisAdjustment = 0;
     var origChartWidth = context.chartWidth;
     var origChartHeight = context.chartHeight;
     if (bRender) {
       context.chartWidth = context.chartHeight = 0;
+    }
+    var wrapper = context.shadowRoot.querySelector('.main');
+    if (!bRender && (wrapper.offsetHeight < 40)) {
+      context.internalSenseSize = false;
     }
     if (!context.width || !context.height || bRender) {
       var elements = document.querySelectorAll("vega-component");
@@ -193,7 +211,6 @@ class VegaComponent extends PolymerElement {
             element.style.height = "100%";
           }
       })
-      var wrapper = context.shadowRoot.querySelector('.main');
       if (!context.width || bRender) {
         context.width = Math.max((wrapper.offsetWidth ? wrapper.offsetWidth : context.chartWidth), context.chartWidth, 50);
       } else {
@@ -211,12 +228,14 @@ class VegaComponent extends PolymerElement {
     if (!context.chartHeight || bRender) {
         context.chartHeight = context.height;
     }
-    if (bRender) {
+    if (bRender && wrapper.offsetHeight) {
       if ((origChartHeight !== context.chartHeight) || (origChartWidth !== context.chartWidth)) {
         var vegaTarget = context.shadowRoot.querySelector("#content");
         context.vegaRender(context.vegaSpec, vegaTarget);
+        thisAdjustment = context.chartHeight;
       }
     }
+    return thisAdjustment;
   }
 
   _vegaColorScheme(scheme) {
@@ -250,7 +269,9 @@ class VegaComponent extends PolymerElement {
           context.vegaData = null;
         }
       }
-      context.vegaRender(spec, vegaTarget);
+      context.vegaSpec = spec;
+      context.adjustWidthHeight(true);
+      // context.vegaRender(spec, vegaTarget);
       context.dispatchEvent(new CustomEvent("specChanged", { 
         detail: true
       }));
@@ -474,25 +495,18 @@ class VegaComponent extends PolymerElement {
       context.vegaSpec = spec;
       var widthDifferential = 0;
       var heightDifferential = 0;
-      // if (!context.chartWidth || !context.chartHeight) {
-      //   return;
-      // }
+      if (!context.chartWidth || !context.chartHeight) {
+        return;
+      }
+      context.vegaSpec = spec;
       var svgMarks = context.shadowRoot.querySelector("svg.marks");
-      if (svgMarks && context.chartWidth && context.chartHeight) {
-        var svgWidth = svgMarks.getAttribute("width");
-        var svgHeight = svgMarks.getAttribute("height");
-        widthDifferential = Math.abs(svgWidth - context.chartWidth);
-        heightDifferential = Math.abs(svgHeight - context.chartHeight);
+      var svgWidth = svgMarks ? svgMarks.getAttribute("width") : 0;
+      var svgHeight = svgMarks ? svgMarks.getAttribute("height") : 0;
+      if (Math.abs(context.chartWidth - svgWidth) > 3) {
+        context.vegaSpec.width = context.chartWidth;
       }
-      if (context.chartWidth) {
-        if (Math.abs(context.chartWidth - context.vegaSpec.width) >= widthDifferential) {
-          context.vegaSpec.width = context.chartWidth;
-        }
-      }
-      if (context.chartHeight) {
-        if (Math.abs(context.chartHeight - context.vegaSpec.height) >= heightDifferential) {
-          context.vegaSpec.height = context.chartHeight;
-        }
+      if (Math.abs(context.chartHeight - svgWidth) > 3) {
+        context.vegaSpec.height = context.chartHeight;
       }
       if (spec.internalInteractionMap) {
           context.internalInteractionMap = spec.internalInteractionMap;
@@ -664,7 +678,13 @@ class VegaComponent extends PolymerElement {
         } else {
           if (!context.resizeInterval) {
             context.resizeInterval = setInterval(function() {
-              //context.adjustWidthHeight(true);
+              if (context.senseSize && context.internalSenseSize) {
+                var thisAdjustment = context.adjustWidthHeight(true);
+                if (thisAdjustment && context.lastAdjustment) {
+                  context.internalSenseSize = false;
+                }
+                context.lastAdjustment = thisAdjustment;
+              }
             }, 1000);
           }
         }
