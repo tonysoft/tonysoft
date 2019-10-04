@@ -493,7 +493,7 @@ class VegaComponent extends PolymerElement {
     vegaRender(spec, vegaTarget, callback) {
       var context = this;
       context.vegaSpec = spec;
-      if (!context.vegaSpec.width || !context.vegaSpec.height) {
+      if (!context.vegaSpec.fixedSize || !context.vegaSpec.width || !context.vegaSpec.height) {
         context.senseSize = true;
         if (!context.chartWidth || !context.chartHeight) {
           return;
