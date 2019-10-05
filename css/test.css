@@ -1,0 +1,10 @@
+        .testCellCell {
+            cursor: "pointer";
+        }
+        .testCell {
+            text-align: "left";
+            width: "100%";
+            display: "inline-block";
+            height: "87px";
+            overflow: "auto";       
+        }
