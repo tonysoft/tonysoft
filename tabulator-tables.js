@@ -94,6 +94,9 @@ class TabulatorTables extends PolymerElement {
                 type: Object,
                 observer: "_data"
             },
+            fixups: {
+                type: Array
+            },
             onReadyProps: {
                 type: Object
             }
@@ -109,6 +112,7 @@ class TabulatorTables extends PolymerElement {
         context.border = false;
         context.onReadyProps = {};
         context.options = null;
+        context.fixups = [];
         context.data = null;
     }
 
@@ -182,7 +186,6 @@ class TabulatorTables extends PolymerElement {
     _options(options) {
         var context = this;
         if (context.checkIsReady("options", options, null)) {
-            var fixups = [];
             var path = "$.[?(@.editor)]";
             var editors = context.JSONPath({ path: path, json: options});
             editors.forEach(function(parentNode) {
@@ -190,8 +193,8 @@ class TabulatorTables extends PolymerElement {
                 if (editor.length) {
                     var segs = editor.split(".");
                     if ((segs.length > 1) && (segs[0] === "context")) {
-                        fixups.push({node: parentNode, prop: "editor", func: context[segs[1]]})
-                        //parentNode.editor = context[segs[1]];
+                        context.fixups.push({node: parentNode, prop: "editor", func: context[segs[1]]})
+                        delete parentNode.editor;
                     }
                 }
             });
@@ -202,14 +205,14 @@ class TabulatorTables extends PolymerElement {
                 if (formatter.length) {
                     var segs = formatter.split(".");
                     if ((segs.length > 1) && (segs[0] === "context")) {
-                        fixups.push({node: parentNode, prop: "formatter", func: context[segs[1]]})
-                        //parentNode.formatter = context[segs[1]];
+                        context.fixups.push({node: parentNode, prop: "formatter", func: context[segs[1]]});
+                        delete parentNode.formatter;
                     }
                 }
             })
             options.cellEdited = context.cellEdited;
             options.cellClick = context.cellClick;
-            fixups.forEach(function (fixup) {
+            context.fixups.forEach(function (fixup) {
                 fixup.node[fixup.prop] = fixup.func;
             })
             context.initTable();
@@ -371,43 +374,43 @@ class TabulatorTables extends PolymerElement {
         return input;
     }
 
-    dayCell(cell, formatingParams) {
-        var table = this;
-        var context = table.component;
-        var cellValue = cell.getValue();
-        var rowIndex = cell._cell.row.data.row;
-        var row = cell._cell.row.data;
-        var columnDef = cell.getColumn()._column.definition;
-        var appointmentsTemplate = columnDef.appointmentsTemplate;
-        var appointmentTemplate = columnDef.appointmentTemplate;
-        var dayOfWeekTemplate = columnDef.dayOfWeekTemplate;
-        var dayTemplate = columnDef.dayTemplate;
-        var cellContainer = document.createElement("div");
-        var cellContainerContent = "";
-        if (rowIndex === 0) {
-            cellContainerContent += dayOfWeekTemplate.replace("${dayOfWeek}", columnDef["field"]);
-        }
-        cellContainerContent += dayTemplate.replace("${day}", row[columnDef["field"]]);
+    // dayCell(cell, formatingParams) {
+    //     var table = this;
+    //     var context = table.component;
+    //     var cellValue = cell.getValue();
+    //     var rowIndex = cell._cell.row.data.row;
+    //     var row = cell._cell.row.data;
+    //     var columnDef = cell.getColumn()._column.definition;
+    //     var appointmentsTemplate = columnDef.appointmentsTemplate;
+    //     var appointmentTemplate = columnDef.appointmentTemplate;
+    //     var dayOfWeekTemplate = columnDef.dayOfWeekTemplate;
+    //     var dayTemplate = columnDef.dayTemplate;
+    //     var cellContainer = document.createElement("div");
+    //     var cellContainerContent = "";
+    //     if (rowIndex === 0) {
+    //         cellContainerContent += dayOfWeekTemplate.replace("${dayOfWeek}", columnDef["field"]);
+    //     }
+    //     cellContainerContent += dayTemplate.replace("${day}", row[columnDef["field"]]);
 
-        cellContainer.innerHTML = cellContainerContent + appointmentsTemplate;
-        var appointments = cellContainer.querySelector(".appointments")
-        var repeat = 5;
+    //     cellContainer.innerHTML = cellContainerContent + appointmentsTemplate;
+    //     var appointments = cellContainer.querySelector(".appointments")
+    //     var repeat = 5;
 
-        if (false && cellValue && appointmentTemplate) {
-            var appointmentsContent = "";
-            for (var i = 0; i < repeat; i++) {
-                var value = cellValue + " " + cellValue + " " + cellValue + " " + cellValue + " " + cellValue
-                var appointment = appointmentTemplate.replace("${index}", i);
-                appointment = appointment.replace("${cellValue}", value);
-                appointmentsContent += appointment;
-            }
-            appointments.innerHTML = appointmentsContent;
-        }
+    //     if (false && cellValue && appointmentTemplate) {
+    //         var appointmentsContent = "";
+    //         for (var i = 0; i < repeat; i++) {
+    //             var value = cellValue + " " + cellValue + " " + cellValue + " " + cellValue + " " + cellValue
+    //             var appointment = appointmentTemplate.replace("${index}", i);
+    //             appointment = appointment.replace("${cellValue}", value);
+    //             appointmentsContent += appointment;
+    //         }
+    //         appointments.innerHTML = appointmentsContent;
+    //     }
 
-        var parentNode = cell._cell.element;
+    //     var parentNode = cell._cell.element;
 
-        return cellContainer.outerHTML;
-    }
+    //     return cellContainer.outerHTML;
+    // }
 
 
 }

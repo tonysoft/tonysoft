@@ -97,5 +97,74 @@ class TabulatorCalendar extends TabulatorTables {
         super.ready();
     }
 
+    _options(options) {
+        var context = this;
+        if (context.checkIsReady("options", options, null)) {
+            var path = "$.[?(@.editor)]";
+            var editors = context.JSONPath({ path: path, json: options});
+            editors.forEach(function(parentNode) {
+                var editor = parentNode.editor;
+                if (editor.length) {
+                    var segs = editor.split(".");
+                    if ((segs.length > 1) && (segs[0] === "context")) {
+                        context.fixups.push({node: parentNode, prop: "editor", func: context[segs[1]]})
+                        delete parentNode.editor;
+                    }
+                }
+            });
+            path = "$.[?(@.formatter)]";
+            var formatters = context.JSONPath({ path: path, json: options});
+            formatters.forEach(function(parentNode) {
+                var formatter = parentNode.formatter;
+                if (formatter.length) {
+                    var segs = formatter.split(".");
+                    if ((segs.length > 1) && (segs[0] === "context")) {
+                        context.fixups.push({node: parentNode, prop: "formatter", func: context[segs[1]]});
+                        delete parentNode.formatter;
+                    }
+                }
+            })
+        }
+        super._options(options);
+    }
+
+    dayCell(cell, formatingParams) {
+        var table = this;
+        var context = table.component;
+        var cellValue = cell.getValue();
+        var rowIndex = cell._cell.row.data.row;
+        var row = cell._cell.row.data;
+        var columnDef = cell.getColumn()._column.definition;
+        var appointmentsTemplate = formatingParams.appointmentsTemplate;
+        var appointmentTemplate = formatingParams.appointmentTemplate;
+        var dayOfWeekTemplate = formatingParams.dayOfWeekTemplate;
+        var dayTemplate = formatingParams.dayTemplate;
+        var cellContainer = document.createElement("div");
+        var cellContainerContent = "";
+        if (rowIndex === 0) {
+            cellContainerContent += dayOfWeekTemplate.replace("${dayOfWeek}", columnDef["field"]);
+        }
+        cellContainerContent += dayTemplate.replace("${day}", row[columnDef["field"]]);
+
+        cellContainer.innerHTML = cellContainerContent + appointmentsTemplate;
+        var appointments = cellContainer.querySelector(".appointments")
+        var repeat = 5;
+
+        if (false && cellValue && appointmentTemplate) {
+            var appointmentsContent = "";
+            for (var i = 0; i < repeat; i++) {
+                var value = cellValue + " " + cellValue + " " + cellValue + " " + cellValue + " " + cellValue
+                var appointment = appointmentTemplate.replace("${index}", i);
+                appointment = appointment.replace("${cellValue}", value);
+                appointmentsContent += appointment;
+            }
+            appointments.innerHTML = appointmentsContent;
+        }
+
+        var parentNode = cell._cell.element;
+
+        return cellContainer.outerHTML;
+    }
+
 }
 customElements.define('tabulator-calendar', TabulatorCalendar);
