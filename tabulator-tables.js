@@ -8,23 +8,6 @@ class TabulatorTables extends PolymerElement {
   static get properties() {
     return {
 
-        variousIcons: {
-            type: Array,
-            value() {
-            return [
-                    {symbol: 'block'},
-                    {symbol: 'star'},
-                    {symbol: 'star'},
-                    {symbol: 'star'},
-                    {symbol: 'star'},
-                    {symbol: 'star'}
-                ];
-            }
-        },
-
-        ratingValue: {
-            type: Number
-        }
 
     };
   }
@@ -55,6 +38,13 @@ class TabulatorTables extends PolymerElement {
             white-space: nowrap;
             overflow: hidden;
         }
+        .dayOfWeek {
+            text-align: center;
+            width: 100%;
+            display: block;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
         .day {
             text-align: center;
             width: 100%;
@@ -66,8 +56,11 @@ class TabulatorTables extends PolymerElement {
             text-align: left;
             width: 100%;
             display: inline-block;
-            height: 54px;
-            overflow: auto;       
+            height: 60px;
+            overflow: auto;
+            padding-left: 8px;
+            padding-right: 19px;
+            box-sizing: content-box;
         }
     </style>
     <div class$="main noSelect [[hasBorder(border)]]" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: hidden;">
@@ -378,33 +371,38 @@ class TabulatorTables extends PolymerElement {
         return input;
     }
 
-    testFormatter(cell, formatingParams) {
+    dayCell(cell, formatingParams) {
+        var table = this;
+        var context = table.component;
         var cellValue = cell.getValue();
+        var rowIndex = cell._cell.row.data.row;
+        var row = cell._cell.row.data;
+        var columnDef = cell.getColumn()._column.definition;
+        var appointmentsTemplate = columnDef.appointmentsTemplate;
+        var appointmentTemplate = columnDef.appointmentTemplate;
+        var dayOfWeekTemplate = columnDef.dayOfWeekTemplate;
+        var dayTemplate = columnDef.dayTemplate;
         var cellContainer = document.createElement("div");
-        var day = document.createElement("div");
-        var appointments = document.createElement("div");
-        cellContainer.appendChild(day);
-        cellContainer.appendChild(appointments);
+        var cellContainerContent = "";
+        if (rowIndex === 0) {
+            cellContainerContent += dayOfWeekTemplate.replace("${dayOfWeek}", columnDef["field"]);
+        }
+        cellContainerContent += dayTemplate.replace("${day}", row[columnDef["field"]]);
 
+        cellContainer.innerHTML = cellContainerContent + appointmentsTemplate;
+        var appointments = cellContainer.querySelector(".appointments")
         var repeat = 5;
 
-        day.classList.add("day");
-        day.innerHTML = "31";
-        appointments.classList.add("appointments");
-        if (cellValue) {
+        if (false && cellValue && appointmentTemplate) {
+            var appointmentsContent = "";
             for (var i = 0; i < repeat; i++) {
-                var appointment = document.createElement("div");
-                appointment.classList.add("appointment");
-                appointment.setAttribute("testAttr", "this is a test: " + i);
-                appointment.innerHTML = cellValue + " " + cellValue + " " + cellValue + " " + cellValue + " " + cellValue;
-                appointments.appendChild(appointment);
-                // innerHTML += "<div class='appointment'>" + cellValue + "</div>"
+                var value = cellValue + " " + cellValue + " " + cellValue + " " + cellValue + " " + cellValue
+                var appointment = appointmentTemplate.replace("${index}", i);
+                appointment = appointment.replace("${cellValue}", value);
+                appointmentsContent += appointment;
             }
-            // appointments.innerHTML = innerHTML;
+            appointments.innerHTML = appointmentsContent;
         }
-        // test.style.backgroundColor = "#dddddd";
-        // test.style.border = "1px solid black";
-        // test.style.borderRadius = "5px";
 
         var parentNode = cell._cell.element;
 
@@ -414,3 +412,4 @@ class TabulatorTables extends PolymerElement {
 
 }
 customElements.define('tabulator-tables', TabulatorTables);
+export {TabulatorTables}
