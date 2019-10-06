@@ -31,7 +31,7 @@ class TabulatorTables extends PolymerElement {
 
   static get template() {
     return html`
-    <link href="https://unpkg.com/tabulator-tables@4.4.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/tabulator-tables@4.4.1/dist/css/tabulator_simple.min.css" rel="stylesheet">
     <style>
         :host {
         }
@@ -44,6 +44,30 @@ class TabulatorTables extends PolymerElement {
         .border {
             border: 1px solid #888888 !important;
             border-radius: 8px;
+        }
+        .appointment {
+            cursor: pointer;
+            text-align: left;
+            margin-left: 4px;
+            margin-right: 4px;
+            text-overflow: ellipsis;
+            width: 95%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .day {
+            text-align: center;
+            width: 100%;
+            display: block;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+        .appointments {
+            text-align: left;
+            width: 100%;
+            display: inline-block;
+            height: 54px;
+            overflow: auto;       
         }
     </style>
     <div class$="main noSelect [[hasBorder(border)]]" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: hidden;">
@@ -165,20 +189,60 @@ class TabulatorTables extends PolymerElement {
     _options(options) {
         var context = this;
         if (context.checkIsReady("options", options, null)) {
+            var fixups = [];
             var path = "$.[?(@.editor)]";
-            var editors = context.JSONPath(path, options);
+            var editors = context.JSONPath({ path: path, json: options});
             editors.forEach(function(parentNode) {
                 var editor = parentNode.editor;
                 if (editor.length) {
                     var segs = editor.split(".");
                     if ((segs.length > 1) && (segs[0] === "context")) {
-                        parentNode.editor = context[segs[1]];
+                        fixups.push({node: parentNode, prop: "editor", func: context[segs[1]]})
+                        //parentNode.editor = context[segs[1]];
+                    }
+                }
+            });
+            path = "$.[?(@.formatter)]";
+            var formatters = context.JSONPath({ path: path, json: options});
+            formatters.forEach(function(parentNode) {
+                var formatter = parentNode.formatter;
+                if (formatter.length) {
+                    var segs = formatter.split(".");
+                    if ((segs.length > 1) && (segs[0] === "context")) {
+                        fixups.push({node: parentNode, prop: "formatter", func: context[segs[1]]})
+                        //parentNode.formatter = context[segs[1]];
                     }
                 }
             })
             options.cellEdited = context.cellEdited;
+            options.cellClick = context.cellClick;
+            fixups.forEach(function (fixup) {
+                fixup.node[fixup.prop] = fixup.func;
+            })
             context.initTable();
         }
+    }
+
+    cellClick(e, cell) {
+        var table = this;
+        var context = table.component;
+        var row = cell._cell.row.data;
+        var clickSrc = e.srcElement;
+        var attributes = clickSrc.attributes;
+        var srcAttributes = {};
+        for (var attrId in attributes) {
+            if (parseInt(attrId) >= 0) {
+                var attr = attributes[attrId];
+                srcAttributes[attr.name] = attributes[attr.name].value;;
+            }
+        }
+        context.dispatchEvent(new CustomEvent("cellClicked", { 
+            detail: {
+                cell: cell,
+                attributes: srcAttributes,
+                row: row
+            }
+        }));
     }
 
     cellEdited(cell) {
@@ -312,6 +376,39 @@ class TabulatorTables extends PolymerElement {
         });
 
         return input;
+    }
+
+    testFormatter(cell, formatingParams) {
+        var cellValue = cell.getValue();
+        var cellContainer = document.createElement("div");
+        var day = document.createElement("div");
+        var appointments = document.createElement("div");
+        cellContainer.appendChild(day);
+        cellContainer.appendChild(appointments);
+
+        var repeat = 5;
+
+        day.classList.add("day");
+        day.innerHTML = "31";
+        appointments.classList.add("appointments");
+        if (cellValue) {
+            for (var i = 0; i < repeat; i++) {
+                var appointment = document.createElement("div");
+                appointment.classList.add("appointment");
+                appointment.setAttribute("testAttr", "this is a test: " + i);
+                appointment.innerHTML = cellValue + " " + cellValue + " " + cellValue + " " + cellValue + " " + cellValue;
+                appointments.appendChild(appointment);
+                // innerHTML += "<div class='appointment'>" + cellValue + "</div>"
+            }
+            // appointments.innerHTML = innerHTML;
+        }
+        // test.style.backgroundColor = "#dddddd";
+        // test.style.border = "1px solid black";
+        // test.style.borderRadius = "5px";
+
+        var parentNode = cell._cell.element;
+
+        return cellContainer.outerHTML;
     }
 
 
