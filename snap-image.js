@@ -115,7 +115,7 @@ class SnapImage extends PolymerElement {
         if (snap && context && context.context) {
             context.context.drawImage(context.video, 0, 0, context.width, context.height);
             context.reset = false;
-            var dataUri = context.canvas.toDataURL();
+            var dataUri = "{str}" + context.canvas.toDataURL();
             context.dispatchEvent(new CustomEvent("imageSnapped", { 
                 detail: { "dataUri": dataUri, "width": context.width, "height": context.height }
             }));
