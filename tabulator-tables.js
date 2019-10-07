@@ -14,7 +14,7 @@ class TabulatorTables extends PolymerElement {
 
   static get template() {
     return html`
-    <link href="https://unpkg.com/tabulator-tables@4.4.1/dist/css/tabulator_simple.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/tabulator-tables@4.4.1/dist/css/tabulator.min.css" rel="stylesheet">
     <style>
         :host {
         }
@@ -27,40 +27,6 @@ class TabulatorTables extends PolymerElement {
         .border {
             border: 1px solid #888888 !important;
             border-radius: 8px;
-        }
-        .appointment {
-            cursor: pointer;
-            text-align: left;
-            margin-left: 4px;
-            margin-right: 4px;
-            text-overflow: ellipsis;
-            width: 95%;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-        .dayOfWeek {
-            text-align: center;
-            width: 100%;
-            display: block;
-            font-weight: 400;
-            margin-bottom: 4px;
-        }
-        .day {
-            text-align: center;
-            width: 100%;
-            display: block;
-            font-weight: 400;
-            margin-bottom: 8px;
-        }
-        .appointments {
-            text-align: left;
-            width: 100%;
-            display: inline-block;
-            height: 60px;
-            overflow: auto;
-            padding-left: 8px;
-            padding-right: 19px;
-            box-sizing: content-box;
         }
     </style>
     <div class$="main noSelect [[hasBorder(border)]]" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: hidden;">
@@ -132,12 +98,6 @@ class TabulatorTables extends PolymerElement {
             })
         }
         context.JSONPath = JSONPath.JSONPath;
-        if (context.default && !context.options && !context.onReadyProps.options) {
-            context.options = context.defaultOptions();
-        }
-        if (context.default && !context.data && !context.onReadyProps.data) {
-            context.data = context.defaultData();
-        }
         context.isReady = true;
         context.tableDest = context.shadowRoot.querySelector('#table');
         for (var prop in context.onReadyProps) {
@@ -149,38 +109,6 @@ class TabulatorTables extends PolymerElement {
         var context = this;
         context.table = new Tabulator(context.tableDest, context.options);
         context.table.component = context;
-    }
-
-
-
-    defaultOptions() {
-        var context = this;
-        return {
-            layout:"fitColumns",
-            placeholder:"No Data Set",
-            headerVisible: true,
-            autoColumns: false,
-            columns:[
-                {title:"Name", field:"name", width:150, editor:"input"},
-                {title:"Location", field:"location", width:130, editor:"autocomplete", editorParams:{allowEmpty:true, showListOnEmpty:true, values:true}},
-                {title:"Progress", field:"progress", sorter:"number", align:"left", formatter:"progress", width:140, editor:"input"},
-                {title:"Gender", field:"gender", editor:"select", editorParams:{values:{"M":"Male", "F":"Female", "?":"Unknown"}}},
-                {title:"Rating", field:"rating",  formatter:"star", align:"center", width:100, editor:true},
-                {title:"Date Of Birth", field:"dob", align:"center", sorter:"date", width:140, editor:context.dateEditor},
-                {title:"Driver", field:"car", align:"center", editor:true, formatter:"tickCross"},
-            ]
-        };
-    }
-
-    defaultData() {
-        var context = this;
-        return [
-            {id:1, name:"Oli Bob", age:"12", progress: 80, location: "HERE", col:"red", dob:""},
-            {id:2, name:"Mary May", age:"1", col:"blue", location: "THERE", dob:"05/14/1982"},
-            {id:3, name:"Christine Lobowski", age:"42", col:"green", dob:"05/22/1982"},
-            {id:4, name:"Brendon Philips", age:"125", col:"orange", dob:"01/08/1980"},
-            {id:5, name:"Margret Marmajuke", age:"16", col:"yellow", dob:"01/31/1999"},
-        ];
     }
 
     _options(options) {
