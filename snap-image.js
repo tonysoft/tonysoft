@@ -57,6 +57,9 @@ class SnapImage extends PolymerElement {
         stop: {
             type: Boolean,
             observer: "_stop"
+        },
+        remixRawImage: {
+            type: Boolean
         }
       }
     }
@@ -68,6 +71,7 @@ class SnapImage extends PolymerElement {
       this.snap = false;
       this.reset = true;
       this.stop = false;
+      remixRawImage = false;
     }
 
     ready() {
@@ -115,7 +119,7 @@ class SnapImage extends PolymerElement {
         if (snap && context && context.context) {
             context.context.drawImage(context.video, 0, 0, context.width, context.height);
             context.reset = false;
-            var dataUri = "{str}" + context.canvas.toDataURL();
+            var dataUri = (context.remixRawImage ? "image-" : "") + context.canvas.toDataURL();
             context.dispatchEvent(new CustomEvent("imageSnapped", { 
                 detail: { "dataUri": dataUri, "width": context.width, "height": context.height }
             }));
