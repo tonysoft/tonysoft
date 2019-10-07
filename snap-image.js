@@ -71,7 +71,7 @@ class SnapImage extends PolymerElement {
       this.snap = false;
       this.reset = true;
       this.stop = false;
-      remixRawImage = false;
+      this.remixRawImage = false;
     }
 
     ready() {
