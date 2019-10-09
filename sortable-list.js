@@ -136,9 +136,6 @@ class SortableList extends GestureEventListeners(PolymerElement) {
           }
           if ((node.nodeType === Node.ELEMENT_NODE) &&
               (node.matches(this.sortable) || sortable)) {
-            if (sortable) {
-                node.style.display = "inline-block";
-            }
             items.push(node);
           }
         });
