@@ -20,12 +20,12 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         -webkit-user-drag: none;
         -webkit-user-select: none;
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-        display: inline-block;
+        displayx: inline-block;
       }
 
       ::slotted(.item--transform) {
         left: 0;
-        margin: 0 !important;
+        marginx: 0 !important;
         position: fixed !important;
         top: 0;
         transition: transform 0.2s cubic-bezier(0.333, 0, 0, 1);
@@ -38,8 +38,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
       }
 
       ::slotted(.item--dragged) {
-        -webkit-box-shadow: 0 2px 10px rgba(0,0,0,.2);
-        box-shadow: 0 2px 10px rgba(0,0,0,.2);
+        -webkit-box-shadowx: 0 2px 10px rgba(0,0,0,.2);
+        box-shadowx: 0 2px 10px rgba(0,0,0,.2);
         filter: brightness(1.1);
         z-index: 2;
       }
@@ -155,7 +155,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         }
       }
 
-      _trackStart(event) {
+
+    _trackStart(event) {
         if (this.disabled) {
           return;
         }
@@ -171,6 +172,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
           navigator.vibrate(30);
         }
         const rect = this.getBoundingClientRect();
+
         this.style.height = rect.height + 'px';
         this.style.width = rect.width + 'px';
         this.items.forEach((item, idx) => {
@@ -186,6 +188,11 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             item.style.transition = null;
           }, 20);
         });
+        this.priorItemOrder = [];
+        var context = this;
+        this.items.forEach(function(item) {
+            context.priorItemOrder.push(item.getAttribute("index"));
+        })
         this._setDragging(true);
       }
 
@@ -225,11 +232,6 @@ class SortableList extends GestureEventListeners(PolymerElement) {
 
       _onDragStart(event) {
         event.preventDefault();
-        this.priorItemOrder = [];
-        var context = this;
-        this.items.forEach(function(item) {
-            context.priorItemOrder.push(item.getAttribute("index"));
-        })
       }
 
       _onTransitionEnd() {
