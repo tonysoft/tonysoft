@@ -136,18 +136,21 @@ class SortableList extends GestureEventListeners(PolymerElement) {
           }
           if ((node.nodeType === Node.ELEMENT_NODE) &&
               (node.matches(this.sortable) || sortable)) {
+            if (sortable) {
+                node.style.display = "inline-block";
+            }
             items.push(node);
           }
         });
-        if (context.parentSortable === "rmx-webcomponent") {
-            var parentNode = context.parentNode;
-            while (parentNode && (!parentNode.classList || !parentNode.classList.contains("remix-app-content"))) {
-                parentNode = parentNode.parentNode;
-            }
-            if (parentNode) {
-                context.boundingBoxAdj = parentNode.getBoundingClientRect();
-            }
-        }
+        // if (context.parentSortable === "rmx-webcomponent") {
+        //     var parentNode = context.parentNode;
+        //     while (parentNode && (!parentNode.classList || !parentNode.classList.contains("remix-app-content"))) {
+        //         parentNode = parentNode.parentNode;
+        //     }
+        //     if (parentNode) {
+        //         context.boundingBoxAdj = parentNode.getBoundingClientRect();
+        //     }
+        // }
         this._setItems(items);
         // this.items = items;
       }
@@ -353,8 +356,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             var boundingRect = node.getBoundingClientRect();
             var rect = { top: boundingRect.top, left: boundingRect.left, width: boundingRect.width, height: boundingRect.height};
             if (context.boundingBoxAdj) {
-                // rect.left -= context.boundingBoxAdj.left;
-                // rect.top -= context.boundingBoxAdj.top;
+                rect.left -= context.boundingBoxAdj.left;
+                rect.top -= context.boundingBoxAdj.top;
             }
             return rect;
       }
