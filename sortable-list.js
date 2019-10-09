@@ -353,8 +353,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             var boundingRect = node.getBoundingClientRect();
             var rect = { top: boundingRect.top, left: boundingRect.left, width: boundingRect.width, height: boundingRect.height};
             if (context.boundingBoxAdj) {
-                rect.left -= context.boundingBoxAdj.left;
-                rect.top -= context.boundingBoxAdj.top;
+                // rect.left -= context.boundingBoxAdj.left;
+                // rect.top -= context.boundingBoxAdj.top;
             }
             return rect;
       }
