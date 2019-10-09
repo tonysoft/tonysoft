@@ -43,9 +43,22 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         filter: brightness(1.1);
         z-index: 2;
       }
+
+      #items {
+          display: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0%;
+          left: 0%;
+      }
+      #main {
+        position: relative; width: 100%; height: 100%;
+      }
     </style>
-    <div id="items">
-      <slot id="slot"></slot>
+    <div id="main">
+        <div id="items">
+        <slot id="slot"></slot>
+        </div>
     </div>
 `;
   }
