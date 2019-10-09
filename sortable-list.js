@@ -24,10 +24,10 @@ class SortableList extends GestureEventListeners(PolymerElement) {
       }
 
       ::slotted(.item--transform) {
-        left: 0;
+        left: 0px;
         marginx: 0 !important;
         position: fixed !important;
-        top: 0;
+        top: 0px;
         transition: transform 0.2s cubic-bezier(0.333, 0, 0, 1);
         will-change: transform;
         z-index: 1;
@@ -45,19 +45,22 @@ class SortableList extends GestureEventListeners(PolymerElement) {
       }
 
       #items {
-          display: absolute;
           width: 100%;
           height: 100%;
-          top: 0%;
-          left: 0%;
+          position: absolute;
       }
       #main {
         position: relative; width: 100%; height: 100%;
       }
+
+      #slot {
+          width: 100%;
+          height: 100%;
+      }
     </style>
     <div id="main">
         <div id="items">
-        <slot id="slot"></slot>
+            <slot id="slot"></slot>
         </div>
     </div>
 `;
@@ -66,6 +69,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
     static get properties() {
         return {
             sortable: String,
+            parentSortable: String,
             items: {
                 type: Array,
                 notify: true,
@@ -102,6 +106,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
     ready() {
         super.ready();
         var context = this;
+        context.parentSortable = context.sortable ? "" :  context.parentSortable || "rmx-webcomponent";
+        context.sortable = context.sortable || "noMatch";
         setTimeout(function() {
             context._updateItems();
             context._observeItems();
@@ -117,16 +123,31 @@ class SortableList extends GestureEventListeners(PolymerElement) {
 
 
     _updateItems() {
+        var context = this;
         if (this.dragging) {
           return;
         }
         const items = [];
         this.querySelectorAll("*").forEach(node => {
+          var parentNode = node.parentNode;
+          var sortable = false;
+          if (context.parentSortable && parentNode.classList.contains(context.parentSortable)) {
+            sortable = true && (node.nodeType === Node.ELEMENT_NODE) && !node.template;
+          }
           if ((node.nodeType === Node.ELEMENT_NODE) &&
-              (!this.sortable || node.matches(this.sortable))) {
+              (node.matches(this.sortable) || sortable)) {
             items.push(node);
           }
         });
+        if (context.parentSortable === "rmx-webcomponent") {
+            var parentNode = context.parentNode;
+            while (parentNode && (!parentNode.classList || !parentNode.classList.contains("remix-app-content"))) {
+                parentNode = parentNode.parentNode;
+            }
+            if (parentNode) {
+                context.boundingBoxAdj = parentNode.getBoundingClientRect();
+            }
+        }
         this._setItems(items);
         // this.items = items;
       }
@@ -320,9 +341,21 @@ class SortableList extends GestureEventListeners(PolymerElement) {
       }
 
       _getItemsRects() {
+        var context = this;
         return this.items.map(item => {
-          return item.getBoundingClientRect();
+        
+          return context._getBoundingClientRect(item);
         })
+      }
+
+      _getBoundingClientRect(node) {
+            var context = this;
+            var rect = node.getBoundingClientRect();
+            if (context.boundingBoxAdj) {
+                rect.left -= context.boundingBoxAdj.left;
+                rect.top -= context.boundingBoxAdj.top;
+            }
+            return rect;
       }
 
       _translate3d(x, y, z, el) {
