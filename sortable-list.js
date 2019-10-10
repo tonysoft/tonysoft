@@ -4,69 +4,70 @@ import * as Gestures from '@polymer/polymer/lib/utils/gestures.js';
 import {} from '@polymer/polymer/lib/mixins/property-effects.js';
 
 class SortableList extends GestureEventListeners(PolymerElement) {
+    static get template() {
+        return html`
+            <style>
+                :host {
+                    display: inline-block;
+                }
 
-  static get template() {
-    return html`
-    <style>
-    :host {
-        display: inline-block;
-      }
+                ::slotted(*) {
+                    user-drag: none;
+                    user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    -webkit-user-drag: none;
+                    -webkit-user-select: none;
+                    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+                    displayx: inline-block;
+                }
 
-      ::slotted(*) {
-        user-drag: none;
-        user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -webkit-user-drag: none;
-        -webkit-user-select: none;
-        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-        displayx: inline-block;
-      }
+                ::slotted(.item--transform) {
+                    left: 0px;
+                    marginx: 0 !important;
+                    position: fixed !important;
+                    top: 0px;
+                    transition: transform 0.2s cubic-bezier(0.333, 0, 0, 1);
+                    will-change: transform;
+                    z-index: 1;
+                }
 
-      ::slotted(.item--transform) {
-        left: 0px;
-        marginx: 0 !important;
-        position: fixed !important;
-        top: 0px;
-        transition: transform 0.2s cubic-bezier(0.333, 0, 0, 1);
-        will-change: transform;
-        z-index: 1;
-      }
+                ::slotted(.item--pressed) {
+                    transition: none !important;
+                }
 
-      ::slotted(.item--pressed) {
-        transition: none !important;
-      }
+                ::slotted(.item--dragged) {
+                    -webkit-box-shadowx: 0 2px 10px rgba(0, 0, 0, 0.2);
+                    box-shadowx: 0 2px 10px rgba(0, 0, 0, 0.2);
+                    filter: brightness(1.1);
+                    z-index: 2;
+                }
 
-      ::slotted(.item--dragged) {
-        -webkit-box-shadowx: 0 2px 10px rgba(0,0,0,.2);
-        box-shadowx: 0 2px 10px rgba(0,0,0,.2);
-        filter: brightness(1.1);
-        z-index: 2;
-      }
+                #items {
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                }
+                #main {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                }
 
-      #items {
-          width: 100%;
-          height: 100%;
-          position: relative;
-      }
-      #main {
-        position: relative; width: 100%; height: 100%;
-      }
-
-      #slot {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          flex-wrap: wrap;
-      }
-    </style>
-    <div id="main">
-        <div id="items">
-            <slot id="slot"></slot>
-        </div>
-    </div>
-`;
-  }
+                #slot {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-wrap: wrap;
+                }
+            </style>
+            <div id="main">
+                <div id="items">
+                    <slot id="slot"></slot>
+                </div>
+            </div>
+        `;
+    }
 
     static get properties() {
         return {
@@ -77,6 +78,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 notify: true,
                 readOnly: true
             },
+
             dragging: {
                 type: Boolean,
                 notify: true,
@@ -84,12 +86,13 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 reflectToAttribute: true,
                 value: false
             },
+
             disabled: {
                 type: Boolean,
                 reflectToAttribute: true,
                 value: false
             }
-        }
+        };
     }
 
     constructor() {
@@ -108,43 +111,43 @@ class SortableList extends GestureEventListeners(PolymerElement) {
     ready() {
         super.ready();
         var context = this;
-        context.style.width = "100%";
-        context.style.height = "100%";
-        context.parentSortable = context.sortable ? "" :  context.parentSortable || "rmx-webcomponent";
+        // We should avoid this sort of styling being baked into WCs
+        // as other WCs won't have it and it is for the builder & runtime to manage that
+        // context.style.width = "100%";
+        // context.style.height = "100%";
+        context.parentSortable = context.sortable ? "" : context.parentSortable || "rmx-webcomponent";
         context.sortable = context.sortable || "noMatch";
         setTimeout(function() {
             context._updateItems();
             context._observeItems();
-            context._toggleListeners({enable: true});
+            context._toggleListeners({ enable: true });
         }, 50);
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
         this._unobserveItems();
-        this._toggleListeners({enable: false});
+        this._toggleListeners({ enable: false });
     }
-
 
     _updateItems() {
         var context = this;
         if (this.dragging) {
-          return;
+            return;
         }
         const items = [];
         this.querySelectorAll("*").forEach(node => {
-          var parentNode = node.parentNode;
-          var sortable = false;
-          if (context.parentSortable && parentNode.classList.contains(context.parentSortable)) {
-            sortable = true && (node.nodeType === Node.ELEMENT_NODE) && !node.template;
-          }
-          if ((node.nodeType === Node.ELEMENT_NODE) &&
-              (node.matches(this.sortable) || sortable)) {
-            // if (sortable) {
-            //     node.style.display = "inline-block"
-            // }
-            items.push(node);
-          }
+            var parentNode = node.parentNode;
+            var sortable = false;
+            if (context.parentSortable && parentNode.classList.contains(context.parentSortable)) {
+                sortable = true && node.nodeType === Node.ELEMENT_NODE && !node.template;
+            }
+            if (node.nodeType === Node.ELEMENT_NODE && (node.matches(this.sortable) || sortable)) {
+                // if (sortable) {
+                //     node.style.display = "inline-block"
+                // }
+                items.push(node);
+            }
         });
         // if (context.parentSortable === "rmx-webcomponent") {
         //     var parentNode = context.parentNode;
@@ -155,79 +158,90 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         //         context.boundingBoxAdj = parentNode.getBoundingClientRect();
         //     }
         // }
+        if (!this.priorItemOrder) {
+            this.priorItemOrder = [];
+            items.forEach((item, idx) => {
+                context.priorItemOrder.push(item.setAttribute("index", idx));
+            });
+
+        }
         this._setItems(items);
-        // this.items = items;
-      }
+    }
 
-      _observeItems() {
+    _observeItems() {
         if (!this._observer) {
-          this._observer = new MutationObserver(_ => {
-            this._updateItems();
-          });
-          this._observer.observe(this, {childList: true});
+            this._observer = new MutationObserver(_ => {
+                this._updateItems();
+            });
+            this._observer.observe(this, { childList: true });
         }
-      }
+    }
 
-      _unobserveItems() {
+    _unobserveItems() {
         if (this._observer) {
-          this._observer.disconnect();
-          this._observer = null;
+            this._observer.disconnect();
+            this._observer = null;
         }
-      }
+    }
 
-      _toggleListeners({enable}) {
-        const m = enable ? 'addEventListener' : 'removeEventListener';
-        this.$.items[m]('dragstart', this._onDragStart);
-        this.$.items[m]('transitionend', this._onTransitionEnd);
-        this.$.items[m]('contextmenu', this._onContextMenu);
-        this.$.items[m]('touchmove', this._onTouchMove);
+    _toggleListeners({ enable }) {
+        const m = enable ? "addEventListener" : "removeEventListener";
+        this.$.items[m]("dragstart", this._onDragStart);
+        this.$.items[m]("transitionend", this._onTransitionEnd);
+        this.$.items[m]("contextmenu", this._onContextMenu);
+        this.$.items[m]("touchmove", this._onTouchMove);
         if (enable) {
-            Gestures.addListener(this, 'track', this._onTrack);
+            Gestures.addListener(this, "track", this._onTrack);
         } else {
-            Gestures.removeListener(this, 'track', this._onTrack);
+            Gestures.removeListener(this, "track", this._onTrack);
         }
-      }
-      _onTrack(event) {
+    }
+    _onTrack(event) {
         var context = this;
-        switch(event.detail.state) {
-          case 'start': this._trackStart(event); break;
-          case 'track': this._track(event); break;
-          case 'end': this._trackEnd(event); break;
+        switch (event.detail.state) {
+            case "start":
+                this._trackStart(event);
+                break;
+            case "track":
+                this._track(event);
+                break;
+            case "end":
+                this._trackEnd(event);
+                break;
         }
-      }
-
+    }
 
     _trackStart(event) {
         if (this.disabled) {
-          return;
+            return;
         }
         this._target = this._itemFromEvent(event);
         if (!this._target) {
-          return;
+            return;
         }
         event.stopPropagation();
         this._rects = this._getItemsRects();
         this._targetRect = this._rects[this.items.indexOf(this._target)];
-        this._target.classList.add('item--dragged', 'item--pressed');
-        if ('vibrate' in navigator) {
-          navigator.vibrate(30);
+        this._target.classList.add("item--dragged", "item--pressed");
+        if ("vibrate" in navigator) {
+            navigator.vibrate(30);
         }
         const rect = this.getBoundingClientRect();
 
-        this.style.height = rect.height + 'px';
-        this.style.width = rect.width + 'px';
+        this.style.height = rect.height + "px";
+        this.style.width = rect.width + "px";
         this.items.forEach((item, idx) => {
-          const rect = this._rects[idx];
-          item.classList.add('item--transform');
-          item.style.transition = 'none';
-          item.__originalWidth = item.style.width;
-          item.__originalHeight = item.style.height;
-          item.style.width = rect.width + 'px';
-          item.style.height = rect.height + 'px';
-          this._translate3d(rect.left, rect.top, 1, item);
-          setTimeout(_ => {
-            item.style.transition = null;
-          }, 20);
+            const rect = this._rects[idx];
+            item.classList.add("item--transform");
+            item.style.transition = "none";
+            item.__originalWidth = item.style.width;
+            item.__originalHeight = item.style.height;
+            item.style.width = rect.width + "px";
+            item.style.height = rect.height + "px";
+            this._translate3d(rect.left, rect.top, 1, item);
+            setTimeout(_ => {
+                item.style.transition = null;
+            }, 20);
         });
         this.priorItemOrder = [];
         var context = this;
@@ -235,151 +249,158 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             context.priorItemOrder.push(item.getAttribute("index"));
         })
         this._setDragging(true);
-      }
+    }
 
-      _track(event) {
+    _track(event) {
         if (!this.dragging) {
-          return;
+            return;
         }
         const left = this._targetRect.left + event.detail.dx;
         const top = this._targetRect.top + event.detail.dy;
         this._translate3d(left, top, 1, this._target);
         const overItem = this._itemFromCoords(event.detail);
         if (overItem && overItem !== this._target) {
-          const overItemIndex = this.items.indexOf(overItem);
-          const targetIndex = this.items.indexOf(this._target);
-          this._moveItemArray(this.items, targetIndex, overItemIndex);
-          for(let i = 0; i < this.items.length; i++) {
-            if (this.items[i] !== this._target) {
-              const rect = this._rects[i];
-              requestAnimationFrame(_ => {
-                this._translate3d(rect.left, rect.top, 1, this.items[i]);
-              });
+            const overItemIndex = this.items.indexOf(overItem);
+            const targetIndex = this.items.indexOf(this._target);
+            this._moveItemArray(this.items, targetIndex, overItemIndex);
+            for (let i = 0; i < this.items.length; i++) {
+                if (this.items[i] !== this._target) {
+                    const rect = this._rects[i];
+                    requestAnimationFrame(_ => {
+                        this._translate3d(rect.left, rect.top, 1, this.items[i]);
+                    });
+                }
             }
-          }
         }
-      }
+    }
 
-      // The track really ends
-      _trackEnd(event) {
+    // The track really ends
+    _trackEnd(event) {
         if (!this.dragging) {
-          return;
+            return;
         }
         const rect = this._rects[this.items.indexOf(this._target)];
-        this._target.classList.remove('item--pressed');
+        this._target.classList.remove("item--pressed");
         this._setDragging(false);
         this._translate3d(rect.left, rect.top, 1, this._target);
-      }
+    }
 
-      _onDragStart(event) {
+    _onDragStart(event) {
         event.preventDefault();
-      }
+    }
 
-      _onTransitionEnd() {
+    _onTransitionEnd() {
         if (this.dragging || !this._target) {
-          return;
+            return;
         }
         const fragment = document.createDocumentFragment();
         this.items.forEach(item => {
-          item.style.transform = '';
-          item.style.width = item.__originalWidth;
-          item.style.height = item.__originalHeight;
-          item.classList.remove('item--transform');
-          fragment.appendChild(item);
+            item.style.transform = "";
+            item.style.width = item.__originalWidth;
+            item.style.height = item.__originalHeight;
+            item.classList.remove("item--transform");
+            fragment.appendChild(item);
         });
         if (this.children[0]) {
-          this.insertBefore(fragment, this.children[0]);
+            this.insertBefore(fragment, this.children[0]);
         } else {
-          this.appendChild(fragment);
+            this.appendChild(fragment);
         }
-        this.style.height = '';
-        this._target.classList.remove('item--dragged');
+        this.style.height = "";
+        this._target.classList.remove("item--dragged");
         this._rects = null;
         this._targetRect = null;
         this._updateItems();
         this.newItemOrder = [];
         var context = this;
         this.items.forEach(function(item) {
-            context.newItemOrder.push(item.getAttribute("index"));
-        })
-        this.dispatchEvent(new CustomEvent('sortFinish', {
-          composed: true,
-          detail: {
+            context.newItemOrder.push(parseInt(item.getAttribute("index")));
+        });
+        let detail = {
             itemIndex: this._target.getAttribute("index"),
             newItemOrder: this.newItemOrder,
             priorItemOrder: this.priorItemOrder
-          }
-        }));
+        };
+        this.dispatchEvent(
+            new CustomEvent("sortFinish", {
+                composed: true,
+                detail
+            })
+        );
+
         this._target = null;
-      }
+    }
 
-      _onContextMenu(event) {
+    _onContextMenu(event) {
         if (this.dragging) {
-          event.preventDefault();
-          this._trackEnd();
+            event.preventDefault();
+            this._trackEnd();
         }
-      }
+    }
 
-      _onTouchMove(event) {
+    _onTouchMove(event) {
         event.preventDefault();
-      }
+    }
 
-      _itemFromEvent(event) {
+    _itemFromEvent(event) {
         const path = event.composedPath();
         for (var i = 0; i < path.length; i++) {
-          if (this.items.indexOf(path[i]) > -1) {
-            return path[i];
-          }
+            if (this.items.indexOf(path[i]) > -1) {
+                return path[i];
+            }
         }
-      }
+    }
 
-      _itemFromCoords({x, y}) {
-        if (!this._rects) {return;}
+    _itemFromCoords({ x, y }) {
+        if (!this._rects) {
+            return;
+        }
         let match = null;
         this._rects.forEach((rect, i) => {
-          if ((x >= rect.left) &&
-              (x <= rect.left + rect.width) &&
-              (y >= rect.top) &&
-              (y <= rect.top + rect.height)) {
-            match = this.items[i];
-          }
+            if (x >= rect.left && x <= rect.left + rect.width && y >= rect.top && y <= rect.top + rect.height) {
+                match = this.items[i];
+            }
         });
         return match;
-      }
+    }
 
-      _getItemsRects() {
+    _getItemsRects() {
         var context = this;
         return this.items.map(item => {
-        
-          return context._getBoundingClientRect(item);
-        })
-      }
+            return context._getBoundingClientRect(item);
+        });
+    }
 
-      _getBoundingClientRect(node) {
-            var context = this;
-            var boundingRect = node.getBoundingClientRect();
-            var rect = { top: boundingRect.top, left: boundingRect.left, width: boundingRect.width, height: boundingRect.height};
-            if (context.boundingBoxAdj) {
-                rect.left -= context.boundingBoxAdj.left;
-                rect.top -= context.boundingBoxAdj.top;
-            }
-            return rect;
-      }
+    _getBoundingClientRect(node) {
+        var context = this;
+        var boundingRect = node.getBoundingClientRect();
+        var rect = {
+            top: boundingRect.top,
+            left: boundingRect.left,
+            width: boundingRect.width,
+            height: boundingRect.height
+        };
+        if (context.boundingBoxAdj) {
+            rect.left -= context.boundingBoxAdj.left;
+            rect.top -= context.boundingBoxAdj.top;
+        }
+        return rect;
+    }
 
-      _translate3d(x, y, z, el) {
+    _translate3d(x, y, z, el) {
         el.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
-      }
+    }
 
-      _moveItemArray(array, oldIndex, newIndex) {
+    _moveItemArray(array, oldIndex, newIndex) {
         if (newIndex >= array.length) {
-          var k = newIndex - array.length;
-          while ((k--) + 1) {
-          array.push(undefined);
-          }
+            var k = newIndex - array.length;
+            while (k-- + 1) {
+                array.push(undefined);
+            }
         }
         array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
         return array;
-      }
-
+    }
 }
-customElements.define('sortable-list', SortableList);
+
+customElements.define("sortable-list", SortableList);
