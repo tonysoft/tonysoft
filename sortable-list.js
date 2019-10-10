@@ -57,7 +57,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
           width: 100%;
           height: 100%;
           display: flex;
-          flew-wrap: wrap;
+          flex-wrap: wrap;
       }
     </style>
     <div id="main">
