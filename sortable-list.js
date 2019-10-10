@@ -77,6 +77,11 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 readOnly: true
             },
 
+            data: {
+                type: Array,
+                observer: "_data"
+            },
+
             dragging: {
                 type: Boolean,
                 notify: true,
@@ -99,6 +104,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         this._target = null;
         this._targetRect = null;
         this._rects = null;
+        this.data = null;
         this._onTrack = this._onTrack.bind(this);
         this._onDragStart = this._onDragStart.bind(this);
         this._onTransitionEnd = this._onTransitionEnd.bind(this);
@@ -128,6 +134,11 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         this._toggleListeners({ enable: false });
     }
 
+    _data(newData) {
+        var context = this;
+        context.priorItemOrder = null;
+    }
+
     _updateItems() {
         var context = this;
         if (this.dragging) {
@@ -141,9 +152,6 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 sortable = true && node.nodeType === Node.ELEMENT_NODE && !node.template;
             }
             if (node.nodeType === Node.ELEMENT_NODE && (node.matches(this.sortable) || sortable)) {
-                // if (sortable) {
-                //     node.style.display = "inline-block"
-                // }
                 items.push(node);
             }
         });
@@ -158,10 +166,17 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         // }
         if (!this.priorItemOrder) {
             this.priorItemOrder = [];
+            context.dataMapping = {};
             items.forEach((item, idx) => {
                 context.priorItemOrder.push(item.setAttribute("index", idx));
+                if (context.data && context.data[idx]) {
+                    let mapping = { 
+                        index: idx,
+                        data: context.data[idx]
+                    }
+                    context.dataMapping[idx] = mapping;
+                }
             });
-
         }
         this._setItems(items);
     }
@@ -311,13 +326,17 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         this._updateItems();
         this.newItemOrder = [];
         var context = this;
+        var orderedData = [];
         this.items.forEach(function(item) {
-            context.newItemOrder.push(parseInt(item.getAttribute("index")));
+            var index = item.getAttribute("index");
+            orderedData.push(context.dataMapping[index].data);
+            context.newItemOrder.push(parseInt(index));
         });
         let detail = {
             itemIndex: this._target.getAttribute("index"),
             newItemOrder: this.newItemOrder,
-            priorItemOrder: this.priorItemOrder
+            priorItemOrder: this.priorItemOrder,
+            orderedData: orderedData
         };
         this.dispatchEvent(
             new CustomEvent("sortFinish", {
