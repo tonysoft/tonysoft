@@ -56,6 +56,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
       #slot {
           width: 100%;
           height: 100%;
+          display: flex;
+          flew-wrap: wrap;
       }
     </style>
     <div id="main">
@@ -136,6 +138,9 @@ class SortableList extends GestureEventListeners(PolymerElement) {
           }
           if ((node.nodeType === Node.ELEMENT_NODE) &&
               (node.matches(this.sortable) || sortable)) {
+            // if (sortable) {
+            //     node.style.display = "inline-block"
+            // }
             items.push(node);
           }
         });
