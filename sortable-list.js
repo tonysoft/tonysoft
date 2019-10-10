@@ -47,7 +47,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
       #items {
           width: 100%;
           height: 100%;
-          position: absolute;
+          position: relative;
       }
       #main {
         position: relative; width: 100%; height: 100%;
@@ -108,6 +108,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
     ready() {
         super.ready();
         var context = this;
+        context.style.width = "100%";
+        context.style.height = "100%";
         context.parentSortable = context.sortable ? "" :  context.parentSortable || "rmx-webcomponent";
         context.sortable = context.sortable || "noMatch";
         setTimeout(function() {
