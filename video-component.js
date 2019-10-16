@@ -425,6 +425,15 @@ class VideoComponent extends PolymerElement {
         }));
     }
 
+    applyPlayState() {
+        var context = this;
+        if (context.playVideo) {
+            context.play();
+        } else {
+            context.pause();
+        }
+    }
+
     play() {
         var context = this;
         context._playVideo(true);
@@ -435,7 +444,7 @@ class VideoComponent extends PolymerElement {
         var video = context.video;
         if (newValue) {
             context.pauseVideo = false;
-            context.playTheVideo();
+//            context.playTheVideo();
         }
     }
 
