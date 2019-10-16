@@ -444,7 +444,7 @@ class VideoComponent extends PolymerElement {
         var video = context.video;
         if (newValue) {
             context.pauseVideo = false;
-//            context.playTheVideo();
+           context.playTheVideo();
         }
     }
 
