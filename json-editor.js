@@ -112,6 +112,11 @@ class JsonEditor extends PolymerElement {
                     context.dispatchEvent(new CustomEvent("node", { 
                         detail: node
                     }));
+                    if (node.value) {
+                        context.dispatchEvent(new CustomEvent("nodeValue", { 
+                            detail: node.value
+                        })); 
+                    }
                 }
             }
         };
