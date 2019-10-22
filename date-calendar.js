@@ -63,7 +63,7 @@
 import '@polymer/polymer/polymer-legacy.js';
 // import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 // import './mp-calendar-theme.js';
