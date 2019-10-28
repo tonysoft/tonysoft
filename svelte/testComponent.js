@@ -31,6 +31,7 @@ function create_fragment(ctx) {
 			attr(link, "href", "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.css");
 			attr(link, "rel", "stylesheet");
 			attr(link, "type", "text/css");
+			attr(div, "class", "editor");
 		},
 
 		m(target, anchor) {
@@ -62,9 +63,16 @@ function instance($$self, $$props, $$invalidate) {
     let options;
 	let container;
 
-	let { width = 500, height = 350, editor, json = { "test": "testing" } } = $$props;
+	let { width = null, height = null, editor, json = {} } = $$props;
 
-	
+    function getJSON() {
+        if (editor) {
+            editorEvent("json", editor.get());
+        }
+    }
+ 
+	let { getjson = false } = $$props;
+
 	const dispatch = createEventDispatcher();
 	let { mode = 'tree' } = $$props;
 	onMount(() => {
@@ -92,9 +100,24 @@ function instance($$self, $$props, $$invalidate) {
                 }
             }
         };
-        $$invalidate('container', container.style.width = width + "px", container);
-        $$invalidate('container', container.style.height = height + "px", container);
+        if (width) {
+            var widthStyle = width;
+            if (!isNaN(widthStyle)) {
+                widthStyle += "px";
+            }
+            $$invalidate('container', container.style.width = widthStyle, container);
+        }
+        if (height) {
+            var heightStyle = height;
+            if (!isNaN(heightStyle)) {
+                heightStyle += "px";
+            }
+            $$invalidate('container', container.style.height = heightStyle, container);
+        }
         $$invalidate('editor', editor = new JSONEditor(container, options));
+        setJSON();
+    }
+    function setJSON() {
         if (json.split) {
             $$invalidate('json', json = JSON.parse(json));
         }
@@ -112,7 +135,17 @@ function instance($$self, $$props, $$invalidate) {
 		if ('height' in $$props) $$invalidate('height', height = $$props.height);
 		if ('editor' in $$props) $$invalidate('editor', editor = $$props.editor);
 		if ('json' in $$props) $$invalidate('json', json = $$props.json);
+		if ('getjson' in $$props) $$invalidate('getjson', getjson = $$props.getjson);
 		if ('mode' in $$props) $$invalidate('mode', mode = $$props.mode);
+	};
+
+	$$self.$$.update = ($$dirty = { getjson: 1, json: 1, editor: 1 }) => {
+		if ($$dirty.getjson) { if (getjson && (getjson !== "false")) {
+                getJSON();
+        	} }
+		if ($$dirty.json || $$dirty.editor) { if (json && editor) {
+                setJSON();
+        	} }
 	};
 
 	return {
@@ -121,6 +154,8 @@ function instance($$self, $$props, $$invalidate) {
 		height,
 		editor,
 		json,
+		getJSON,
+		getjson,
 		mode,
 		div_binding
 	};
@@ -130,7 +165,9 @@ class Inner extends SvelteElement {
 	constructor(options) {
 		super();
 
-		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["width", "height", "editor", "json", "mode"]);
+		this.shadowRoot.innerHTML = `<style>.editor{width:100%;height:100%}</style>`;
+
+		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["width", "height", "editor", "json", "getJSON", "getjson", "mode"]);
 
 		if (options) {
 			if (options.target) {
@@ -145,7 +182,7 @@ class Inner extends SvelteElement {
 	}
 
 	static get observedAttributes() {
-		return ["width","height","editor","json","mode"];
+		return ["width","height","editor","json","getJSON","getjson","mode"];
 	}
 
 	get width() {
@@ -184,6 +221,19 @@ class Inner extends SvelteElement {
 		flush();
 	}
 
+	get getJSON() {
+		return this.$$.ctx.getJSON;
+	}
+
+	get getjson() {
+		return this.$$.ctx.getjson;
+	}
+
+	set getjson(getjson) {
+		this.$set({ getjson });
+		flush();
+	}
+
 	get mode() {
 		return this.$$.ctx.mode;
 	}
@@ -195,4 +245,4 @@ class Inner extends SvelteElement {
 }
 
 export default Inner;
-window.customElements.define('test-component', Inner);
+window.customElements.define('json-svelte', Inner);
