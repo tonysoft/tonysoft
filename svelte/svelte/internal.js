@@ -1576,10 +1576,11 @@ exports.validate_component = validate_component;
 exports.validate_store = validate_store;
 exports.xlink_attr = xlink_attr;
 
-// var exportList = "";
-// for (var exported in exports) {
-//     exportList += "export { " + exported + " }\n"
-// }
+var exportList = "";
+for (var exportid in exports) {
+    // exportList += "export { " + exported + " }\n"
+    // export exports[exported] as exportid
+}
 
 var SvelteElement = exports['SvelteElement']
 var now = exports['now']

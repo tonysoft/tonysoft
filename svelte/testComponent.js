@@ -2,7 +2,9 @@
 import {
 	SvelteElement,
 	append,
+	attr,
 	detach,
+	binding_callbacks,
 	element,
 	flush,
 	init,
@@ -11,46 +13,45 @@ import {
 	noop,
 	safe_not_equal,
 	set_data,
+	space,
 	text
 } from "./svelte/internal.js";
-import { createEventDispatcher } from "./svelte/svelte.js";
-import "https://cdn.jsdelivr.net/npm/vega@5";
+import { createEventDispatcher, onMount } from "./svelte/svelte.js";
+import "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.js"
 
 function create_fragment(ctx) {
-	var button, t0, t1, t2, dispose;
+	var link, t, div;
 
 	return {
 		c() {
-			button = element("button");
-			t0 = text("Click to say ");
-			t1 = text(ctx.message);
-			t2 = text("!!!");
+			link = element("link");
+			t = space();
+			div = element("div");
 			this.c = noop;
-			dispose = listen(button, "click", ctx.sayHello);
+			attr(link, "href", "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.css");
+			attr(link, "rel", "stylesheet");
+			attr(link, "type", "text/css");
 		},
 
 		m(target, anchor) {
-			insert(target, button, anchor);
-			append(button, t0);
-			append(button, t1);
-			append(button, t2);
+			insert(target, link, anchor);
+			insert(target, t, anchor);
+			insert(target, div, anchor);
+			ctx.div_binding(div);
 		},
 
-		p(changed, ctx) {
-			if (changed.message) {
-				set_data(t1, ctx.message);
-			}
-		},
-
+		p: noop,
 		i: noop,
 		o: noop,
 
 		d(detaching) {
 			if (detaching) {
-				detach(button);
+				detach(link);
+				detach(t);
+				detach(div);
 			}
 
-			dispose();
+			ctx.div_binding(null);
 		}
 	};
 }
@@ -58,27 +59,78 @@ function create_fragment(ctx) {
 function instance($$self, $$props, $$invalidate) {
 	
 
-	const dispatch = createEventDispatcher();
-	let { message = 'something nice' } = $$props;
+    let options;
+	let container;
 
-	function sayHello() {
-		dispatch('message', {
-			text: 'Hello!'
+	let { width = 500, height = 350, editor, json = { "test": "testing" } } = $$props;
+
+	
+	const dispatch = createEventDispatcher();
+	let { mode = 'tree' } = $$props;
+	onMount(() => {
+        setTimeout(function() {
+            createEditor();
+        });
+
+		return () => {
+			// map.remove();
+		};
+	});
+	function editorEvent(eventName, payload) {
+        dispatch(eventName, payload);
+	}
+
+    function createEditor() {
+        options = { 
+            mode: mode,
+            onEvent: function(node, event) {
+                if (event.type === 'click') {
+                    editorEvent("node", node);
+                    if (node.value) {
+                        editorEvent("nodeValue", node.value);
+                    }
+                }
+            }
+        };
+        $$invalidate('container', container.style.width = width + "px", container);
+        $$invalidate('container', container.style.height = height + "px", container);
+        $$invalidate('editor', editor = new JSONEditor(container, options));
+        if (json.split) {
+            $$invalidate('json', json = JSON.parse(json));
+        }
+        editor.set(json);
+    }
+
+	function div_binding($$value) {
+		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+			$$invalidate('container', container = $$value);
 		});
 	}
 
 	$$self.$set = $$props => {
-		if ('message' in $$props) $$invalidate('message', message = $$props.message);
+		if ('width' in $$props) $$invalidate('width', width = $$props.width);
+		if ('height' in $$props) $$invalidate('height', height = $$props.height);
+		if ('editor' in $$props) $$invalidate('editor', editor = $$props.editor);
+		if ('json' in $$props) $$invalidate('json', json = $$props.json);
+		if ('mode' in $$props) $$invalidate('mode', mode = $$props.mode);
 	};
 
-	return { message, sayHello };
+	return {
+		container,
+		width,
+		height,
+		editor,
+		json,
+		mode,
+		div_binding
+	};
 }
 
 class Inner extends SvelteElement {
 	constructor(options) {
 		super();
 
-		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["message"]);
+		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["width", "height", "editor", "json", "mode"]);
 
 		if (options) {
 			if (options.target) {
@@ -93,15 +145,51 @@ class Inner extends SvelteElement {
 	}
 
 	static get observedAttributes() {
-		return ["message"];
+		return ["width","height","editor","json","mode"];
 	}
 
-	get message() {
-		return this.$$.ctx.message;
+	get width() {
+		return this.$$.ctx.width;
 	}
 
-	set message(message) {
-		this.$set({ message });
+	set width(width) {
+		this.$set({ width });
+		flush();
+	}
+
+	get height() {
+		return this.$$.ctx.height;
+	}
+
+	set height(height) {
+		this.$set({ height });
+		flush();
+	}
+
+	get editor() {
+		return this.$$.ctx.editor;
+	}
+
+	set editor(editor) {
+		this.$set({ editor });
+		flush();
+	}
+
+	get json() {
+		return this.$$.ctx.json;
+	}
+
+	set json(json) {
+		this.$set({ json });
+		flush();
+	}
+
+	get mode() {
+		return this.$$.ctx.mode;
+	}
+
+	set mode(mode) {
+		this.$set({ mode });
 		flush();
 	}
 }
