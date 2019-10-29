@@ -17,7 +17,7 @@ import {
 	space
 } from "./svelte/internal.js";
 import { createEventDispatcher, onMount } from "./svelte/svelte.js";
-import "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.js"
+import "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor-minimalist.js"
 
 function create_fragment(ctx) {
 	var div1, div0, t0, button0, t2, button1, t4, button2, t6, link, dispose;
