@@ -11,7 +11,7 @@
         position: relative; width: 100%; height: 100%;
     }
     .editor {
-        width: 100%; height: 100%; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica; font-weight: 300; border: 1px solid #444444;            
+        width: 100%; height: 100%; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica; font-weight: 300; border: 1px solid #444444;        
     }
     .buttonActive {
         opacity: 1.0; pointer-events: all; cursor: pointer;
@@ -35,11 +35,12 @@
 	import "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor-minimalist.js"
 
     let options;
-	let container;
-	let wrapper;
+    let container;
+    let wrapper;
 	let buttonTreeMode;
 	let buttonTextMode;
 
+    let minHeight = 250;
 	export let width = null; 
 	export let height = null; 
 	export let editor; 
@@ -114,8 +115,8 @@
             }
             wrapper.style.width = widthStyle;
         }
-        if (height) {
-            var heightStyle = height;
+        if (height || minHeight) {
+            var heightStyle = height | minHeight;
             if (!isNaN(heightStyle)) {
                 heightStyle += "px";
             }

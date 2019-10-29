@@ -95,15 +95,16 @@ function create_fragment(ctx) {
 	};
 }
 
+let minHeight = 250;
+
 function instance($$self, $$props, $$invalidate) {
 	
 
     let options;
-	let container;
-	let wrapper;
+    let container;
+    let wrapper;
 	let buttonTreeMode;
 	let buttonTextMode;
-
 	let { width = null, height = null, editor, json = {}, getjson = false, mode = 'tree' } = $$props;
     
 
@@ -153,8 +154,8 @@ function instance($$self, $$props, $$invalidate) {
             }
             $$invalidate('wrapper', wrapper.style.width = widthStyle, wrapper);
         }
-        if (height) {
-            var heightStyle = height;
+        if (height || minHeight) {
+            var heightStyle = height | minHeight;
             if (!isNaN(heightStyle)) {
                 heightStyle += "px";
             }
