@@ -115,8 +115,14 @@
             }
             wrapper.style.width = widthStyle;
         }
-        if (height || minHeight) {
-            var heightStyle = height | minHeight;
+        if (!height) {
+            var offsetHeight = container.offsetHeight;
+            if (offsetHeight < minHeight) {
+                height = minHeight;
+            }
+        }
+        if (height) {
+            var heightStyle = height;
             if (!isNaN(heightStyle)) {
                 heightStyle += "px";
             }

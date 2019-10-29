@@ -154,8 +154,14 @@ function instance($$self, $$props, $$invalidate) {
             }
             $$invalidate('wrapper', wrapper.style.width = widthStyle, wrapper);
         }
-        if (height || minHeight) {
-            var heightStyle = height | minHeight;
+        if (!height) {
+            var offsetHeight = container.offsetHeight;
+            if (offsetHeight < minHeight) {
+                $$invalidate('height', height = minHeight);
+            }
+        }
+        if (height) {
+            var heightStyle = height;
             if (!isNaN(heightStyle)) {
                 heightStyle += "px";
             }
