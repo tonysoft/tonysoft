@@ -20,35 +20,32 @@ import { createEventDispatcher, onMount } from "./svelte/svelte.js";
 import "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.js"
 
 function create_fragment(ctx) {
-	var link, t0, div1, div0, t1, button0, t3, button1, t5, button2, dispose;
+	var div1, div0, t0, button0, t2, button1, t4, button2, t6, link, dispose;
 
 	return {
 		c() {
-			link = element("link");
-			t0 = space();
 			div1 = element("div");
 			div0 = element("div");
-			t1 = space();
+			t0 = space();
 			button0 = element("button");
 			button0.textContent = "Get";
-			t3 = space();
+			t2 = space();
 			button1 = element("button");
 			button1.textContent = "Tree";
-			t5 = space();
+			t4 = space();
 			button2 = element("button");
 			button2.textContent = "Text";
+			t6 = space();
+			link = element("link");
 			this.c = noop;
-			attr(link, "href", "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.css");
-			attr(link, "rel", "stylesheet");
-			attr(link, "type", "text/css");
 			attr(div0, "class", "editor");
 			attr(button0, "class", "getJSON buttonActive");
-			set_style(button0, "position", "absolute");
-			set_style(button0, "bottom", "4px");
-			set_style(button0, "right", "23px");
 			attr(button1, "class", "treeMode buttonActive buttonInactive");
 			attr(button2, "class", "textMode buttonActive");
 			attr(div1, "class", "wrapper");
+			attr(link, "href", "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.css");
+			attr(link, "rel", "stylesheet");
+			attr(link, "type", "text/css");
 
 			dispose = [
 				listen(button0, "click", ctx.getJSON),
@@ -58,20 +55,20 @@ function create_fragment(ctx) {
 		},
 
 		m(target, anchor) {
-			insert(target, link, anchor);
-			insert(target, t0, anchor);
 			insert(target, div1, anchor);
 			append(div1, div0);
 			ctx.div0_binding(div0);
-			append(div1, t1);
+			append(div1, t0);
 			append(div1, button0);
-			append(div1, t3);
+			append(div1, t2);
 			append(div1, button1);
 			ctx.button1_binding(button1);
-			append(div1, t5);
+			append(div1, t4);
 			append(div1, button2);
 			ctx.button2_binding(button2);
 			ctx.div1_binding(div1);
+			insert(target, t6, anchor);
+			insert(target, link, anchor);
 		},
 
 		p: noop,
@@ -80,8 +77,6 @@ function create_fragment(ctx) {
 
 		d(detaching) {
 			if (detaching) {
-				detach(link);
-				detach(t0);
 				detach(div1);
 			}
 
@@ -89,6 +84,12 @@ function create_fragment(ctx) {
 			ctx.button1_binding(null);
 			ctx.button2_binding(null);
 			ctx.div1_binding(null);
+
+			if (detaching) {
+				detach(t6);
+				detach(link);
+			}
+
 			run_all(dispose);
 		}
 	};
@@ -125,11 +126,10 @@ function instance($$self, $$props, $$invalidate) {
         setTimeout(function() {
             createEditor();
         });
-
 		return () => {
-			// map.remove();
 		};
 	});
+
 	function editorEvent(eventName, payload) {
         dispatch(eventName, payload);
 	}
@@ -254,7 +254,7 @@ class Inner extends SvelteElement {
 	constructor(options) {
 		super();
 
-		this.shadowRoot.innerHTML = `<style>.wrapper{position:relative;width:100%;height:100%}.editor{width:100%;height:100%;font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;font-weight:300;border:1px solid #444444}.buttonActive{opacity:1.0;pointer-events:all;cursor:pointer}.buttonInactive{opacity:0.4;pointer-events:none;cursor:default}.getJSON{position:absolute;bottom:4px;right:83px}.treeMode{position:absolute;bottom:4px;right:83px}.textMode{position:absolute;bottom:4px;right:143px}</style>`;
+		this.shadowRoot.innerHTML = `<style>.wrapper{position:relative;width:100%;height:100%}.editor{width:100%;height:100%;font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;font-weight:300;border:1px solid #444444}.buttonActive{opacity:1.0;pointer-events:all;cursor:pointer}.buttonInactive{opacity:0.4;pointer-events:none;cursor:default}.getJSON{position:absolute;bottom:4px;right:23px}.treeMode{position:absolute;bottom:4px;right:83px}.textMode{position:absolute;bottom:4px;right:143px}</style>`;
 
 		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["width", "height", "editor", "json", "getjson", "mode", "getJSON"]);
 

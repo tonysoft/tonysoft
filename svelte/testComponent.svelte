@@ -1,3 +1,10 @@
+<div class="wrapper" bind:this={wrapper}>
+    <div class="editor" bind:this={container}></div>
+    <button on:click={getJSON} class="getJSON buttonActive">Get</button>
+    <button on:click={treeMode} class="treeMode buttonActive buttonInactive" bind:this={buttonTreeMode}>Tree</button>
+    <button on:click={textMode} class="textMode buttonActive" bind:this={buttonTextMode}>Text</button>
+</div>
+
 <link href="https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.css" rel="stylesheet" type="text/css">
 <style>
     .wrapper {
@@ -13,7 +20,7 @@
         opacity: 0.4; pointer-events: none; cursor: default;
     }
     .getJSON {
-        position: absolute; bottom: 4px; right:83px;
+        position: absolute; bottom: 4px; right:23px;;
     }
     .treeMode {
         position: absolute; bottom: 4px; right:83px;
@@ -23,16 +30,9 @@
     }
 </style>
 
-<div class="wrapper" bind:this={wrapper}>
-    <div class="editor" bind:this={container}></div>
-    <button on:click={getJSON} class="getJSON buttonActive" style="position: absolute; bottom: 4px; right:23px;">Get</button>
-    <button on:click={treeMode} class="treeMode buttonActive buttonInactive" bind:this={buttonTreeMode}>Tree</button>
-    <button on:click={textMode} class="textMode buttonActive" bind:this={buttonTextMode}>Text</button>
-</div>
-
 <script>
 	import { createEventDispatcher, onMount } from 'svelte';
-	import "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.js"
+	import "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor-minimalist.js"
 
     let options;
 	let container;
@@ -87,11 +87,10 @@
         setTimeout(function() {
             createEditor();
         });
-
 		return () => {
-			// map.remove();
 		};
 	});
+
 	function editorEvent(eventName, payload) {
         dispatch(eventName, payload);
 	}
