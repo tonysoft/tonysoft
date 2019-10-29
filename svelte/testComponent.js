@@ -39,7 +39,7 @@ function create_fragment(ctx) {
 			link = element("link");
 			this.c = noop;
 			attr(div0, "class", "editor");
-			attr(button0, "class", "getJSON buttonActive");
+			attr(button0, "class", "readJSON buttonActive");
 			attr(button1, "class", "treeMode buttonActive buttonInactive");
 			attr(button2, "class", "textMode buttonActive");
 			attr(div1, "class", "wrapper");
@@ -48,7 +48,7 @@ function create_fragment(ctx) {
 			attr(link, "type", "text/css");
 
 			dispose = [
-				listen(button0, "click", ctx.getJSON),
+				listen(button0, "click", ctx.readJSON),
 				listen(button1, "click", ctx.treeMode),
 				listen(button2, "click", ctx.textMode)
 			];
@@ -108,7 +108,7 @@ function instance($$self, $$props, $$invalidate) {
 	let { width = null, height = null, editor, json = {}, getjson = false, mode = 'tree' } = $$props;
     
 
-    function getJSON() {
+    function readJSON() {
         if (editor) {
             editorEvent("json", editor.get());
         }
@@ -140,10 +140,10 @@ function instance($$self, $$props, $$invalidate) {
             mode: mode,
             onEvent: function(node, event) {
                 if (event.type === 'click') {
-                    editorEvent("node", node);
                     if (node.value) {
                         editorEvent("nodeValue", node.value);
                     }
+                    editorEvent("node", node);
                 }
             }
         };
@@ -218,7 +218,7 @@ function instance($$self, $$props, $$invalidate) {
 
 	$$self.$$.update = ($$dirty = { getjson: 1, json: 1, editor: 1, mode: 1, buttonTreeMode: 1, buttonTextMode: 1 }) => {
 		if ($$dirty.getjson) { if (getjson && (getjson !== "false")) {
-                getJSON();
+                readJSON();
         	} }
 		if ($$dirty.json || $$dirty.editor) { if (json && editor) {
                 setJSON();
@@ -247,7 +247,7 @@ function instance($$self, $$props, $$invalidate) {
 		json,
 		getjson,
 		mode,
-		getJSON,
+		readJSON,
 		treeMode,
 		textMode,
 		div0_binding,
@@ -261,9 +261,9 @@ class Inner extends SvelteElement {
 	constructor(options) {
 		super();
 
-		this.shadowRoot.innerHTML = `<style>.wrapper{position:relative;width:100%;height:100%}.editor{width:100%;height:100%;font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;font-weight:300;border:1px solid #444444}.buttonActive{opacity:1.0;pointer-events:all;cursor:pointer}.buttonInactive{opacity:0.4;pointer-events:none;cursor:default}.getJSON{position:absolute;bottom:4px;right:23px}.treeMode{position:absolute;bottom:4px;right:83px}.textMode{position:absolute;bottom:4px;right:143px}</style>`;
+		this.shadowRoot.innerHTML = `<style>.wrapper{position:relative;width:100%;height:100%}.editor{width:100%;height:100%;font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;font-weight:300;border:1px solid #444444}.buttonActive{opacity:1.0;pointer-events:all;cursor:pointer}.buttonInactive{opacity:0.4;pointer-events:none;cursor:default}.readJSON{position:absolute;bottom:4px;right:23px}.treeMode{position:absolute;bottom:4px;right:83px}.textMode{position:absolute;bottom:4px;right:143px}</style>`;
 
-		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["width", "height", "editor", "json", "getjson", "mode", "getJSON"]);
+		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["width", "height", "editor", "json", "getjson", "mode", "readJSON"]);
 
 		if (options) {
 			if (options.target) {
@@ -278,7 +278,7 @@ class Inner extends SvelteElement {
 	}
 
 	static get observedAttributes() {
-		return ["width","height","editor","json","getjson","mode","getJSON"];
+		return ["width","height","editor","json","getjson","mode","readJSON"];
 	}
 
 	get width() {
@@ -335,8 +335,8 @@ class Inner extends SvelteElement {
 		flush();
 	}
 
-	get getJSON() {
-		return this.$$.ctx.getJSON;
+	get readJSON() {
+		return this.$$.ctx.readJSON;
 	}
 }
 

@@ -1,6 +1,6 @@
 <div class="wrapper" bind:this={wrapper}>
     <div class="editor" bind:this={container}></div>
-    <button on:click={getJSON} class="getJSON buttonActive">Get</button>
+    <button on:click={readJSON} class="readJSON buttonActive">Get</button>
     <button on:click={treeMode} class="treeMode buttonActive buttonInactive" bind:this={buttonTreeMode}>Tree</button>
     <button on:click={textMode} class="textMode buttonActive" bind:this={buttonTextMode}>Text</button>
 </div>
@@ -19,7 +19,7 @@
     .buttonInactive {
         opacity: 0.4; pointer-events: none; cursor: default;
     }
-    .getJSON {
+    .readJSON {
         position: absolute; bottom: 4px; right:23px;;
     }
     .treeMode {
@@ -49,7 +49,7 @@
 	export let mode = 'tree';
     
 
-    export function getJSON() {
+    export function readJSON() {
         if (editor) {
             editorEvent("json", editor.get());
         }
@@ -64,7 +64,7 @@
     }
  
 	$: if (getjson && (getjson !== "false")) {
-        getJSON();
+        readJSON();
 	}
 
 	$: if (json && editor) {
@@ -101,10 +101,10 @@
             mode: mode,
             onEvent: function(node, event) {
                 if (event.type === 'click') {
-                    editorEvent("node", node);
                     if (node.value) {
                         editorEvent("nodeValue", node.value);
                     }
+                    editorEvent("node", node);
                 }
             }
         };
