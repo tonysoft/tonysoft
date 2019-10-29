@@ -3,42 +3,81 @@ import {
 	SvelteElement,
 	append,
 	attr,
-	detach,
 	binding_callbacks,
+	detach,
 	element,
 	flush,
 	init,
 	insert,
 	listen,
 	noop,
+	run_all,
 	safe_not_equal,
-	set_data,
-	space,
-	text
+	set_style,
+	space
 } from "./svelte/internal.js";
 import { createEventDispatcher, onMount } from "./svelte/svelte.js";
 import "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.js"
 
 function create_fragment(ctx) {
-	var link, t, div;
+	var link, t0, div1, div0, t1, button0, t3, button1, t5, button2, dispose;
 
 	return {
 		c() {
 			link = element("link");
-			t = space();
-			div = element("div");
+			t0 = space();
+			div1 = element("div");
+			div0 = element("div");
+			t1 = space();
+			button0 = element("button");
+			button0.textContent = "Get";
+			t3 = space();
+			button1 = element("button");
+			button1.textContent = "Tree";
+			t5 = space();
+			button2 = element("button");
+			button2.textContent = "Text";
 			this.c = noop;
 			attr(link, "href", "https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.css");
 			attr(link, "rel", "stylesheet");
 			attr(link, "type", "text/css");
-			attr(div, "class", "editor");
+			attr(div0, "class", "editor");
+			attr(button0, "class", "buttonActive");
+			set_style(button0, "position", "absolute");
+			set_style(button0, "bottom", "4px");
+			set_style(button0, "right", "23px");
+			attr(button1, "class", "buttonActive buttonInactive");
+			set_style(button1, "position", "absolute");
+			set_style(button1, "bottom", "4px");
+			set_style(button1, "right", "83px");
+			attr(button2, "class", "buttonActive");
+			set_style(button2, "position", "absolute");
+			set_style(button2, "bottom", "4px");
+			set_style(button2, "right", "143px");
+			attr(div1, "class", "wrapper");
+
+			dispose = [
+				listen(button0, "click", ctx.getJSON),
+				listen(button1, "click", ctx.treeMode),
+				listen(button2, "click", ctx.textMode)
+			];
 		},
 
 		m(target, anchor) {
 			insert(target, link, anchor);
-			insert(target, t, anchor);
-			insert(target, div, anchor);
-			ctx.div_binding(div);
+			insert(target, t0, anchor);
+			insert(target, div1, anchor);
+			append(div1, div0);
+			ctx.div0_binding(div0);
+			append(div1, t1);
+			append(div1, button0);
+			append(div1, t3);
+			append(div1, button1);
+			ctx.button1_binding(button1);
+			append(div1, t5);
+			append(div1, button2);
+			ctx.button2_binding(button2);
+			ctx.div1_binding(div1);
 		},
 
 		p: noop,
@@ -48,11 +87,15 @@ function create_fragment(ctx) {
 		d(detaching) {
 			if (detaching) {
 				detach(link);
-				detach(t);
-				detach(div);
+				detach(t0);
+				detach(div1);
 			}
 
-			ctx.div_binding(null);
+			ctx.div0_binding(null);
+			ctx.button1_binding(null);
+			ctx.button2_binding(null);
+			ctx.div1_binding(null);
+			run_all(dispose);
 		}
 	};
 }
@@ -62,8 +105,12 @@ function instance($$self, $$props, $$invalidate) {
 
     let options;
 	let container;
+	let wrapper;
+	let buttonTreeMode;
+	let buttonTextMode;
 
-	let { width = null, height = null, editor, json = {} } = $$props;
+	let { width = null, height = null, editor, json = {}, getjson = false, mode = 'tree' } = $$props;
+    
 
     function getJSON() {
         if (editor) {
@@ -71,10 +118,15 @@ function instance($$self, $$props, $$invalidate) {
         }
     }
  
-	let { getjson = false } = $$props;
+    function treeMode() {
+        $$invalidate('mode', mode = "tree");
+    }
+ 
+    function textMode() {
+        $$invalidate('mode', mode = "text");
+    }
 
 	const dispatch = createEventDispatcher();
-	let { mode = 'tree' } = $$props;
 	onMount(() => {
         setTimeout(function() {
             createEditor();
@@ -105,18 +157,24 @@ function instance($$self, $$props, $$invalidate) {
             if (!isNaN(widthStyle)) {
                 widthStyle += "px";
             }
-            $$invalidate('container', container.style.width = widthStyle, container);
+            $$invalidate('wrapper', wrapper.style.width = widthStyle, wrapper);
         }
         if (height) {
             var heightStyle = height;
             if (!isNaN(heightStyle)) {
                 heightStyle += "px";
             }
-            $$invalidate('container', container.style.height = heightStyle, container);
+            $$invalidate('wrapper', wrapper.style.height = heightStyle, wrapper);
         }
+        newEditor();
+    }
+
+    function newEditor() {
+        $$invalidate('container', container.innerHTML = "", container);
         $$invalidate('editor', editor = new JSONEditor(container, options));
         setJSON();
     }
+
     function setJSON() {
         if (json.split) {
             $$invalidate('json', json = JSON.parse(json));
@@ -124,9 +182,27 @@ function instance($$self, $$props, $$invalidate) {
         editor.set(json);
     }
 
-	function div_binding($$value) {
+	function div0_binding($$value) {
 		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
 			$$invalidate('container', container = $$value);
+		});
+	}
+
+	function button1_binding($$value) {
+		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+			$$invalidate('buttonTreeMode', buttonTreeMode = $$value);
+		});
+	}
+
+	function button2_binding($$value) {
+		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+			$$invalidate('buttonTextMode', buttonTextMode = $$value);
+		});
+	}
+
+	function div1_binding($$value) {
+		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+			$$invalidate('wrapper', wrapper = $$value);
 		});
 	}
 
@@ -139,25 +215,44 @@ function instance($$self, $$props, $$invalidate) {
 		if ('mode' in $$props) $$invalidate('mode', mode = $$props.mode);
 	};
 
-	$$self.$$.update = ($$dirty = { getjson: 1, json: 1, editor: 1 }) => {
+	$$self.$$.update = ($$dirty = { getjson: 1, json: 1, editor: 1, mode: 1, buttonTreeMode: 1, buttonTextMode: 1 }) => {
 		if ($$dirty.getjson) { if (getjson && (getjson !== "false")) {
                 getJSON();
         	} }
 		if ($$dirty.json || $$dirty.editor) { if (json && editor) {
                 setJSON();
         	} }
+		if ($$dirty.mode || $$dirty.editor || $$dirty.buttonTreeMode || $$dirty.buttonTextMode) { if (mode && editor) {
+                options.mode = mode;
+                newEditor();
+                if (mode === "tree") {
+                    buttonTreeMode.classList.add("buttonInactive");
+                    buttonTextMode.classList.remove("buttonInactive");
+                } else {
+                    buttonTreeMode.classList.remove("buttonInactive");
+                    buttonTextMode.classList.add("buttonInactive");
+                }
+        	} }
 	};
 
 	return {
 		container,
+		wrapper,
+		buttonTreeMode,
+		buttonTextMode,
 		width,
 		height,
 		editor,
 		json,
-		getJSON,
 		getjson,
 		mode,
-		div_binding
+		getJSON,
+		treeMode,
+		textMode,
+		div0_binding,
+		button1_binding,
+		button2_binding,
+		div1_binding
 	};
 }
 
@@ -165,9 +260,9 @@ class Inner extends SvelteElement {
 	constructor(options) {
 		super();
 
-		this.shadowRoot.innerHTML = `<style>.editor{width:100%;height:100%}</style>`;
+		this.shadowRoot.innerHTML = `<style>.wrapper{position:relative;width:100%;height:100%}.editor{width:100%;height:100%}.buttonActive{opacity:1.0;pointer-events:all;cursor:pointer}.buttonInactive{opacity:0.4;pointer-events:none;cursor:default}</style>`;
 
-		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["width", "height", "editor", "json", "getJSON", "getjson", "mode"]);
+		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["width", "height", "editor", "json", "getjson", "mode", "getJSON"]);
 
 		if (options) {
 			if (options.target) {
@@ -182,7 +277,7 @@ class Inner extends SvelteElement {
 	}
 
 	static get observedAttributes() {
-		return ["width","height","editor","json","getJSON","getjson","mode"];
+		return ["width","height","editor","json","getjson","mode","getJSON"];
 	}
 
 	get width() {
@@ -221,10 +316,6 @@ class Inner extends SvelteElement {
 		flush();
 	}
 
-	get getJSON() {
-		return this.$$.ctx.getJSON;
-	}
-
 	get getjson() {
 		return this.$$.ctx.getjson;
 	}
@@ -241,6 +332,10 @@ class Inner extends SvelteElement {
 	set mode(mode) {
 		this.$set({ mode });
 		flush();
+	}
+
+	get getJSON() {
+		return this.$$.ctx.getJSON;
 	}
 }
 

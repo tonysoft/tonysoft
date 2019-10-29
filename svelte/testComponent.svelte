@@ -1,12 +1,32 @@
 <link href="https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.css" rel="stylesheet" type="text/css">
 <style>
+    .wrapper {
+        position: relative; 
+        width: 100%;
+        height: 100%;
+    }
     .editor {
         width: 100%;
         height: 100%;
     }
+    .buttonActive {
+        opacity: 1.0;
+        pointer-events: all;
+        cursor: pointer;
+    }
+    .buttonInactive {
+        opacity: 0.4;
+        pointer-events: none;
+        cursor: default;
+    }
 </style>
 
-<div class="editor" bind:this={container}></div>
+<div class="wrapper" bind:this={wrapper}>
+    <div class="editor" bind:this={container}></div>
+    <button on:click={getJSON} class="buttonActive" style="position: absolute; bottom: 4px; right:23px;">Get</button>
+    <button on:click={treeMode} class="buttonActive buttonInactive" style="position: absolute; bottom: 4px; right:83px;" bind:this={buttonTreeMode}>Tree</button>
+    <button on:click={textMode} class="buttonActive" style="position: absolute; bottom: 4px; right:143px;" bind:this={buttonTextMode}>Text</button>
+</div>
 
 <script>
 	import { createEventDispatcher, onMount } from 'svelte';
@@ -14,11 +34,17 @@
 
     let options;
 	let container;
+	let wrapper;
+	let buttonTreeMode;
+	let buttonTextMode;
 
 	export let width = null; 
 	export let height = null; 
 	export let editor; 
     export let json = {};
+	export let getjson = false;
+	export let mode = 'tree';
+    
 
     export function getJSON() {
         if (editor) {
@@ -26,8 +52,14 @@
         }
     }
  
-	export let getjson = false;
-
+    function treeMode() {
+        mode = "tree";
+    }
+ 
+    function textMode() {
+        mode = "text";
+    }
+ 
 	$: if (getjson && (getjson !== "false")) {
         getJSON();
 	}
@@ -36,8 +68,19 @@
         setJSON();
 	}
 
+	$: if (mode && editor) {
+        options.mode = mode;
+        newEditor();
+        if (mode === "tree") {
+            buttonTreeMode.classList.add("buttonInactive");
+            buttonTextMode.classList.remove("buttonInactive");
+        } else {
+            buttonTreeMode.classList.remove("buttonInactive");
+            buttonTextMode.classList.add("buttonInactive");
+        }
+	}
+
 	const dispatch = createEventDispatcher();
-	export let mode = 'tree';
 	onMount(() => {
         setTimeout(function() {
             createEditor();
@@ -68,18 +111,24 @@
             if (!isNaN(widthStyle)) {
                 widthStyle += "px";
             }
-            container.style.width = widthStyle;
+            wrapper.style.width = widthStyle;
         }
         if (height) {
             var heightStyle = height;
             if (!isNaN(heightStyle)) {
                 heightStyle += "px";
             }
-            container.style.height = heightStyle;
+            wrapper.style.height = heightStyle;
         }
+        newEditor();
+    }
+
+    function newEditor() {
+        container.innerHTML = "";
         editor = new JSONEditor(container, options);
         setJSON();
     }
+
     function setJSON() {
         if (json.split) {
             json = JSON.parse(json);
