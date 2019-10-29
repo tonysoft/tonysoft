@@ -1,31 +1,33 @@
 <link href="https://unpkg.com/jsoneditor@7.0.3/dist/jsoneditor.css" rel="stylesheet" type="text/css">
 <style>
     .wrapper {
-        position: relative; 
-        width: 100%;
-        height: 100%;
+        position: relative; width: 100%; height: 100%;
     }
     .editor {
-        width: 100%;
-        height: 100%;
+        width: 100%; height: 100%; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica; font-weight: 300; border: 1px solid #444444;            
     }
     .buttonActive {
-        opacity: 1.0;
-        pointer-events: all;
-        cursor: pointer;
+        opacity: 1.0; pointer-events: all; cursor: pointer;
     }
     .buttonInactive {
-        opacity: 0.4;
-        pointer-events: none;
-        cursor: default;
+        opacity: 0.4; pointer-events: none; cursor: default;
+    }
+    .getJSON {
+        position: absolute; bottom: 4px; right:83px;
+    }
+    .treeMode {
+        position: absolute; bottom: 4px; right:83px;
+    }
+    .textMode {
+        position: absolute; bottom: 4px; right:143px;
     }
 </style>
 
 <div class="wrapper" bind:this={wrapper}>
     <div class="editor" bind:this={container}></div>
-    <button on:click={getJSON} class="buttonActive" style="position: absolute; bottom: 4px; right:23px;">Get</button>
-    <button on:click={treeMode} class="buttonActive buttonInactive" style="position: absolute; bottom: 4px; right:83px;" bind:this={buttonTreeMode}>Tree</button>
-    <button on:click={textMode} class="buttonActive" style="position: absolute; bottom: 4px; right:143px;" bind:this={buttonTextMode}>Text</button>
+    <button on:click={getJSON} class="getJSON buttonActive" style="position: absolute; bottom: 4px; right:23px;">Get</button>
+    <button on:click={treeMode} class="treeMode buttonActive buttonInactive" bind:this={buttonTreeMode}>Tree</button>
+    <button on:click={textMode} class="textMode buttonActive" bind:this={buttonTextMode}>Text</button>
 </div>
 
 <script>

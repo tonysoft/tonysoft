@@ -42,18 +42,12 @@ function create_fragment(ctx) {
 			attr(link, "rel", "stylesheet");
 			attr(link, "type", "text/css");
 			attr(div0, "class", "editor");
-			attr(button0, "class", "buttonActive");
+			attr(button0, "class", "getJSON buttonActive");
 			set_style(button0, "position", "absolute");
 			set_style(button0, "bottom", "4px");
 			set_style(button0, "right", "23px");
-			attr(button1, "class", "buttonActive buttonInactive");
-			set_style(button1, "position", "absolute");
-			set_style(button1, "bottom", "4px");
-			set_style(button1, "right", "83px");
-			attr(button2, "class", "buttonActive");
-			set_style(button2, "position", "absolute");
-			set_style(button2, "bottom", "4px");
-			set_style(button2, "right", "143px");
+			attr(button1, "class", "treeMode buttonActive buttonInactive");
+			attr(button2, "class", "textMode buttonActive");
 			attr(div1, "class", "wrapper");
 
 			dispose = [
@@ -260,7 +254,7 @@ class Inner extends SvelteElement {
 	constructor(options) {
 		super();
 
-		this.shadowRoot.innerHTML = `<style>.wrapper{position:relative;width:100%;height:100%}.editor{width:100%;height:100%}.buttonActive{opacity:1.0;pointer-events:all;cursor:pointer}.buttonInactive{opacity:0.4;pointer-events:none;cursor:default}</style>`;
+		this.shadowRoot.innerHTML = `<style>.wrapper{position:relative;width:100%;height:100%}.editor{width:100%;height:100%;font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;font-weight:300;border:1px solid #444444}.buttonActive{opacity:1.0;pointer-events:all;cursor:pointer}.buttonInactive{opacity:0.4;pointer-events:none;cursor:default}.getJSON{position:absolute;bottom:4px;right:83px}.treeMode{position:absolute;bottom:4px;right:83px}.textMode{position:absolute;bottom:4px;right:143px}</style>`;
 
 		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["width", "height", "editor", "json", "getjson", "mode", "getJSON"]);
 
