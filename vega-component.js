@@ -520,8 +520,9 @@ class VegaComponent extends PolymerElement {
       if (!vegaTarget) {
         vegaTarget = context.shadowRoot.querySelector("#content");
       }
+      var renderer = context.vegaSpec.renderer || "svg";
       var view = new vega.View(vega.parse(spec), {
-        renderer:  'svg',  // renderer (canvas or svg)
+        renderer:  renderer,  // renderer (canvas or svg)
         container: vegaTarget,   // parent DOM container
         hover:     true       // enable hover processing
       });
