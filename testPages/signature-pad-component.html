@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Signature Pad Test</title>
+        <meta charset="utf-8">
+
+        <script>
+            var origCustomElementsDefine = customElements.define.bind(customElements);
+            customElements.define = function(name, target) {
+                customElements.get(name) || origCustomElementsDefine(name, target);
+            };
+        </script>
+        <style>
+            .editor {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+        <script type="module">
+            import { Grail } from './svelte/js/grail.js'
+            // import './js/signature-pad-bundle.js'
+            import './svelte/signature-pad.js'
+            var svelte = null;
+            var startupInterval = setInterval(function() {
+                svelte = document.querySelector("signature-pad");
+                svelte.addEventListener('signature', function(e) {
+                    var payload = e.detail;
+                    console.log(payload);
+                    document.querySelector("#signature").src = payload.dataUri;
+                    svelte.clearbuttons = svelte.clearbuttons === false ? true : false;
+                    svelte.savebuttons = svelte.savebuttons === false ? true : false;
+                });
+                svelte.addEventListener('pointData', function(e) {
+                    var payload = e.detail;
+                    var grail = new Grail();
+                    var points = payload[0].points
+                    flipPoints(points, svelte.parentNode.offsetHeight);
+                    var character = grail.Init(grail, points);
+                    document.querySelector("#recogized").innerHTML = character;
+                });
+                clearInterval(startupInterval);
+                document.querySelector("#png").addEventListener('click', function(e) {
+                    svelte.savePNG();
+                })
+                document.querySelector("#svg").addEventListener('click', function(e) {
+                    svelte.saveSVG();
+                })
+                document.querySelector("#clear").addEventListener('click', function(e) {
+                    svelte.clearPad();
+                })
+                document.querySelector("#undo").addEventListener('click', function(e) {
+                    svelte.undo();
+                })
+                document.querySelector("#data").addEventListener('click', function(e) {
+                    svelte.getData();
+                })
+            }, 100);
+            function flipPoints(points, height) {
+                points.forEach(function(point) {
+                    point.y = height - point.y;
+                })
+            }
+        </script>
+    </head>
+
+    <body style="margin: 0;">
+        <div style="height: 400px; width: 600px; border: 1px solid black;">
+            <signature-pad clearbuttonsx savebuttonsx download></signature-pad>
+        </div>
+        <br/>
+        <div>
+            <button id="clear" onclickx="clearPad()" >Clear</button>
+            <button id="undo" onclickx="undo()" >Undo</button>
+            <button id="png" onclickx="savePNG()" >Save as PNG</button>
+            <button id="svg" onclickx="saveSVG()" >Save as SVG</button>
+            <button id="data" onclickx="getData()" >Get Data</button>
+        </div>
+        <br/>
+        <div style="height: 400px; width: 600px; border: 1px solid black;">
+            <img id="signature" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="width: 100%; height: 100%;"></img>
+        </div>
+        <br/>
+        <div id="recogized"></div>
+    </body>
+</html>
