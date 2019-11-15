@@ -57,17 +57,12 @@ Object.defineProperty(exports, 'tick', {
 	}
 });
 
-// var exportList = "";
-// for (var exported in exports) {
-//     exportList += "let " + exported + " = exports['" + exported + "']; export { " + exported + " }\n"
-// }
+var exportList = "";
+for (var exported in exports) {
+    exportList += "export { " + exported + " }\n"
+}
 
-let afterUpdate = exports['afterUpdate']; export { afterUpdate }
-let beforeUpdate = exports['beforeUpdate']; export { beforeUpdate }
-let createEventDispatcher = exports['createEventDispatcher']; export { createEventDispatcher }
-let getContext = exports['getContext']; export { getContext }
-let onDestroy = exports['onDestroy']; export { onDestroy }
-let onMount = exports['onMount']; export { onMount }
-let setContext = exports['setContext']; export { setContext }
-let tick = exports['tick']; export { tick }
+var createEventDispatcher = exports['createEventDispatcher']
+
+export { createEventDispatcher }
 

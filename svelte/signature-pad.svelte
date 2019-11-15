@@ -88,11 +88,7 @@
 
 	const dispatch = createEventDispatcher();
 	onMount(() => {
-        setTimeout(function() {
-            createPad();
-        });
-		return () => {
-		};
+        createPad();
 	});
 
     function checkActionButtons() {
@@ -108,12 +104,9 @@
                         velocityFilterWeight: velocityfilterweight,
                         backgroundColor: background,
                         penColor: pen };
-        setTimeout(function() {
-            resizeCanvas();
-            signaturePad = new SignaturePad(canvas, options);
-
-            clearPad();
-        }, 100);
+        resizeCanvas();
+        signaturePad = new SignaturePad(canvas, options);
+        clearPad();
     }
 
     export function getData() {

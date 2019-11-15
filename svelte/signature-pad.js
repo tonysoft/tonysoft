@@ -164,11 +164,7 @@ function instance($$self, $$props, $$invalidate) {
 
 	const dispatch = createEventDispatcher();
 	onMount(() => {
-        setTimeout(function() {
-            createPad();
-        });
-		return () => {
-		};
+        createPad();
 	});
 
     function checkActionButtons() {
@@ -184,12 +180,9 @@ function instance($$self, $$props, $$invalidate) {
                         velocityFilterWeight: velocityfilterweight,
                         backgroundColor: background,
                         penColor: pen };
-        setTimeout(function() {
-            resizeCanvas();
-            signaturePad = new SignaturePad(canvas, options);
-
-            clearPad();
-        }, 100);
+        resizeCanvas();
+        signaturePad = new SignaturePad(canvas, options);
+        clearPad();
     }
 
     function getData() {
