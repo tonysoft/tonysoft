@@ -1220,23 +1220,25 @@ var Grail = function () {
     }
 
 
-    function Recognize(grail, pointsSets, height) {
+    function Recognize(pointsSets, bFlip) {
         var characters = "";
         pointsSets.forEach(function(pointSet) {
             var index = 0;
             var points = pointSet.points;
             points = JSON.parse(JSON.stringify(points));
-            flipPoints(points, height);
+            if (bFlip) {
+                flipPoints(points);
+            }
             Init();
             points.forEach(function(pos) {
                 if (index === 0) {
-                    grail.OnPenDown(pos);
+                    OnPenDown(pos);
                 } else {
-                    grail.OnPenMove(pos);
+                    OnPenMove(pos);
                 }
                 index++;
             });
-            characters += grail.OnPenUp();
+            characters += OnPenUp();
         });
         return characters;
     }
@@ -1266,9 +1268,9 @@ var Grail = function () {
         }
    }
 
-    function flipPoints(points, height) {
+    function flipPoints(points) {
         points.forEach(function(point) {
-            point.y = height - point.y;
+            point.y *= -1;
         })
     }
 

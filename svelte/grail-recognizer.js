@@ -42,10 +42,10 @@ function instance($$self, $$props, $$invalidate) {
                 if (!grail) {
                     $$invalidate('grail', grail = new Grail());
                 }
-                if (pointsets.split) {  // data passed in a string rather than array
+                if (typeof pointsets === "string") {  // data passed in a string rather than array
                     $$invalidate('pointsets', pointsets = JSON.parse(pointsets));
                 }
-                var recognized = grail.Recognize(grail, pointsets, 0);
+                var recognized = grail.Recognize(pointsets, true);
                 dispatch("recognized", recognized);
         	} }
 	};
