@@ -50,7 +50,7 @@ function instance($$self, $$props, $$invalidate) {
                 download(content, "application/json");
                 $$invalidate('json', json = {});
             }
-        }, 100);
+        });
     }
  
     function downloadText() {
@@ -60,7 +60,7 @@ function instance($$self, $$props, $$invalidate) {
                 download(content, "text/plain");
                 $$invalidate('text', text = "");
             }
-        }, 100);
+        });
 	}
 
 	const dispatch = createEventDispatcher();

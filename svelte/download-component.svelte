@@ -17,7 +17,7 @@
                 download(content, "application/json");
                 json = {};
             }
-        }, 100);
+        });
     }
  
     export function downloadText() {
@@ -27,7 +27,7 @@
                 download(content, "text/plain");
                 text = "";
             }
-        }, 100);
+        });
 	}
 
 	const dispatch = createEventDispatcher();
