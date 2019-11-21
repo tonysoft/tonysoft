@@ -39,24 +39,28 @@ function instance($$self, $$props, $$invalidate) {
 	let { filename = "test.json", json, text } = $$props;
 
     function downloadJSON() {
-        var content = "{}";
-        if (!json.length) {
-            content = JSON.stringify(json);
-        } else {
-            content = json;
-        }
-        if (content !== "{}") {
-            download(content, "application/json");
-            $$invalidate('json', json = {});
-        }
+        setTimeout(function() {
+            var content = "{}";
+            if (!json.length) {
+                content = JSON.stringify(json);
+            } else {
+                content = json;
+            }
+            if (content !== "{}") {
+                download(content, "application/json");
+                $$invalidate('json', json = {});
+            }
+        }, 100);
     }
  
     function downloadText() {
-        if (text !== "") {
-            var content = text;
-            download(content, "text/plain");
-            $$invalidate('text', text = "");
-        }
+        setTimeout(function() {
+            if (text !== "") {
+                var content = text;
+                download(content, "text/plain");
+                $$invalidate('text', text = "");
+            }
+        }, 100);
 	}
 
 	const dispatch = createEventDispatcher();

@@ -6,24 +6,28 @@
     export let text;
 
     export function downloadJSON() {
-        var content = "{}";
-        if (!json.length) {
-            content = JSON.stringify(json);
-        } else {
-            content = json;
-        }
-        if (content !== "{}") {
-            download(content, "application/json");
-            json = {};
-        }
+        setTimeout(function() {
+            var content = "{}";
+            if (!json.length) {
+                content = JSON.stringify(json);
+            } else {
+                content = json;
+            }
+            if (content !== "{}") {
+                download(content, "application/json");
+                json = {};
+            }
+        }, 100);
     }
  
     export function downloadText() {
-        if (text !== "") {
-            var content = text;
-            download(content, "text/plain");
-            text = "";
-        }
+        setTimeout(function() {
+            if (text !== "") {
+                var content = text;
+                download(content, "text/plain");
+                text = "";
+            }
+        }, 100);
 	}
 
 	const dispatch = createEventDispatcher();
