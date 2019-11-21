@@ -38,9 +38,28 @@ function toBlob(content, contentType) {
 function instance($$self, $$props, $$invalidate) {
 	let { filename = "test.json", json, text } = $$props;
 
+    function downloadJSON() {
+        var content = "{}";
+        if (!json.length) {
+            content = JSON.stringify(json);
+        } else {
+            content = json;
+        }
+        if (content !== "{}") {
+            download(content, "application/json");
+            $$invalidate('json', json = {});
+        }
+    }
+ 
+    function downloadText() {
+        if (text !== "") {
+            var content = text;
+            download(content, "text/plain");
+            $$invalidate('text', text = "");
+        }
+	}
+
 	const dispatch = createEventDispatcher();
-	onMount(() => {
-	});
 
     function download(content, contentType) {
         var blob = toBlob(content, contentType);
@@ -63,36 +82,20 @@ function instance($$self, $$props, $$invalidate) {
 		if ('text' in $$props) $$invalidate('text', text = $$props.text);
 	};
 
-	$$self.$$.update = ($$dirty = { json: 1, content: 1, text: 1 }) => {
-		if ($$dirty.json || $$dirty.content) { if (json !== undefined) {
-                var content = "{}";
-                if (!json.length) {
-                    $$invalidate('content', content = JSON.stringify(json));
-                } else {
-                    $$invalidate('content', content = json);
-                }
-                if (content !== "{}") {
-                    download(content, "application/json");
-                    $$invalidate('json', json = {});
-                }
-        	} }
-		if ($$dirty.text || $$dirty.content) { if (text !== undefined) {
-                if (text !== "") {
-                    var content = text;
-                    download(content, "text/plain");
-                    $$invalidate('text', text = "");
-                }
-        	} }
+	return {
+		filename,
+		json,
+		text,
+		downloadJSON,
+		downloadText
 	};
-
-	return { filename, json, text };
 }
 
 class DownloadComponent extends SvelteElement {
 	constructor(options) {
 		super();
 
-		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["filename", "json", "text"]);
+		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["filename", "json", "text", "downloadJSON", "downloadText"]);
 
 		if (options) {
 			if (options.target) {
@@ -107,7 +110,7 @@ class DownloadComponent extends SvelteElement {
 	}
 
 	static get observedAttributes() {
-		return ["filename","json","text"];
+		return ["filename","json","text","downloadJSON","downloadText"];
 	}
 
 	get filename() {
@@ -135,6 +138,14 @@ class DownloadComponent extends SvelteElement {
 	set text(text) {
 		this.$set({ text });
 		flush();
+	}
+
+	get downloadJSON() {
+		return this.$$.ctx.downloadJSON;
+	}
+
+	get downloadText() {
+		return this.$$.ctx.downloadText;
 	}
 }
 

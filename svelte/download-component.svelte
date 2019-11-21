@@ -1,11 +1,11 @@
 <script>
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
     export let filename = "test.json";
     export let json;
     export let text;
 
-    $: if (json !== undefined) {
+    export function downloadJSON() {
         var content = "{}";
         if (!json.length) {
             content = JSON.stringify(json);
@@ -16,9 +16,9 @@
             download(content, "application/json");
             json = {};
         }
-	}
-
-    $: if (text !== undefined) {
+    }
+ 
+    export function downloadText() {
         if (text !== "") {
             var content = text;
             download(content, "text/plain");
@@ -27,8 +27,6 @@
 	}
 
 	const dispatch = createEventDispatcher();
-	onMount(() => {
-	});
 
     function download(content, contentType) {
         var blob = toBlob(content, contentType);
