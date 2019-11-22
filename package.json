@@ -1,6 +1,6 @@
 {
   "name": "tonysoft",
-  "version": "1.55.15",
+  "version": "1.55.16",
   "description": "A repository of common components used in tonysoft demos",
   "main": "generic-container.js",
   "bundleDependencies": false,
