@@ -139,7 +139,7 @@ function instance($$self, $$props, $$invalidate) {
         options = { 
             mode: mode,
             onEditable: function(node) {
-                return (((editable !== "false") && (editable !== false)) || (editable === undefined));
+                return (((editable !== "false") && (editable !== false) && (editable !== null)) || (editable === undefined));
             },
             onEvent: function(node, event) {
                 if (event.type === 'click') {
