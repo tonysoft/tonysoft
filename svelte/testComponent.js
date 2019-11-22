@@ -105,7 +105,7 @@ function instance($$self, $$props, $$invalidate) {
     let wrapper;
 	let buttonTreeMode;
 	let buttonTextMode;
-	let { width = null, height = null, editor, json = {}, getjson = false, mode = 'tree', editable = true } = $$props;
+	let { width = null, height = null, editor, json = {}, getjson = false, mode = 'tree', editable } = $$props;
     
 
     function readJSON() {
@@ -139,7 +139,7 @@ function instance($$self, $$props, $$invalidate) {
         options = { 
             mode: mode,
             onEditable: function(node) {
-                return ((editable !== "false") && (editable !== false));
+                return (((editable !== "false") && (editable !== false)) || (editable === undefined));
             },
             onEvent: function(node, event) {
                 if (event.type === 'click') {

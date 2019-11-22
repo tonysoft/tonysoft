@@ -47,7 +47,7 @@
     export let json = {};
 	export let getjson = false;
 	export let mode = 'tree';
-    export let editable = true;
+    export let editable;
     
 
     export function readJSON() {
@@ -101,8 +101,8 @@
         options = { 
             mode: mode,
             onEditable: function(node) {
-                return ((editable !== "false") && (editable !== false));
-            }
+                return (((editable !== "false") && (editable !== false)) || (editable === undefined));
+            },
             onEvent: function(node, event) {
                 if (event.type === 'click') {
                     if (node.value) {
