@@ -1052,7 +1052,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
             }
             else {
                 this.chosen = e;
-                var days = dom(this.$.mpCalendar).querySelectorAll('.day');
+                var days = dom(this.$.mpCalendar).querySelectorAll('.day'); 
 
                 days.forEach((e, i) => {
                     if (this.chosen == e.getAttribute('data-date')) {
@@ -1068,6 +1068,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
                 day: chosenDay,
                 year: chosenYear
             };
+            this._checkChosen();
         }
     }
 
