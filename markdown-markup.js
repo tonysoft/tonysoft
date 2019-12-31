@@ -198,6 +198,14 @@ class MarkdownMarkup extends PolymerElement {
         var emojiFound = true;
 
         var markup = context.converter.render(context.markdown);  
+        markup = context.checkForEmojis(markup);
+        context.markupDest.innerHTML = markup;
+        context.dispatchEvent(new CustomEvent("markup", { 
+            detail: markup
+        }));
+    }
+
+    checkForEmojis(markup) {
         var startEmojiIndex = markup.search(/(?<=\:)(.*?)(?=\:)/);
         while (startEmojiIndex >= 0) {
             if (markup.charAt(startEmojiIndex) !== '/') {
@@ -205,8 +213,13 @@ class MarkdownMarkup extends PolymerElement {
                 var preMarkup = markup.substring(0, startEmojiIndex -1);
                 var endEmojiIndex = markup.indexOf(":", startEmojiIndex);
                 var postMarkup = markup.substr(endEmojiIndex + 1);
-                var emoji = emojiMarkuptemplate.replace("${emoji}", markup.substring(startEmojiIndex, endEmojiIndex));
-                markup = preMarkup + emoji + postMarkup;
+                var emoji = markup.substring(startEmojiIndex, endEmojiIndex);
+                if ((emoji.length <= 40) && (emoji.indexOf(" ") && !((emoji.length > 15) && (emoji.indexOf("_") < 0)))) {
+                    emoji = emojiMarkuptemplate.replace("${emoji}", emoji);
+                    markup = preMarkup + emoji + postMarkup;
+                } else {
+                    markup = preMarkup + "~~" + emoji + ":" + postMarkup;
+                }
             } else {
                 markup = markup.replace(":/", "~~/");
             }
@@ -215,10 +228,7 @@ class MarkdownMarkup extends PolymerElement {
         while (markup.indexOf("~~") >= 0) {
             markup = markup.replace("~~", ":");
         }
-        context.markupDest.innerHTML = markup;
-        context.dispatchEvent(new CustomEvent("markup", { 
-            detail: markup
-        }));
+        return markup;
     }
 
 }
