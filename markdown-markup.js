@@ -195,7 +195,26 @@ class MarkdownMarkup extends PolymerElement {
         if (!context.converter) {
             context.converter = new markdownit({ "html": true });
         }
+        var emojiFound = true;
+
         var markup = context.converter.render(context.markdown);  
+        var startEmojiIndex = markup.search(/(?<=\:)(.*?)(?=\:)/);
+        while (startEmojiIndex >= 0) {
+            if (markup.charAt(startEmojiIndex) !== '/') {
+                var emojiMarkuptemplate = '<img src="https~~//www.webfx.com/tools/emoji-cheat-sheet/graphics/emojis/${emoji}.png" style="width~~ 22px; height~~ 22px; position~~ relative; top~~ 5px;"></img>';
+                var preMarkup = markup.substring(0, startEmojiIndex -1);
+                var endEmojiIndex = markup.indexOf(":", startEmojiIndex);
+                var postMarkup = markup.substr(endEmojiIndex + 1);
+                var emoji = emojiMarkuptemplate.replace("${emoji}", markup.substring(startEmojiIndex, endEmojiIndex));
+                markup = preMarkup + emoji + postMarkup;
+            } else {
+                markup = markup.replace(":/", "~~/");
+            }
+            startEmojiIndex = markup.search(/(?<=\:)(.*?)(?=\:)/);
+        }
+        while (markup.indexOf("~~") >= 0) {
+            markup = markup.replace("~~", ":");
+        }
         context.markupDest.innerHTML = markup;
         context.dispatchEvent(new CustomEvent("markup", { 
             detail: markup
