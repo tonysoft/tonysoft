@@ -199,7 +199,9 @@ class MarkdownMarkup extends PolymerElement {
 
         var markup = context.converter.render(markdown);  
         markup = context.checkForEmojis(markup);
-        context.markupDest.innerHTML = markup;
+        if (context.markupDest) {
+            context.markupDest.innerHTML = markup;
+        }
         context.dispatchEvent(new CustomEvent("markup", { 
             detail: markup
         }));
