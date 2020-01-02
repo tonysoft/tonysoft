@@ -33,11 +33,14 @@ function instance($$self, $$props, $$invalidate) {
 
     let { markdown } = $$props;    
 
-    function slackify() {
-        if (markdown) {
-            var slackified = slackifyMarkdown(markdown);
+    function slackify(markdownIn) {
+        var slackified = "";
+        var markdownToProcess = markdownIn || markdown;
+        if (markdownToProcess) {
+            slackified = slackifyMarkdown(markdownToProcess);
             event("slackified", slackified);
         }
+        return slackified;
     }
 
 	onMount(() => {
