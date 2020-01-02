@@ -80,7 +80,9 @@ class markdownSlackified extends SvelteElement {
 
 				if (options.props) {
 					this.$set(options.props);
-					flush();
+					try {
+						flush();
+					} catch(e){};
 				}
 			}
 		} catch(e){};
