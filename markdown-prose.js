@@ -154,7 +154,7 @@ class MarkdownProseEditor extends PolymerElement {
         }
     }
 
-    getMarkdown() {
+    fetchMarkdown() {
         var context = this;
         context._getMarkdown(true);
     }
