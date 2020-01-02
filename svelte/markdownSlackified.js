@@ -79,8 +79,8 @@ class markdownSlackified extends SvelteElement {
 				}
 
 				if (options.props) {
-					this.$set(options.props);
 					try {
+						this.$set(options.props);
 						flush();
 					} catch(e){};
 				}
