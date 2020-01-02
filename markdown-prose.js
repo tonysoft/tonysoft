@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import "https://unpkg.com/tonysoft@^1.55.19/js/prosemirror.js?module";
+import "https://unpkg.com/tonysoft@^1.53.11/js/prosemirror.js?module";
 import "https://unpkg.com/tonysoft@^1.52.70/js/proseMirrorHelpers.js?module";
 
 /**
@@ -152,6 +152,11 @@ class MarkdownProseEditor extends PolymerElement {
         if (context.checkIsReady("markdown", markdown, null)) {
             context.initView();
         }
+    }
+
+    getMarkdown() {
+        var context = this;
+        context._getMarkdown(true);
     }
 
     _getMarkdown(state) {
