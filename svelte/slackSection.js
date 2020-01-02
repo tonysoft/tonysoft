@@ -121,9 +121,13 @@ function instance($$self, $$props, $$invalidate) {
             var slackified = markdownSlackifiedConverter.slackify(markdown);
             blockKit = JSON.parse(JSON.stringify(blockKitJSON));
             blockKit.text.text = slackified;
-            event("slackified", JSON.stringify(slackified));
-            event("markup", markup);
-            event("blockKit", blockKit);
+			event("slackified", JSON.stringify(slackified));
+			setTimeout(function() {
+				setTimeout(function() {
+					event("blockKit", blockKit);
+				}, 200);
+				event("markup", markup);
+			}, 200);
         }
         return blockKit;
     }
