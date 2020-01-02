@@ -68,20 +68,22 @@ function instance($$self, $$props, $$invalidate) {
 
 class markdownSlackified extends SvelteElement {
 	constructor(options) {
-		super();
+		try {
+			super();
 
-		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["markdown", "slackify"]);
+			init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["markdown", "slackify"]);
 
-		if (options) {
-			if (options.target) {
-				insert(options.target, this, options.anchor);
+			if (options) {
+				if (options.target) {
+					insert(options.target, this, options.anchor);
+				}
+
+				if (options.props) {
+					this.$set(options.props);
+					flush();
+				}
 			}
-
-			if (options.props) {
-				this.$set(options.props);
-				flush();
-			}
-		}
+		} catch(e){};
 	}
 
 	static get observedAttributes() {
