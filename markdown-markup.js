@@ -210,8 +210,9 @@ class MarkdownMarkup extends PolymerElement {
 
     checkForEmojis(markup, emojiSize) {
         emojiSize = emojiSize || 22;
+        var emojeOffset = emojiSize ? 0 : (emojiSize / 5);
         var emojiSizeInPixels = emojiSize + "px";
-        var emojiOffsetInPixels = (emojiSize / 5) + "px";
+        var emojiOffsetInPixels = emojeOffset + "px";
         var startEmojiIndex = markup.search(/(?<=\:)(.*?)(?=\:)/);
         while (startEmojiIndex >= 0) {
             if (markup.charAt(startEmojiIndex) !== '/') {
