@@ -153,7 +153,7 @@ function instance($$self, $$props, $$invalidate) {
             }
             var slackified = markdownSlackifiedConverter.slackify(markdown);
             if (slackified.lastIndexOf("\n") === (slackified.length - 1)) {
-                slackified = slackified.substring(0, slackified.length - 2);
+                slackified = slackified.substring(0, slackified.length - 1);
             }
             blockKit = JSON.parse(JSON.stringify(blockKitJSON));
             blockKit.text.text = slackified;
