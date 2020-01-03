@@ -190,7 +190,7 @@ class MarkdownMarkup extends PolymerElement {
         }));
     }
 
-    convertMarkdown(markdown) {
+    convertMarkdown(markdown, emojiSize) {
         var context = this;
         if (!context.converter) {
             context.converter = new markdownit({ "html": true });
@@ -198,7 +198,7 @@ class MarkdownMarkup extends PolymerElement {
         var emojiFound = true;
 
         var markup = context.converter.render(markdown);  
-        markup = context.checkForEmojis(markup);
+        markup = context.checkForEmojis(markup, emojiSize);
         if (context.markupDest) {
             context.markupDest.innerHTML = markup;
         }
@@ -208,11 +208,20 @@ class MarkdownMarkup extends PolymerElement {
         return markup;
     }
 
-    checkForEmojis(markup) {
+    checkForEmojis(markup, emojiSize) {
+        emojiSize = emojiSize || 22;
+        var emojiSizeInPixels = emojiSize + "px";
+        var emojiOffsetInPixels = (emojiSize / 5) + "px";
         var startEmojiIndex = markup.search(/(?<=\:)(.*?)(?=\:)/);
         while (startEmojiIndex >= 0) {
             if (markup.charAt(startEmojiIndex) !== '/') {
-                var emojiMarkuptemplate = '<img src="https~~//www.webfx.com/tools/emoji-cheat-sheet/graphics/emojis/${emoji}.png" style="width~~ 22px; height~~ 22px; position~~ relative; top~~ 5px;"></img>';
+                var emojiMarkuptemplate = '<img src="https~~//www.webfx.com/tools/emoji-cheat-sheet/graphics/emojis/${emoji}.png" style="width~~ NNpx; height~~ NNpx; position~~ relative; top~~ OOpx;"></img>';
+                while (emojiMarkuptemplate.indexOf("NNpx") >= 0) {
+                    emojiMarkuptemplate = emojiMarkuptemplate.replace("NNpx", emojiSizeInPixels);
+                }
+                while (emojiMarkuptemplate.indexOf("OOpx") >= 0) {
+                    emojiMarkuptemplate = emojiMarkuptemplate.replace("OOpx", emojiOffsetInPixels);
+                }
                 var preMarkup = markup.substring(0, startEmojiIndex -1);
                 var endEmojiIndex = markup.indexOf(":", startEmojiIndex);
                 var postMarkup = markup.substr(endEmojiIndex + 1);
