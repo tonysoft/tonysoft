@@ -144,9 +144,12 @@ function instance($$self, $$props, $$invalidate) {
             var markup = markdownMarkupConverter.convertMarkdown(markdown);
             $$invalidate('sectionMarkup', sectionMarkup.innerHTML = markup, sectionMarkup);
             var slackified = markdownSlackifiedConverter.slackify(markdown);
+            if (slackified.lastIndexOf("\n") === (slackified.length - 1)) {
+                slackified = slackified.substring(0, slackified.length - 2);
+            }
             blockKit = JSON.parse(JSON.stringify(blockKitJSON));
             blockKit.text.text = slackified;
-			event("slackified", JSON.stringify(slackified));
+			event("slackified", slackified);
 			setTimeout(function() {
 				setTimeout(function() {
 					event("blockKit", blockKit);
