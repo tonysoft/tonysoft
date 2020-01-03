@@ -49,6 +49,7 @@ function create_fragment(ctx) {
 			attr(div3, "data-qa", "bk_section_block");
 			attr(div3, "class", "p-section_block p-section_block--no_top_margin");
 			attr(div4, "class", "p-block_kit_renderer__block_wrapper");
+			set_style(div4, "display", ctx.display);
 			set_style(div5, "display", "none");
 			attr(link0, "href", "https://unpkg.com/tonysoft@1.55.21/css/rollup-slack_kit_base.css");
 			attr(link0, "rel", "stylesheet");
@@ -84,7 +85,12 @@ function create_fragment(ctx) {
 			insert(target, link2, anchor);
 		},
 
-		p: noop,
+		p(changed, ctx) {
+			if (changed.display) {
+				set_style(div4, "display", ctx.display);
+			}
+		},
+
 		i: noop,
 		o: noop,
 
@@ -134,7 +140,7 @@ function instance($$self, $$props, $$invalidate) {
         }
 	}
 
-    let { markdown } = $$props;
+    let { markdown, display = "block" } = $$props;
 
     let sectionMarkup;
 
@@ -142,7 +148,9 @@ function instance($$self, $$props, $$invalidate) {
         var blockKit = null;
         if (markdown) {
             var markup = markdownMarkupConverter.convertMarkdown(markdown);
-            $$invalidate('sectionMarkup', sectionMarkup.innerHTML = markup, sectionMarkup);
+            if (display !== "none") {
+                $$invalidate('sectionMarkup', sectionMarkup.innerHTML = markup, sectionMarkup);
+            }
             var slackified = markdownSlackifiedConverter.slackify(markdown);
             if (slackified.lastIndexOf("\n") === (slackified.length - 1)) {
                 slackified = slackified.substring(0, slackified.length - 2);
@@ -190,6 +198,7 @@ function instance($$self, $$props, $$invalidate) {
 
 	$$self.$set = $$props => {
 		if ('markdown' in $$props) $$invalidate('markdown', markdown = $$props.markdown);
+		if ('display' in $$props) $$invalidate('display', display = $$props.display);
 	};
 
 	$$self.$$.update = ($$dirty = { markdown: 1 }) => {
@@ -202,6 +211,7 @@ function instance($$self, $$props, $$invalidate) {
 		markdownSlackifiedConverter,
 		markdownMarkupConverter,
 		markdown,
+		display,
 		sectionMarkup,
 		span_binding,
 		markdown_slackified_binding,
@@ -215,7 +225,7 @@ class slackSection extends SvelteElement {
 
 		this.shadowRoot.innerHTML = `<style>*{font-family:Slack-Lato, appleLogo, sans-serif}</style>`;
 
-		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["markdown"]);
+		init(this, { target: this.shadowRoot }, instance, create_fragment, safe_not_equal, ["markdown", "display"]);
 
 		if (options) {
 			if (options.target) {
@@ -230,7 +240,7 @@ class slackSection extends SvelteElement {
 	}
 
 	static get observedAttributes() {
-		return ["markdown"];
+		return ["markdown","display"];
 	}
 
 	get markdown() {
@@ -241,7 +251,17 @@ class slackSection extends SvelteElement {
 		this.$set({ markdown });
 		flush();
 	}
+
+	get display() {
+		return this.$$.ctx.display;
+	}
+
+	set display(display) {
+		this.$set({ display });
+		flush();
+	}
 }
+
 
 export default slackSection;
 window.customElements.define('slack-section', slackSection);
