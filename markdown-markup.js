@@ -190,7 +190,7 @@ class MarkdownMarkup extends PolymerElement {
         }));
     }
 
-    convertMarkdown(markdown, emojiSize) {
+    convertMarkdown(markdown, emojiSize, emojiOffset) {
         var context = this;
         if (!context.converter) {
             context.converter = new markdownit({ "html": true });
@@ -198,7 +198,7 @@ class MarkdownMarkup extends PolymerElement {
         var emojiFound = true;
 
         var markup = context.converter.render(markdown);  
-        markup = context.checkForEmojis(markup, emojiSize);
+        markup = context.checkForEmojis(markup, emojiSize, emojiOffset);
         if (context.markupDest) {
             context.markupDest.innerHTML = markup;
         }
@@ -208,10 +208,10 @@ class MarkdownMarkup extends PolymerElement {
         return markup;
     }
 
-    checkForEmojis(markup, emojiSize) {
-        var emojeOffset = emojiSize ? 0 : (emojiSize / 5);
+    checkForEmojis(markup, emojiSize, emojiOffset) {
         emojiSize = emojiSize || 22;
         var emojiSizeInPixels = emojiSize + "px";
+        emojeOffset = (emojeOffset === undefined) ? (emojiSize / 5) : emojiSize;
         var emojiOffsetInPixels = emojeOffset + "px";
         var startEmojiIndex = markup.search(/(?<=\:)(.*?)(?=\:)/);
         while (startEmojiIndex >= 0) {
