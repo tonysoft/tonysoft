@@ -211,7 +211,7 @@ class MarkdownMarkup extends PolymerElement {
     checkForEmojis(markup, emojiSize, emojiOffset) {
         emojiSize = emojiSize || 22;
         var emojiSizeInPixels = emojiSize + "px";
-        emojeOffset = (emojeOffset === undefined) ? (emojiSize / 5) : emojiSize;
+        emojiOffset = (emojiOffset === undefined) ? (emojiSize / 5) : emojiOffset;
         var emojiOffsetInPixels = emojeOffset + "px";
         var startEmojiIndex = markup.search(/(?<=\:)(.*?)(?=\:)/);
         while (startEmojiIndex >= 0) {
