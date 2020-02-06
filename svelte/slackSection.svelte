@@ -12,7 +12,7 @@
     </div>
 	{#each sections as thisSection, i}
         {#if (thisSection && thisSection.accessory && (thisSection.accessory.type === "button"))}
-            <slack-button on:block={buttonBlock} block={thisSection.accessory} class="accessory" display=""></slack-button>
+            <slack-button on:block={buttonBlock} on:buttonClicked={buttonClicked} block={thisSection.accessory} class="accessory" display=""></slack-button>
         {/if}
     {/each}
 </div> 
@@ -124,6 +124,10 @@
 	function event(eventName, payload) {
         dispatch(eventName, payload);
 	}
+
+	function buttonClicked(e) {
+        event("buttonClicked", e.detail);
+    }
 
     function buttonBlock(event) {
         //console.log(event);

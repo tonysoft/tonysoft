@@ -1,7 +1,7 @@
 <div class="flexRow" style="display: {display};">
     <button class="c-button c-button--outline c-button--small p-block_kit_button_element null--outline null--small" type="button" data-qa-block-id="l07=" data-qa-action-id="2JA2A">
         <div class="p-plain_text_element" data-qa="bk-plain_text_element">
-            <span dir="auto" bind:this={sectionMarkup}></span>
+            <span on:click={buttonClicked} dir="auto" bind:this={sectionMarkup}></span>
         </div>
     </button>
 </div>
@@ -61,6 +61,7 @@
             blockKit = JSON.parse(JSON.stringify(blockKitJSON));
             blockKit.text.text = label;
             blockKit.value = value;
+            block = blockKit;
 			event("block", blockKit);
         }
         return blockKit;
@@ -84,6 +85,10 @@
         label = block.text.text;
         value = block.value;
 	}
+
+	function buttonClicked(e) {
+        event("buttonClicked", { button: block.text.text, value: block.value });
+    }
 
 	function event(eventName, payload) {
         dispatch(eventName, payload);

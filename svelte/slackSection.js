@@ -41,7 +41,11 @@ function create_if_block(ctx) {
 			set_custom_element_data(slack_button, "block", slack_button_block_value = ctx.thisSection.accessory);
 			set_custom_element_data(slack_button, "class", "accessory");
 			set_custom_element_data(slack_button, "display", "");
-			dispose = listen(slack_button, "block", buttonBlock);
+
+			dispose = [
+				listen(slack_button, "block", buttonBlock),
+				listen(slack_button, "buttonClicked", ctx.buttonClicked)
+			];
 		},
 
 		m(target, anchor) {
@@ -59,7 +63,7 @@ function create_if_block(ctx) {
 				detach(slack_button);
 			}
 
-			dispose();
+			run_all(dispose);
 		}
 	};
 }
@@ -328,6 +332,10 @@ function instance($$self, $$props, $$invalidate) {
         dispatch(eventName, payload);
 	}
 
+	function buttonClicked(e) {
+        event("buttonClicked", e.detail);
+    }
+
 	function span_binding($$value) {
 		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
 			$$invalidate('sectionMarkup', sectionMarkup = $$value);
@@ -383,6 +391,7 @@ function instance($$self, $$props, $$invalidate) {
 		sections,
 		mainContainer,
 		sectionMarkup,
+		buttonClicked,
 		span_binding,
 		div5_binding,
 		markdown_slackified_binding,

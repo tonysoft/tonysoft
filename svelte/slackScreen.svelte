@@ -1,5 +1,5 @@
 <div class="flexColumn" style="display: {display};" bind:this={mainContainer}>
-    <slack-blocks on:blocksProcessed={blocksProcessed} blocks={blocks} display="" style="width: {width}"  bind:this={slackBlocksElement}></slack-blocks>
+    <slack-blocks on:blocksProcessed={blocksProcessed} on:buttonClicked={buttonClicked} blocks={blocks} display="" style="width: {width}"  bind:this={slackBlocksElement}></slack-blocks>
 </div> 
 <div style="display: none;">
     <merge-into-json bind:this={merger}></merge-into-json>
@@ -46,7 +46,9 @@
 
     function checkProcess() {
         if (data && definition) {
-            process();
+            setTimeout(function() {
+                process();
+            })
         }
     }
 
@@ -95,7 +97,11 @@
             allBlocks = allBlocks.concat(merger.merge(def, dat));
         }
         blocks = allBlocks;
-        event("blocksProcessed", blocks);
+        //event("blocksProcessed", blocks);
+    }
+
+	function buttonClicked(e) {
+        event("buttonClicked", e.detail);
     }
 
 </script>

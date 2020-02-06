@@ -11,6 +11,7 @@ import {
 	insert,
 	listen,
 	noop,
+	run_all,
 	safe_not_equal,
 	set_custom_element_data,
 	set_style,
@@ -38,7 +39,11 @@ function create_fragment(ctx) {
 			attr(div0, "class", "flexColumn");
 			set_style(div0, "display", ctx.display);
 			set_style(div1, "display", "none");
-			dispose = listen(slack_blocks, "blocksProcessed", ctx.blocksProcessed);
+
+			dispose = [
+				listen(slack_blocks, "blocksProcessed", ctx.blocksProcessed),
+				listen(slack_blocks, "buttonClicked", ctx.buttonClicked)
+			];
 		},
 
 		m(target, anchor) {
@@ -83,7 +88,7 @@ function create_fragment(ctx) {
 			}
 
 			ctx.merge_into_json_binding(null);
-			dispose();
+			run_all(dispose);
 		}
 	};
 }
@@ -149,6 +154,11 @@ function instance($$self, $$props, $$invalidate) {
             allBlocks = allBlocks.concat(merger.merge(def, dat));
         }
         $$invalidate('blocks', blocks = allBlocks);
+        //event("blocksProcessed", blocks);
+    }
+
+	function buttonClicked(e) {
+        event("buttonClicked", e.detail);
     }
 
 	function slack_blocks_binding($$value) {
@@ -206,6 +216,7 @@ function instance($$self, $$props, $$invalidate) {
 		merger,
 		width,
 		blocksProcessed,
+		buttonClicked,
 		slack_blocks_binding,
 		div0_binding,
 		merge_into_json_binding

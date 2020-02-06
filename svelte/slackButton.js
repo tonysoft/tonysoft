@@ -9,6 +9,7 @@ import {
 	flush,
 	init,
 	insert,
+	listen,
 	noop,
 	safe_not_equal,
 	set_style,
@@ -19,7 +20,7 @@ import { createEventDispatcher, onMount } from "./svelte/svelte.js";
 import {MarkdownMarkup} from "https://unpkg.com/tonysoft@^1.55.47/markdown-markup.js?module"
 
 function create_fragment(ctx) {
-	var div1, button, div0, span, t0, div2, markdown_markup, t1, link0, t2, link1, t3, link2;
+	var div1, button, div0, span, t0, div2, markdown_markup, t1, link0, t2, link1, t3, link2, dispose;
 
 	return {
 		c() {
@@ -56,6 +57,7 @@ function create_fragment(ctx) {
 			attr(link2, "href", "https://unpkg.com/tonysoft@1.55.21/css/slackBlockKitBuilder.css");
 			attr(link2, "rel", "stylesheet");
 			attr(link2, "type", "text/css");
+			dispose = listen(span, "click", ctx.buttonClicked);
 		},
 
 		m(target, anchor) {
@@ -107,6 +109,8 @@ function create_fragment(ctx) {
 				detach(t3);
 				detach(link2);
 			}
+
+			dispose();
 		}
 	};
 }
@@ -143,6 +147,7 @@ function instance($$self, $$props, $$invalidate) {
             blockKit = JSON.parse(JSON.stringify(blockKitJSON));
             blockKit.text.text = label;
             blockKit.value = value;
+            $$invalidate('block', block = blockKit);
 			event("block", blockKit);
         }
         return blockKit;
@@ -153,6 +158,10 @@ function instance($$self, $$props, $$invalidate) {
             textToMarkup();
         });
 	});
+
+	function buttonClicked(e) {
+        event("buttonClicked", { button: block.text.text, value: block.value });
+    }
 
 	function event(eventName, payload) {
         dispatch(eventName, payload);
@@ -198,6 +207,7 @@ function instance($$self, $$props, $$invalidate) {
 		display,
 		block,
 		sectionMarkup,
+		buttonClicked,
 		span_binding,
 		markdown_markup_binding
 	};
@@ -263,6 +273,5 @@ class slackButton extends SvelteElement {
 		flush();
 	}
 }
-
 export {slackButton};
 window.customElements.define('slack-button', slackButton);

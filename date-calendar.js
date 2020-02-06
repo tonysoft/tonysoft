@@ -1024,18 +1024,28 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
             isoDate: dataDate
         };
         this.chosen = dataDate;
-    }
+        var eventDate = JSON.parse(JSON.stringify(this.date));
+        var isoDate = eventDate.isoDate.split("-");
+        eventDate.year = parseInt(isoDate[0]);
+        eventDate.month = parseInt(isoDate[1]);
+        eventDate.day = parseInt(isoDate[2]);
+        //this._fire('dateSelected', eventDate);
+        this.selectedDate = eventDate.isoDate;
+        this._fire('date', eventDate.isoDate);
+}
 
     _selectedDate(e) {
-        if (e) {
-            this.chosen = e;
-        }
+        this.chosen = e;
+        console.log("selectedDate: " + e);
     }
 
     _chosenHandler(e) {
         var dateSegments = e.split("-");
         if (dateSegments.length < 3) {
-            return;
+            var today = new Date();
+            dateSegments[0] = today.getUTCFullYear();
+            dateSegments[1] = today.getUTCMonth() + 1;
+            dateSegments[2] = today.getDate();
         }
         var chosenDate = new Date(e);
         var chosenYear = parseInt(dateSegments[0]);
@@ -1070,6 +1080,14 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
             };
             this._checkChosen();
         }
+        if (e === "") {
+            // var days = dom(this.$.mpCalendar).querySelectorAll('.day'); 
+
+            // days.forEach((e, i) => {
+            //     e.classList.remove('selected');
+            // });
+            this.goToCurrentDate();
+        }
     }
 
     prevMonthHandler() {
@@ -1083,7 +1101,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
         this._initCalandar(this.showDate.month, this.showDate.year);
         this.$.montSelection.value = this.showDate.month;
         this.$.yearSelection.value = this.showDate.year;
-        this._fire('prevMonth');
+        //this._fire('prevMonth');
     }
 
     nextMonthHandler() {
@@ -1097,7 +1115,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
         this._initCalandar(this.showDate.month, this.showDate.year);
         this.$.montSelection.value = this.showDate.month;
         this.$.yearSelection.value = this.showDate.year;
-        this._fire('nextMonth');
+        //this._fire('nextMonth');
     }
 
     setMonth(month) {
@@ -1108,7 +1126,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
 
         this.chosen = "";
         this._initCalandar(parseInt(month), parseInt(this.$.yearSelection.value));
-        this._fire('monthChanged');
+        //this._fire('monthChanged');
     }
 
     setYear(year) {
@@ -1119,7 +1137,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
 
         this.chosen = "";
         this._initCalandar(parseInt(this.$.montSelection.value), year);
-        this._fire('monthChanged');
+        //this._fire('monthChanged');
     }
 
     _fire(ev, el) {
@@ -1151,19 +1169,19 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
         if (!!newDate && !!oldDate) {
             if (newDate.date.getUTCMonth() > oldDate.date.getUTCMonth()) {
                 this._initCalandar(this.showDate.month, this.showDate.year);
-                this._fire('nextMonth');
+                //this._fire('nextMonth');
             }
             if (newDate.date.getUTCMonth() < oldDate.date.getUTCMonth()) {
                 this._initCalandar(this.showDate.month, this.showDate.year);
-                this._fire('prevMonth');
+                //this._fire('prevMonth');
             }
-            var eventDate = JSON.parse(JSON.stringify(this.date));
-            var isoDate = eventDate.isoDate.split("-");
-            eventDate.year = parseInt(isoDate[0]);
-            eventDate.month = parseInt(isoDate[1]);
-            eventDate.day = parseInt(isoDate[2]);
-            this._fire('dateSelected', eventDate);
-            this._fire('date', eventDate.isoDate);
+            // var eventDate = JSON.parse(JSON.stringify(this.date));
+            // var isoDate = eventDate.isoDate.split("-");
+            // eventDate.year = parseInt(isoDate[0]);
+            // eventDate.month = parseInt(isoDate[1]);
+            // eventDate.day = parseInt(isoDate[2]);
+            // //this._fire('dateSelected', eventDate);
+            // this._fire('date', eventDate.isoDate);
         }
 
         this.$.montSelection.value = this.showDate.month;
@@ -1184,7 +1202,7 @@ class mpCalendar extends GestureEventListeners(PolymerElement) {
         this._initCalandar(this.showDate.month, this.showDate.year);
         this.$.montSelection.value = this.showDate.month;
         this.$.yearSelection.value = this.showDate.year;
-        this._fire('currMonth');
+        //this._fire('currMonth');
     }
 
     _initCalandar(month, year) {

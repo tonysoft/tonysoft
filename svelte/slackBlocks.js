@@ -12,6 +12,7 @@ import {
 	insert,
 	listen,
 	noop,
+	run_all,
 	safe_not_equal,
 	set_custom_element_data,
 	set_style
@@ -37,7 +38,11 @@ function create_if_block(ctx) {
 			set_custom_element_data(slack_section, "section", slack_section_section_value = ctx.thisBlock);
 			set_custom_element_data(slack_section, "display", "");
 			set_style(slack_section, "width", ctx.width);
-			dispose = listen(slack_section, "block", ctx.blockProcessed);
+
+			dispose = [
+				listen(slack_section, "block", ctx.blockProcessed),
+				listen(slack_section, "buttonClicked", ctx.buttonClicked)
+			];
 		},
 
 		m(target, anchor) {
@@ -59,7 +64,7 @@ function create_if_block(ctx) {
 				detach(slack_section);
 			}
 
-			dispose();
+			run_all(dispose);
 		}
 	};
 }
@@ -209,6 +214,10 @@ function instance($$self, $$props, $$invalidate) {
         }
     }
 
+	function buttonClicked(e) {
+        event("buttonClicked", e.detail);
+    }
+
 	function event(eventName, payload) {
         dispatch(eventName, payload);
 	}
@@ -230,7 +239,7 @@ function instance($$self, $$props, $$invalidate) {
                 if (blocks.split) {
                     $$invalidate('blocks', blocks = JSON.parse(blocks));
                 }
-        
+                blocksProcessed = [];
         	} }
 	};
 
@@ -240,6 +249,7 @@ function instance($$self, $$props, $$invalidate) {
 		mainContainer,
 		width,
 		blockProcessed,
+		buttonClicked,
 		div_binding
 	};
 }
