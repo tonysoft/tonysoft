@@ -13,26 +13,7 @@ import 'https://unpkg.com/tonysoft@^1.52.88/js/turndown.js'
 class MarkdownMarkup extends PolymerElement {
     static get template() {
         return html`
-        <style>
-            .noSelect {
-                user-select: none;
-            }
-            .main {
-                cursor: pointer;
-                overflow: auto;
-                position: relative; 
-            }
-            .border {
-                border: 1px solid #888888;
-                border-radius: 5px;
-            }
-            .markup {
-                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif, Helvetica;
-                font-weight: 300;
-                padding: 10px;
-                
-            }
-        </style>
+        <style></style>
         <div class$="main noSelect [[hasBorder(border)]]" style="display: [[isHidden(hidden)]]; width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]];">
             <div class="markup"></div>
         </div>
