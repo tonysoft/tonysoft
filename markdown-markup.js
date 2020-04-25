@@ -13,7 +13,9 @@ import 'https://unpkg.com/tonysoft@^1.52.88/js/turndown.js'
 class MarkdownMarkup extends PolymerElement {
     static get template() {
         return html`
-        <style></style>
+        <style>
+            @import url("https://staging.remixlabs.com/staging/runtime/assets/embed.css");
+        </style>
         <div class$="main noSelect [[hasBorder(border)]]" style="display: [[isHidden(hidden)]]; width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]];">
             <div class="markup"></div>
         </div>
