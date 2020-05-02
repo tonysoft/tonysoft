@@ -84,8 +84,12 @@ class FileUploadX extends PolymerElement {
             type: Boolean
         },
         label: {
-            type: String,
-            value: 'Upload an Image'
+          type: String,
+          value: 'Upload an Image'
+        },
+        accept: {
+          type: String,
+          value: '*.*'
         },
         typeOfOutput: {
             type: String,
