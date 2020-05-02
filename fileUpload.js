@@ -35,10 +35,7 @@ class FileUploadX extends PolymerElement {
           margin-top: 10px;
         }
         #gallery img {
-          width: 150px;
-          margin-bottom: 10px;
-          margin-right: 10px;
-          vertical-align: middle;
+            width: 100%;
         }
         .button {
           display: inline-block;
@@ -65,7 +62,7 @@ class FileUploadX extends PolymerElement {
             <input id="fileElem" type="file" on-change="_handleFiles" class="fileInput" accept="[[accept]]" multiple>
         </div>
         <progress id="progressBar" max=100 value=0 style="display: none;" ></progress>
-        <div id="gallery"></div>
+        <div id="gallery" style="width: [[previewWidth]]px;"></div>
       </div>
     `;
   }
@@ -82,6 +79,10 @@ class FileUploadX extends PolymerElement {
         },
         preview: {
             type: Boolean
+        },
+        previewWidth: {
+          type: Number,
+          value: 350
         },
         label: {
           type: String,
@@ -188,7 +189,7 @@ class FileUploadX extends PolymerElement {
         name: file.name,
         type: file.type
       }
-      this.dispatchEvent(new CustomEvent("file-output", {detail: obj}));
+      this.dispatchEvent(new CustomEvent("file-output", {detail: JSON.stringify(obj)}));
     };
     reader.onerror = error => reject(error);
   }
@@ -241,7 +242,6 @@ class FileUploadX extends PolymerElement {
         let img
         if (file.type.includes('image')) {
             img = document.createElement('img')
-            img.setAttribute('style', 'width: 100% !important', 'height: 500px')
         } else {
             img = document.createElement('iframe')
             img.width = '100%'
