@@ -59,7 +59,7 @@ class FileUploadX extends PolymerElement {
         .fileInput { display: none; }
       </style>
       <div id="dropArea">
-        <div class="container" style="width: [[width]]px; height: [[height]]px; opacity: [[buttonOpacity]];">
+        <div class="container" style="width: [[width]]px; height: [[height]]px; opacity: [[buttonOpacity]];  line-height: [[height]]px; font-size: 12px;">
             <span>[[label]]</span>
             <label for="fileElem" class="label" style="width: [[width]]px; height: [[height]]px;"></label>
             <input id="fileElem" type="file" on-change="_handleFiles" class="fileInput" accept="[[accept]]" multiple>
