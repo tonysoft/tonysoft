@@ -194,8 +194,9 @@ class MarkdownMarkup extends PolymerElement {
         var emojiSizeInPixels = emojiSize + "px";
         emojiOffset = (emojiOffset === undefined) ? (emojiSize / 5) : emojiOffset;
         var emojiOffsetInPixels = emojiOffset + "px";
-        var startEmojiIndex = markup.search(/(?<=\:)(.*?)(?=\:)/);
-        while (startEmojiIndex >= 0) {
+        var emojiRegex = new RegExp("\:(\w+)\:", "g"); //new RegExp('/(?<=\:)(.*?)(?=\:)/');
+        var startEmojiIndex = markup.search(/\:(\w+)\:/) + 1;
+        while (startEmojiIndex > 0) {
             if (markup.charAt(startEmojiIndex) !== '/') {
                 var emojiMarkuptemplate = '<img src="https~~//www.webfx.com/tools/emoji-cheat-sheet/graphics/emojis/${emoji}.png" style="width~~ NNpx; height~~ NNpx; position~~ relative; top~~ OOpx;"></img>';
                 while (emojiMarkuptemplate.indexOf("NNpx") >= 0) {
@@ -217,7 +218,7 @@ class MarkdownMarkup extends PolymerElement {
             } else {
                 markup = markup.replace(":/", "~~/");
             }
-            startEmojiIndex = markup.search(/(?<=\:)(.*?)(?=\:)/);
+            startEmojiIndex = markup.search(/\:(\w+)\:/) + 1;
         }
         while (markup.indexOf("~~") >= 0) {
             markup = markup.replace("~~", ":");

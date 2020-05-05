@@ -62,7 +62,7 @@ class FileUploadX extends PolymerElement {
             <input id="fileElem" type="file" on-change="_handleFiles" class="fileInput" accept="[[accept]]" multiple>
         </div>
         <progress id="progressBar" max=100 value=0 style="display: none;" ></progress>
-        <div id="gallery" style="width: [[previewWidth]]px;"></div>
+        <div id="gallery" style="width: [[previewWidth]]px; display: none;"></div>
       </div>
     `;
   }
@@ -236,6 +236,7 @@ class FileUploadX extends PolymerElement {
 
   _previewFile(file) {
     if (this.preview) {
+        this.gallery.innerHTML = "";
         let reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onloadend = () => {
@@ -247,7 +248,8 @@ class FileUploadX extends PolymerElement {
             img.width = '100%'
             img.height = '500px'
         }
-        img.src = reader.result
+        img.src = reader.result;
+        this.gallery.style.display = "block";
         this.gallery.appendChild(img)
         }
     }
