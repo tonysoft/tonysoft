@@ -186,6 +186,15 @@ class MarkdownMarkup extends PolymerElement {
         context.dispatchEvent(new CustomEvent("markup", { 
             detail: markup
         }));
+        var text = context.markupDest.textContent;
+        while (text.indexOf("\n\n\n") >= 0) {
+            text = text.replace("\n\n\n", "\n\n");
+        }
+        setTimeout(function() {
+            context.dispatchEvent(new CustomEvent("text", { 
+                detail: text
+            }));
+        }, 250);
         return markup;
     }
 
