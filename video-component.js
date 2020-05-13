@@ -317,7 +317,7 @@ class VideoComponent extends PolymerElement {
             clearInterval(context.playPositionReadyInterval);
         }
         context.playPositionReadyInterval = setInterval(function() {
-            if (context.isReady && (context.youTube !== undefined) && context.video) {
+            if (context.isReady && (context.youTube !== undefined)) { // && context.video) {
                 var video = context.video;
                 if (context.youTube) {
                     var state = video.state;
