@@ -135,7 +135,7 @@ class VideoComponent extends PolymerElement {
         this.spacingRight = 0;
         this.border = false;
         this.resumePlayPosition = -1;
-        context.video = null;
+        this.video = null;
       }
   
       ready() {
