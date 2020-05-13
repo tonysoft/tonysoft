@@ -68,6 +68,9 @@ class VideoComponent extends PolymerElement {
             type: Number,
             observer: "_playPosition"
         },
+        pausePosition: {
+            type: Number
+        },
         src: {
             type: String,
             observer: "_srcChanged"
@@ -127,6 +130,7 @@ class VideoComponent extends PolymerElement {
         this.muted = false;
         this.showControls = true;
         this.playPosition = -1;
+        this.pausePosition = -1;
         this.spacingBottom = 0;
         this.spacingRight = 0;
         this.border = false;
@@ -416,6 +420,10 @@ class VideoComponent extends PolymerElement {
 
         if (context.youTube && (video.state === -1)) {  // YouTube gets confused if you choose a playPosition before the first play
             video.pause();
+        }
+        if ((context.pausePosition > context.playPosition) && (context.pausePosition >= currentTime)) {
+            video.pause();
+            playing = false;
         }
         context.dispatchEvent(new CustomEvent("playState", { 
             detail: { 
