@@ -328,8 +328,12 @@ class VideoComponent extends PolymerElement {
                             callback();
                         }
                     } else {
-                        video.seekTo(targetTime, true);
-                        context.playPosition = -1;
+                        try {
+                            video.seekTo(targetTime, true);
+                            context.playPosition = -1;
+                        } catch(e) {
+                            clearInterval(context.playPositionReadyInterval);
+                        }
                     }
                 } else {
                     clearInterval(context.playPositionReadyInterval);
