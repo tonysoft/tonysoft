@@ -423,6 +423,9 @@ class VideoComponent extends PolymerElement {
         }
         if ((context.pausePosition > context.playPosition) && (currentTime >= context.pausePosition)) {
             video.pause();
+            if (context.youTube) {
+                video[currentTimeProperty] = context.playPosition;
+            }
             playing = false;
         }
         context.dispatchEvent(new CustomEvent("playState", { 
