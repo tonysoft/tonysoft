@@ -421,7 +421,7 @@ class VideoComponent extends PolymerElement {
         if (context.youTube && (video.state === -1)) {  // YouTube gets confused if you choose a playPosition before the first play
             video.pause();
         }
-        if ((context.pausePosition > context.playPosition) && (context.pausePosition >= currentTime)) {
+        if ((context.pausePosition > context.playPosition) && (currentTime >= context.pausePosition)) {
             video.pause();
             playing = false;
         }
