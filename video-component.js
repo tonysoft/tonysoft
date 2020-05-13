@@ -135,6 +135,7 @@ class VideoComponent extends PolymerElement {
         this.spacingRight = 0;
         this.border = false;
         this.resumePlayPosition = -1;
+        context.video = null;
       }
   
       ready() {
@@ -316,7 +317,7 @@ class VideoComponent extends PolymerElement {
             clearInterval(context.playPositionReadyInterval);
         }
         context.playPositionReadyInterval = setInterval(function() {
-            if (context.isReady && (context.youTube !== undefined)) {
+            if (context.isReady && (context.youTube !== undefined) && context.video) {
                 var video = context.video;
                 if (context.youTube) {
                     var state = video.state;
