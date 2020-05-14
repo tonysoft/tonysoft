@@ -207,7 +207,8 @@ class PdfViewer extends PolymerElement {
             context.loadingTask.destroy();
             context.numPages = 0;
         }
-        context.page = context.getPageFromUrl(src);
+        var pageFromUrl = context.getPageFromUrl(src);
+        context.page = pageFromUrl ? pageFromUrl : context.page;
         context.loadingTask = context.pdfjsLib.getDocument(src);
         context.loadingTask.promise.then(function(pdf) {
             console.log('PDF loaded');
