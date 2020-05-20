@@ -169,7 +169,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             context.dataMapping = {};
             items.forEach((item, idx) => {
                 context.priorItemOrder.push(item.setAttribute("index", idx));
-                if (context.data && context.data[idx]) {
+                if (context.data && (context.data[idx] !== undefined)) {
                     let mapping = { 
                         index: idx,
                         data: context.data[idx]
@@ -247,8 +247,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             const rect = this._rects[idx];
             item.classList.add("item--transform");
             item.style.transition = "none";
-            item.__originalWidth = item.style.width;
-            item.__originalHeight = item.style.height;
+            // item.__originalWidth = item.style.width;
+            // item.__originalHeight = item.style.height;
             item.style.width = rect.width + "px";
             item.style.height = rect.height + "px";
             this._translate3d(rect.left, rect.top, 1, item);
@@ -309,8 +309,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         const fragment = document.createDocumentFragment();
         this.items.forEach(item => {
             item.style.transform = "";
-            item.style.width = item.__originalWidth;
-            item.style.height = item.__originalHeight;
+            // item.style.width = item.__originalWidth;
+            // item.style.height = item.__originalHeight;
             item.classList.remove("item--transform");
             fragment.appendChild(item);
         });
@@ -329,8 +329,10 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         var orderedData = [];
         this.items.forEach(function(item) {
             var index = item.getAttribute("index");
-            orderedData.push(context.dataMapping[index].data);
-            context.newItemOrder.push(parseInt(index));
+            if (context.dataMapping[index]) {
+                orderedData.push(context.dataMapping[index].data);
+                context.newItemOrder.push(parseInt(index));
+            }
         });
         let detail = {
             itemIndex: this._target.getAttribute("index"),

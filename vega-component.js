@@ -79,12 +79,20 @@ class VegaComponent extends PolymerElement {
           type: Object,
           observer: '_vegaSpecJsonChanged'
         },
+        chartSpec: {
+          type: Object,
+          observer: '_vegaSpecJsonChanged'
+        },
         vegaRenderCallback: {
           type: Object
         },
         vegaData: {
             type: Object,
             observer: '_vegaDataChanged'
+        },
+        chartData: {
+          type: Object,
+          observer: '_vegaDataChanged'
         },
         addedVegaData: {
             type: Object,
@@ -291,6 +299,7 @@ class VegaComponent extends PolymerElement {
     
     _vegaSpecJsonChanged(newValue) {
       var context = this;
+      context.vegaSpec = newValue;
       if (!newValue || !newValue["$schema"]) {
         return;
       }
@@ -333,6 +342,7 @@ class VegaComponent extends PolymerElement {
 
     _vegaDataChanged(newData) {
       var context = this;
+      context.vegaData = newValue;
       if (newData) {
         var dataChangedInterval = setInterval(function() {
           if (context.vegaView) {
