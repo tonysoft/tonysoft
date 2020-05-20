@@ -329,12 +329,15 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             context._updateItems();
             context.newItemOrder = [];
             var orderedData = [];
+            var sortIndex = 100;
             context.items.forEach(function(item) {
                 var index = item.getAttribute("index");
                 if (context.dataMapping[index]) {
+                    context.dataMapping[index].data.sort = sortIndex;
                     orderedData.push(context.dataMapping[index].data);
                     context.newItemOrder.push(parseInt(index));
                 }
+                sortIndex += 100;
             });
             let detail = {
                 itemIndex: context._target.getAttribute("index"),
