@@ -108,7 +108,7 @@ class PdfViewer extends PolymerElement {
                     element.style.height = "100%";
                 } else {
                     context.baseHeight = element.style.height.replace("px", "");
-                    context.baseHeight = baseHeight.replace("%", "");
+                    context.baseHeight = context.baseHeight.replace("%", "");
                 }
             })
         }
