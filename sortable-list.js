@@ -314,41 +314,45 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             item.classList.remove("item--transform");
             fragment.appendChild(item);
         });
-        if (this.children[0]) {
-            this.insertBefore(fragment, this.children[0]);
-        } else {
-            this.appendChild(fragment);
-        }
-        this.style.height = "";
-        this._target.classList.remove("item--dragged");
-        this._rects = null;
-        this._targetRect = null;
-        this._updateItems();
-        this.newItemOrder = [];
         var context = this;
-        var orderedData = [];
-        this.items.forEach(function(item) {
-            var index = item.getAttribute("index");
-            if (context.dataMapping[index]) {
-                orderedData.push(context.dataMapping[index].data);
-                context.newItemOrder.push(parseInt(index));
-            }
+        if (context.children[0]) {
+            context.insertBefore(fragment, this.children[0]);
+        } else {
+            context.appendChild(fragment);
+        }
+        var display = context.style.display;
+        context.style.display = "none";
+        setTimeout(function() {
+            context._target.classList.remove("item--dragged");
+            context._rects = null;
+            context._targetRect = null;
+            context._updateItems();
+            context.newItemOrder = [];
+            var orderedData = [];
+            context.items.forEach(function(item) {
+                var index = item.getAttribute("index");
+                if (context.dataMapping[index]) {
+                    orderedData.push(context.dataMapping[index].data);
+                    context.newItemOrder.push(parseInt(index));
+                }
+            });
+            let detail = {
+                itemIndex: context._target.getAttribute("index"),
+                newItemOrder: context.newItemOrder,
+                priorItemOrder: context.priorItemOrder,
+                orderedData: orderedData
+            };
+            context.dispatchEvent(
+                new CustomEvent("sortFinish", {
+                    composed: true,
+                    detail
+                })
+            );
+    
+            context._target = null;
+            context.style.display = display;
         });
-        let detail = {
-            itemIndex: this._target.getAttribute("index"),
-            newItemOrder: this.newItemOrder,
-            priorItemOrder: this.priorItemOrder,
-            orderedData: orderedData
-        };
-        this.dispatchEvent(
-            new CustomEvent("sortFinish", {
-                composed: true,
-                detail
-            })
-        );
-
-        this._target = null;
-    }
+   }
 
     _onContextMenu(event) {
         if (this.dragging) {
