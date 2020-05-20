@@ -100,14 +100,20 @@ class PdfViewer extends PolymerElement {
                 var parentNode = element.parentNode;
                 if (!element.style.width) {
                     element.style.width = "100%";
+                } else {
+                    baseWidth = element.style.width.replace("px", "");
+                    baseWidth = baseWidth.replace("%", "");
                 }
                 if (!element.style.height) {
                     element.style.height = "100%";
+                } else {
+                    baseHeight = element.style.height.replace("px", "");
+                    baseHeight = baseHeight.replace("%", "");
                 }
             })
         }
-        context.baseHeight = context.container.offsetHeight;
-        context.baseWidth = context.container.offsetWidth;
+        context.baseHeight = context.baseHeight || context.container.offsetHeight;
+        context.baseWidth = context.baseWidth || context.container.offsetWidth;
         if (!context.baseWidth) {
             context.baseWidth = parseInt(window.innerWidth * .4);
         }
