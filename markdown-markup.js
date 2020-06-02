@@ -132,10 +132,10 @@ class MarkdownMarkup extends PolymerElement {
         }
     }
 
-    _markdown(markdown) {
+    _markdown(markdown, emojiSize, emojiOffset) {
         var context = this;
         if (context.checkIsReady("markdown", markdown, null)) {
-            context.convertMarkdown(markdown);
+            context.convertMarkdown(markdown, emojiSize, emojiOffset);
         }
     }
 
@@ -180,21 +180,21 @@ class MarkdownMarkup extends PolymerElement {
 
         var markup = context.converter.render(markdown);  
         markup = context.checkForEmojis(markup, emojiSize, emojiOffset);
-        if (context.markupDest) {
-            context.markupDest.innerHTML = markup;
-        }
         context.dispatchEvent(new CustomEvent("markup", { 
             detail: markup
         }));
-        var text = context.markupDest.textContent;
-        while (text.indexOf("\n\n\n") >= 0) {
-            text = text.replace("\n\n\n", "\n\n");
+        if (context.markupDest) {
+            context.markupDest.innerHTML = markup;
+            var text = context.markupDest.textContent;
+            while (text.indexOf("\n\n\n") >= 0) {
+                text = text.replace("\n\n\n", "\n\n");
+            }
+            setTimeout(function() {
+                context.dispatchEvent(new CustomEvent("text", { 
+                    detail: text
+                }));
+            }, 250);
         }
-        setTimeout(function() {
-            context.dispatchEvent(new CustomEvent("text", { 
-                detail: text
-            }));
-        }, 250);
         return markup;
     }
 
