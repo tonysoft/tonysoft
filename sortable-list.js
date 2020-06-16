@@ -245,7 +245,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         }
         if (this.dragHandle) {
             var dataRmxMeta = event.srcElement.getAttribute("data-rmx-meta") || event.srcElement.parentNode.getAttribute("data-rmx-meta");
-            if (dataRmxMeta.indexOf(this.dragHandle) < 0) {
+            if (dataRmxMeta && (dataRmxMeta.indexOf(this.dragHandle) < 0)) {
                 return;
             }
         }
@@ -344,38 +344,40 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         var display = context.style.display;
         context.style.display = "none";
         setTimeout(function() {
-            context._target.classList.remove("item--dragged");
-            context._rects = null;
-            context._targetRect = null;
-            context._updateItems();
-            context.newItemOrder = [];
-            var orderedData = [];
-            var sortIndex = 100;
-            context.items.forEach(function(item) {
-                var index = item.getAttribute("index");
-                if (context.dataMapping[index]) {
-                    context.dataMapping[index].data.sort = sortIndex;
-                    orderedData.push(context.dataMapping[index].data);
-                    context.newItemOrder.push(parseInt(index));
-                }
-                sortIndex += 100;
-            });
-            let detail = {
-                itemIndex: context._target.getAttribute("index"),
-                newItemOrder: context.newItemOrder,
-                priorItemOrder: context.priorItemOrder,
-                orderedData: orderedData
-            };
-            context.dispatchEvent(
-                new CustomEvent("sortFinish", {
-                    composed: true,
-                    detail
-                })
-            );
-            
-            context.style.display = display;
-            context._target.scrollIntoView(false);
-            context._target = null;
+            if (context._target) {
+                context._target.classList.remove("item--dragged");
+                context._rects = null;
+                context._targetRect = null;
+                context._updateItems();
+                context.newItemOrder = [];
+                var orderedData = [];
+                var sortIndex = 100;
+                context.items.forEach(function(item) {
+                    var index = item.getAttribute("index");
+                    if (context.dataMapping[index]) {
+                        context.dataMapping[index].data.sort = sortIndex;
+                        orderedData.push(context.dataMapping[index].data);
+                        context.newItemOrder.push(parseInt(index));
+                    }
+                    sortIndex += 100;
+                });
+                let detail = {
+                    itemIndex: context._target.getAttribute("index"),
+                    newItemOrder: context.newItemOrder,
+                    priorItemOrder: context.priorItemOrder,
+                    orderedData: orderedData
+                };
+                context.dispatchEvent(
+                    new CustomEvent("sortFinish", {
+                        composed: true,
+                        detail
+                    })
+                );
+                
+                context.style.display = display;
+                context._target.scrollIntoView(false);
+                context._target = null;
+            }
         });
    }
 
