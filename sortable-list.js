@@ -330,8 +330,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         const fragment = document.createDocumentFragment();
         this.items.forEach(item => {
             item.style.transform = "";
-            // item.style.width = item.__originalWidth;
-            // item.style.height = item.__originalHeight;
+            item.style.width = item.__originalWidth;
+            item.style.height = item.__originalHeight;
             item.classList.remove("item--transform");
             fragment.appendChild(item);
         });
