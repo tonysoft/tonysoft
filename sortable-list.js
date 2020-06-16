@@ -94,6 +94,12 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 type: Boolean,
                 reflectToAttribute: true,
                 value: false
+            },
+
+            dragHandle: {
+                type: String,
+                reflectToAttribute: true,
+                value: ""
             }
         };
     }
@@ -227,6 +233,12 @@ class SortableList extends GestureEventListeners(PolymerElement) {
     _trackStart(event) {
         if (this.disabled) {
             return;
+        }
+        if (this.dragHandle) {
+            var dataRmxMeta = event.srcElement.getAttribute("data-rmx-meta") || event.srcElement.parentNode.getAttribute("data-rmx-meta");
+            if (dataRmxMeta.indexOf(this.dragHandle) < 0) {
+                return;
+            }
         }
         this._target = this._itemFromEvent(event);
         if (!this._target) {
