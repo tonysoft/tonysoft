@@ -245,7 +245,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         }
         if (this.dragHandle) {
             var dataRmxMeta = event.srcElement.getAttribute("data-rmx-meta") || event.srcElement.parentNode.getAttribute("data-rmx-meta");
-            if (dataRmxMeta && (dataRmxMeta.indexOf(this.dragHandle) < 0)) {
+            if (!dataRmxMeta || (dataRmxMeta.indexOf(this.dragHandle) < 0)) {
                 return;
             }
         }
