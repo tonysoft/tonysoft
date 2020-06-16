@@ -268,8 +268,8 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             const rect = this._rects[idx];
             item.classList.add("item--transform");
             item.style.transition = "none";
-            // item.__originalWidth = item.style.width;
-            // item.__originalHeight = item.style.height;
+            item.__originalWidth = item.style.width;
+            item.__originalHeight = item.style.height;
             item.style.width = rect.width + "px";
             item.style.height = rect.height + "px";
             this._translate3d(rect.left, rect.top, 1, item);
