@@ -25,7 +25,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 ::slotted(.item--transform) {
                     left: 0px;
                     marginx: 0 !important;
-                    position: fixed !important;
+                    position: absolute !important;
                     top: 0px;
                     transition: transform 0.2s cubic-bezier(0.333, 0, 0, 1);
                     will-change: transform;
@@ -59,7 +59,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                     flex-wrap: wrap;
                 }
             </style>
-            <div id="main">
+            <div id="main" style="height: 100%; overflow-y: auto; overflow-x: hidden;">
                 <div id="items">
                     <slot id="slot"></slot>
                 </div>
@@ -253,14 +253,24 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         if (!this._target) {
             return;
         }
+        var main = this.root.querySelector("#main");
         event.stopPropagation();
         this._rects = this._getItemsRects();
+        const rect = this.getBoundingClientRect();
+        const xOffset = rect.left;
+        const yOffset = rect.top;
+
+        this._rects.forEach(function(rect) {
+            rect.left -= xOffset;
+            rect.top -= yOffset;
+        })
+
         this._targetRect = this._rects[this.items.indexOf(this._target)];
+        
         this._target.classList.add("item--dragged", "item--pressed");
         if ("vibrate" in navigator) {
             navigator.vibrate(30);
         }
-        const rect = this.getBoundingClientRect();
 
         this.style.height = rect.height + "px";
         this.style.width = rect.width + "px";
@@ -405,6 +415,12 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         if (!this._rects) {
             return;
         }
+        const rect = this.getBoundingClientRect();
+        const xOffset = rect.left;
+        const yOffset = rect.top;
+        x -= xOffset;
+        y -= yOffset;
+
         let match = null;
         this._rects.forEach((rect, i) => {
             if (x >= rect.left && x <= rect.left + rect.width && y >= rect.top && y <= rect.top + rect.height) {
