@@ -186,7 +186,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                     var dragHandle = item.querySelector("*[data-rmx-meta]");
                     if (dragHandle) {
                         var dataRmxMeta = dragHandle.getAttribute("data-rmx-meta");
-                        if (dataRmxMeta.indexOf(context.dragHandle) >= 0) {
+                        if ((dataRmxMeta.indexOf(context.dragHandle) >= 0) && !dragHandle.style.cursor) {
                             dragHandle.style.cursor = "ns-resize";
                         }
                     }
