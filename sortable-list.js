@@ -170,7 +170,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         //         context.boundingBoxAdj = parentNode.getBoundingClientRect();
         //     }
         // }
-        if (!this.priorItemOrder) {
+        if (true) { //(!this.priorItemOrder) {
             this.priorItemOrder = [];
             context.dataMapping = {};
             items.forEach((item, idx) => {
@@ -306,6 +306,12 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         if (overItem && overItem !== this._target) {
             const overItemIndex = this.items.indexOf(overItem);
             const targetIndex = this.items.indexOf(this._target);
+            const overIndex = this.items.indexOf(overItem);
+            var scrollParam = true;
+            if (overIndex > targetIndex) {
+                scrollParam = false;
+            }
+            overItem.scrollIntoView(scrollParam);
             this._moveItemArray(this.items, targetIndex, overItemIndex);
             for (let i = 0; i < this.items.length; i++) {
                 if (this.items[i] !== this._target) {
