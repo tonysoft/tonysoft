@@ -143,8 +143,10 @@ class SortableList extends GestureEventListeners(PolymerElement) {
 
     _data(newData) {
         var context = this;
-        this.newData = true;
-        context.priorItemOrder = null;
+        if (newData !== null) {
+            this.newData = true;
+            context.priorItemOrder = null;
+        }
     }
 
     _updateItems() {
@@ -163,16 +165,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 items.push(node);
             }
         });
-        // if (context.parentSortable === "rmx-webcomponent") {
-        //     var parentNode = context.parentNode;
-        //     while (parentNode && (!parentNode.classList || !parentNode.classList.contains("remix-app-content"))) {
-        //         parentNode = parentNode.parentNode;
-        //     }
-        //     if (parentNode) {
-        //         context.boundingBoxAdj = parentNode.getBoundingClientRect();
-        //     }
-        // }
-        if (this.newData) { //(!this.priorItemOrder) {
+        if (this.newData) {
             this.priorItemOrder = [];
             if (this.newData) {
                 context.dataMapping = {};
@@ -201,6 +194,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 }
             });
             this.newData = false;
+            this.data = null;
         }
         this._setItems(items);
     }
