@@ -235,7 +235,10 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 break;
             case "end":
                 this._trackEnd(event);
-                this._onTransitionEnd();
+                var context = this;
+                setTimeout(function() {
+                    context._onTransitionEnd();
+                }, 500);
                 break;
         }
     }
