@@ -113,7 +113,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         this.data = null;
         this._onTrack = this._onTrack.bind(this);
         this._onDragStart = this._onDragStart.bind(this);
-        // this._onTransitionEnd = this._onTransitionEnd.bind(this);
+        this._onTransitionEnd = this._onTransitionEnd.bind(this);
         this._onContextMenu = this._onContextMenu.bind(this);
         this._onTouchMove = this._onTouchMove.bind(this);
     }
@@ -215,7 +215,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
     _toggleListeners({ enable }) {
         const m = enable ? "addEventListener" : "removeEventListener";
         this.$.items[m]("dragstart", this._onDragStart);
-        // this.$.items[m]("transitionend", this._onTransitionEnd);
+        this.$.items[m]("transitionend", this._onTransitionEnd);
         this.$.items[m]("contextmenu", this._onContextMenu);
         this.$.items[m]("touchmove", this._onTouchMove);
         if (enable) {
@@ -315,7 +315,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             if (overIndex > targetIndex) {
                 scrollParam = false;
             }
-            //overItem.scrollIntoViewIfNeeded(scrollParam);
+            overItem.scrollIntoViewIfNeeded(scrollParam);
             this._moveItemArray(this.items, targetIndex, overItemIndex);
             for (let i = 0; i < this.items.length; i++) {
                 if (this.items[i] !== this._target) {
