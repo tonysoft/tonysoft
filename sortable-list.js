@@ -312,7 +312,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
             if (overIndex > targetIndex) {
                 scrollParam = false;
             }
-            overItem.scrollIntoView(scrollParam);
+            //overItem.scrollIntoView(scrollParam);
             this._moveItemArray(this.items, targetIndex, overItemIndex);
             for (let i = 0; i < this.items.length; i++) {
                 if (this.items[i] !== this._target) {
