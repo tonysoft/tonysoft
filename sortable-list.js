@@ -116,6 +116,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         this._onTransitionEnd = this._onTransitionEnd.bind(this);
         this._onContextMenu = this._onContextMenu.bind(this);
         this._onTouchMove = this._onTouchMove.bind(this);
+        this.newData = false;
     }
 
     ready() {
@@ -142,6 +143,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
 
     _data(newData) {
         var context = this;
+        this.newData = true;
         context.priorItemOrder = null;
     }
 
@@ -170,17 +172,23 @@ class SortableList extends GestureEventListeners(PolymerElement) {
         //         context.boundingBoxAdj = parentNode.getBoundingClientRect();
         //     }
         // }
-        if (!this.priorItemOrder) {
+        if (this.newData) { //(!this.priorItemOrder) {
             this.priorItemOrder = [];
-            context.dataMapping = {};
+            if (this.newData) {
+                context.dataMapping = {};
+            }
             items.forEach((item, idx) => {
-                context.priorItemOrder.push(item.setAttribute("index", idx));
-                if (context.data && (context.data[idx] !== undefined)) {
+                if (item.getAttribute("index") === undefined) {
+                    item.setAttribute("index", idx);
+                }
+                var dataIndex = item.getAttribute("index");
+                context.priorItemOrder.push(dataIndex);
+                if (this.newData && context.data && (context.data[idx] !== undefined)) {
                     let mapping = { 
-                        index: idx,
+                        index: dataIndex,
                         data: context.data[idx]
                     }
-                    context.dataMapping[idx] = mapping;
+                    context.dataMapping[dataIndex] = mapping;
                 }
                 if (context.dragHandle) {
                     var dragHandle = item.querySelector("*[data-rmx-meta]");
@@ -192,6 +200,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                     }
                 }
             });
+            this.newData = false;
         }
         this._setItems(items);
     }
@@ -377,7 +386,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                     if (context.dataMapping[index]) {
                         context.dataMapping[index].data.sort = sortIndex;
                         orderedData.push(context.dataMapping[index].data);
-                        context.newItemOrder.push(parseInt(index));
+                        context.newItemOrder.push(index);
                     }
                     sortIndex += 100;
                 });
