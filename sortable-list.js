@@ -178,7 +178,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 context.dataMapping = {};
             }
             items.forEach((item, idx) => {
-                if (item.getAttribute("index") === undefined) {
+                if ((item.getAttribute("index") === undefined) || (item.getAttribute("index") === null)) {
                     item.setAttribute("index", idx);
                 }
                 var dataIndex = item.getAttribute("index");
