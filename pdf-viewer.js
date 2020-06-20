@@ -93,6 +93,11 @@ class PdfViewer extends PolymerElement {
         context.pdfjsLib = window.pdfjsLib;
         context.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@2.1.266/build/pdf.worker.js';
         context.canvas = context.shadowRoot.querySelector('#the-canvas');
+        context.canvas.addEventListener("click", function(e) {
+            context.dispatchEvent(new CustomEvent("click", { 
+                detail: context.pageNumber
+            }));
+        });
         context.container = context.shadowRoot.querySelector('.main'); 
         if (!context.width || !context.height) {
             var elements = document.querySelectorAll("pdf-viewer");
