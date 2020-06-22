@@ -30,10 +30,20 @@ class PdfViewer extends PolymerElement {
             }
 
         </style>
-        <div id="editor" on-click="focusOnEditor" class="main noSelect" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: visible;">
+        <div id="editor" on-click="focusOnEditor" class="main noSelect" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: visible; position: relative;">
+            <div class="prevPage" style="display: [[conditionalPageNavigation]]; cursor: pointer; position: absolute; top: 0px; left: 0px; width: 100%; height: 20px; text-align: center;">
+                <svg height="20" width="20">
+                    <polygon points="10,0 20,20 0, 20" style="fill:#f0f0f0;stroke:#444444;stroke-width:1" />
+                </svg>
+            </div>
             <a href="[[src]]" title="View Document in a New Tab" style="position: relative; pointer-events: [[hasBrowserLink(browserLink)]];" target="_blank">
                 <canvas id="the-canvas" class="border" style="display: none; margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas>
             </a>
+            <div class="nextPage" style="display: [[conditionalPageNavigation]]; cursor: pointer; position: absolute; bottom: 0px; left: 0px; width: 100%; height: 20px; text-align: center;">
+                <svg height="20" width="20">
+                    <polygon points="10,20 0,0 20,0" style="fill:#f0f0f0;stroke:#444444;stroke-width:1" />
+                </svg>
+            </div>
         </div>
       `;
     }
@@ -67,6 +77,9 @@ class PdfViewer extends PolymerElement {
         },
         browserLink: {
             type: Boolean
+        },
+        pageNavigation: {
+            type: Boolean
         }
       }
     }
@@ -83,6 +96,8 @@ class PdfViewer extends PolymerElement {
       this.page = 0;
       this.src = null;
       this.browserLink = false;
+      this.pageNavigation = true;
+      this.conditionalPageNavigation = "none"; 
       this.onReadyProps = {};
     }
 
@@ -93,10 +108,22 @@ class PdfViewer extends PolymerElement {
         context.pdfjsLib = window.pdfjsLib;
         context.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@2.1.266/build/pdf.worker.js';
         context.canvas = context.shadowRoot.querySelector('#the-canvas');
+        context.prevPage = context.shadowRoot.querySelector('.prevPage');
+        context.nextPage = context.shadowRoot.querySelector('.nextPage');
         context.canvas.addEventListener("click", function(e) {
             context.dispatchEvent(new CustomEvent("click", { 
                 detail: context.pageNumber
             }));
+        });
+        context.prevPage.addEventListener("click", function(e) {
+            if (context.pageNumber > 1) {
+                context.page = context.pageNumber = context.pageNumber - 1;
+            }
+        });
+        context.nextPage.addEventListener("click", function(e) {
+            if (context.pageNumber < context.numPages) {
+                context.page = context.pageNumber = context.pageNumber + 1;
+            }
         });
         context.container = context.shadowRoot.querySelector('.main'); 
         if (!context.width || !context.height) {
@@ -225,6 +252,7 @@ class PdfViewer extends PolymerElement {
             console.log('PDF loaded');
             context.currentPdf = pdf;
             context.numPages = pdf.numPages;
+            context.conditionalPageNavigation = (context.pageNavigation && (context.numPages > 1)) ? "block" : "none";
             
             // Fetch the first page
             context.pageNumber = (context.page && (context.page <= context.numPages)) ? context.page : 1;
