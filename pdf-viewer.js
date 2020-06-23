@@ -79,7 +79,8 @@ class PdfViewer extends PolymerElement {
             type: Boolean
         },
         pageNavigation: {
-            type: Boolean
+            type: Boolean,
+            observer: "_pageNavigation"
         }
       }
     }
@@ -96,7 +97,7 @@ class PdfViewer extends PolymerElement {
       this.page = 0;
       this.src = null;
       this.browserLink = false;
-      this.pageNavigation = true;
+      this.pageNavigation = false;
       this.conditionalPageNavigation = "none"; 
       this.onReadyProps = {};
     }
@@ -157,6 +158,15 @@ class PdfViewer extends PolymerElement {
         context.baseWidth -= (borderAdj + (context.margin * 2));
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
+        }
+    }
+
+    _pageNavigation(newValue, oldValue) {
+        var context = this;
+        if (newValue || (newValue === "")) {
+          context.pageNavigation = true;
+        } else {
+            context.pageNavigation = false;
         }
     }
 
