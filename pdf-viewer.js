@@ -379,6 +379,7 @@ class PdfViewer extends PolymerElement {
         }
         if (context.checkIsReady("page", page, null)) {
             if (context.numPages) {
+                context.currentPage = page;
                 context.loadPage(page);
             }
         }
