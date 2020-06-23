@@ -305,7 +305,7 @@ class PdfViewer extends PolymerElement {
         }
         context.currentPdf.getPage(pageNumber).then(function(page) {
             console.log('Page loaded');
-            
+            context.page = context.pageNumber = pageNumber;
             var scale = 1.5;
             var viewport = page.getViewport({scale: scale});
 
@@ -379,7 +379,7 @@ class PdfViewer extends PolymerElement {
         }
         if (context.checkIsReady("page", page, null)) {
             if (context.numPages) {
-                context.currentPage = page;
+                context.pageNumber = page;
                 context.loadPage(page);
             }
         }
