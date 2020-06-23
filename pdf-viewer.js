@@ -31,7 +31,7 @@ class PdfViewer extends PolymerElement {
 
         </style>
         <div id="editor" on-click="focusOnEditor" class="main noSelect" style="width: [[setWidth(width)]]; max-width: [[setMaxWidth(maxWidth)]]; height: [[setHeight(height)]]; overflow: visible; position: relative;">
-            <div class="prevPage" style="display: [[conditionalPageNavigation]]; cursor: n-resize; position: absolute; top: -16px; left: 0px; width: 100%; height: 20px; text-align: center;">
+            <div class="prevPage" style="display: [[conditionalPrevPageNavigation]]; cursor: n-resize; position: absolute; top: -16px; left: 0px; width: 100%; height: 20px; text-align: center;">
                 <svg height="20" width="20">
                     <polygon points="10,0 20,20 0, 20" style="fill:#f0f0f0;stroke:#444444;stroke-width:1" />
                 </svg>
@@ -39,7 +39,7 @@ class PdfViewer extends PolymerElement {
             <a href="[[src]]" title="View Document in a New Tab" style="position: relative; pointer-events: [[hasBrowserLink(browserLink)]];" target="_blank">
                 <canvas id="the-canvas" class="border" style="display: none; margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas>
             </a>
-            <div class="nextPage" style="display: [[conditionalPageNavigation]]; cursor: s-resize; position: absolute; bottom: -18px; left: 0px; width: 100%; height: 20px; text-align: center;">
+            <div class="nextPage" style="display: [[conditionalNextPageNavigation]]; cursor: s-resize; position: absolute; bottom: -18px; left: 0px; width: 100%; height: 20px; text-align: center;">
                 <svg height="20" width="20">
                     <polygon points="10,20 0,0 20,0" style="fill:#f0f0f0;stroke:#444444;stroke-width:1" />
                 </svg>
@@ -98,7 +98,8 @@ class PdfViewer extends PolymerElement {
       this.src = null;
       this.browserLink = false;
       this.pageNavigation = false;
-      this.conditionalPageNavigation = "none"; 
+      this.conditionalPrevPageNavigation = "none"; 
+      this.conditionalNextPageNavigation = "none"; 
       this.onReadyProps = {};
     }
 
@@ -262,7 +263,6 @@ class PdfViewer extends PolymerElement {
             console.log('PDF loaded');
             context.currentPdf = pdf;
             context.numPages = pdf.numPages;
-            context.conditionalPageNavigation = (context.pageNavigation && (context.numPages > 1)) ? "block" : "none";
             
             // Fetch the first page
             context.pageNumber = (context.page && (context.page <= context.numPages)) ? context.page : 1;
@@ -306,6 +306,8 @@ class PdfViewer extends PolymerElement {
         context.currentPdf.getPage(pageNumber).then(function(page) {
             console.log('Page loaded');
             context.page = context.pageNumber = pageNumber;
+            context.conditionalPrevPageNavigation = (context.pageNavigation && (context.numPages > 1) && (context.pageNumber > 1)) ? "block" : "none";
+            context.conditionalNextPageNavigation = (context.pageNavigation && (context.numPages > 1) && (context.pageNumber < context.numPages)) ? "block" : "none";
             var scale = 1.5;
             var viewport = page.getViewport({scale: scale});
 
