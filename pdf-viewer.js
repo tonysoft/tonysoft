@@ -182,7 +182,7 @@ class PdfViewer extends PolymerElement {
 
     _nodeActionPacket(actionPacket) {
         var context = this;
-        if (context.nodeActionPacket.target === context.componentId) {
+        if (context.nodeActionPacket && context.nodeActionPacket.target === context.componentId) {
             if (context.nodeActionPacket.commands && (context.nodeActionPacket.commands.length > 0)) {
                 context.src = context.nodeActionPacket.commands[0];
                 if (context.nodeActionPacket.commands.length > 0) {
