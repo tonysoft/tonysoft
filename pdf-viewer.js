@@ -380,8 +380,11 @@ class PdfViewer extends PolymerElement {
             canvasContext: canvasContext,
             viewport: viewport
             };
-            var renderTask = page.render(renderContext);
-            renderTask.promise.then(function () {
+            if (context.renderTask) {
+                context.renderTask.destroy();
+            }
+            context.renderTask = page.render(renderContext);
+            context.renderTask.promise.then(function () {
                 console.log('Page rendered');
                 context.dispatchEvent(new CustomEvent("pageLoaded", { 
                     detail: { 
