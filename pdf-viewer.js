@@ -184,9 +184,13 @@ class PdfViewer extends PolymerElement {
         var context = this;
         if (context.nodeActionPacket && context.nodeActionPacket.target === context.componentId) {
             if (context.nodeActionPacket.commands && (context.nodeActionPacket.commands.length > 0)) {
-                context.src = context.nodeActionPacket.commands[0];
+                if (context.src !== context.nodeActionPacket.commands[0]) {
+                    context.src = context.nodeActionPacket.commands[0];
+                }
                 if (context.nodeActionPacket.commands.length > 0) {
-                    context.page = context.nodeActionPacket.commands[1];
+                    setTimeout(function() {
+                        context.page = context.nodeActionPacket.commands[1];
+                    })
                 }
             }
         }
