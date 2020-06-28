@@ -68,6 +68,13 @@ class PdfViewer extends PolymerElement {
         onReadyProps: {
             type: Object
         },
+        componentId: {
+            type: String
+        },
+        nodeActionPacket: {
+            type: Object,
+            observer: "_nodeActionPacket"
+        },
         margin: {
             type: Number
         },
@@ -101,6 +108,8 @@ class PdfViewer extends PolymerElement {
       this.conditionalPrevPageNavigation = "none"; 
       this.conditionalNextPageNavigation = "none"; 
       this.onReadyProps = {};
+      this.componentId = "";
+      this.nodeActionPacket = {};
     }
 
     ready() {
@@ -168,6 +177,18 @@ class PdfViewer extends PolymerElement {
           context.pageNavigation = true;
         } else {
             context.pageNavigation = false;
+        }
+    }
+
+    _nodeActionPacket(actionPacket) {
+        var context = this;
+        if (context.nodeActionPacket.target === context.componentId) {
+            if (context.nodeActionPacket.commands && (context.nodeActionPacket.commands.length > 0)) {
+                context.src = context.nodeActionPacket.commands[0];
+                if (context.nodeActionPacket.commands.length > 0) {
+                    context.page = context.nodeActionPacket.commands[1];
+                }
+            }
         }
     }
 
