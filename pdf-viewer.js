@@ -381,7 +381,9 @@ class PdfViewer extends PolymerElement {
             viewport: viewport
             };
             if (context.renderTask) {
-                //context.renderTask.destroy();
+                try {
+                    context.renderTask.destroy();
+                } catch(e) {};
             }
             context.renderTask = page.render(renderContext);
             context.renderTask.promise.then(function () {
