@@ -191,7 +191,7 @@ class PdfViewer extends PolymerElement {
                     var page = parseInt(context.nodeActionPacket.commands[1]);
                     if (!isNaN(page)) {
                         setTimeout(function() {
-                            context.page = ;
+                            context.page = page;
                         })
                     }
                 }
