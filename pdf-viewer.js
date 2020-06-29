@@ -39,7 +39,7 @@ class PdfViewer extends PolymerElement {
             <a href="[[src]]" title="View Document in a New Tab" style="position: relative; pointer-events: [[hasBrowserLink(browserLink)]];" target="_blank">
                 <canvas id="the-canvas" class="border" style="display: none; margin: [[margin]]px; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; " ></canvas>
             </a>
-            <div class="nextPage" style="display: [[conditionalNextPageNavigation]]; cursor: s-resize; position: absolute; bottom: -18px; left: 0px; width: 100%; height: 20px; text-align: center;">
+            <div class="nextPage" style="display: [[conditionalNextPageNavigation]]; cursor: s-resize; position: absolute; bottom: -20px; left: 0px; width: 100%; height: 20px; text-align: center;">
                 <svg height="20" width="20">
                     <polygon points="10,20 0,0 20,0" style="fill:#f0f0f0;stroke:#444444;stroke-width:1" />
                 </svg>
