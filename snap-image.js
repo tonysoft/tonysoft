@@ -141,6 +141,9 @@ class SnapImage extends PolymerElement {
             context.context.drawImage(context.video, 0, 0, context.width, context.height);
             context.reset = false;
             var dataUri = (context.remixRawImage ? "image-" : "") + context.canvas.toDataURL();
+            context.dispatchEvent(new CustomEvent("captureMode", { 
+                detail: { "captureMode": context.reset }
+            }));
             if (context.uploadserver) {
                 context.uploadToRemix(dataUri);
             } else {
