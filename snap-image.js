@@ -60,6 +60,12 @@ class SnapImage extends PolymerElement {
         },
         remixRawImage: {
             type: Boolean
+        },
+        upload: {
+            type: Boolean
+        },
+        uploadserver: {
+            type: String
         }
       }
     }
@@ -70,6 +76,8 @@ class SnapImage extends PolymerElement {
       this.height = 240;
       this.snap = false;
       this.reset = true;
+      this.upload = false;
+      this.uploadserver = "";
       this.stop = false;
       this.remixRawImage = false;
     }
@@ -77,6 +85,11 @@ class SnapImage extends PolymerElement {
     ready() {
         var context = this;
         super.ready();
+        context.startCamera();
+    }
+
+    startCamera() {
+        var context = this;
         context.video = context.shadowRoot.querySelector("#video");
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             // Not adding `{ audio: true }` since we only want video now
@@ -97,7 +110,12 @@ class SnapImage extends PolymerElement {
 
     _stop() {
         var context = this;
-        if (context && context.stop && context.video && context.video.srcObject) {
+        context.stopCamera(context.stop);
+    }
+
+    stopCamera(fromStopProp) {
+        var context = this;
+        if (context && (context.stop || !fromStopProp) && context.video && context.video.srcObject) {
             var tracks = context.video.srcObject.getTracks();
             if (tracks.length) {
                 tracks[0].stop();
@@ -117,23 +135,73 @@ class SnapImage extends PolymerElement {
     _snap(snap) {
         var context = this;
         if (snap && context && context.context) {
-            context.context.drawImage(context.video, 0, 0, context.width, context.height);
-            context.reset = false;
-            var dataUri = (context.remixRawImage ? "image-" : "") + context.canvas.toDataURL();
-            context.dispatchEvent(new CustomEvent("imageSnapped", { 
-                detail: { "dataUri": dataUri, "width": context.width, "height": context.height }
-            }));
+            context.snapImage();
         }
     }
 
-    _reset(reset) {
+    snapImage(fromSnapProp) {
         var context = this;
-        if (reset) {
-            context.snap = false;
+        if (context.snap || !fromSnapProp) {
+            context.context.drawImage(context.video, 0, 0, context.width, context.height);
+            context.reset = false;
+            var dataUri = (context.remixRawImage ? "image-" : "") + context.canvas.toDataURL();
+            if (context.upload) {
+                context.uploadToRemix(dataUri);
+            } else {
+                context.dispatchEvent(new CustomEvent("imageSnapped", { 
+                    detail: { "dataUri": dataUri, "width": context.width, "height": context.height }
+                }));
+            }
+        }        
+    }
+
+    uploadToRemix(dataURI) {
+        var context = this;
+        var base64 = dataURI.split(',')[1];
+        var _rmx_content_type = "image/png";
+        var uploadPayload = { "data": "{bin}" + base64, "_rmx_content_type": _rmx_content_type };
+        if (context.uploadserver) {
+            fetch(context.uploadserver, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(uploadPayload)
+            })
+            .then(response => response.text())
+            .then(uploaded => {
+                console.log(uploaded);
+                var lastServerUrlSegment = context.uploadserver.lastIndexOf("/");
+                var uploadedURL = context.uploadserver.substring(0, lastServerUrlSegment + 1);
+                var ref = uploaded.replace("{ref}", "");
+                uploadedURL += "raw/" + ref;
+                context.dispatchEvent(new CustomEvent("uploadedURL", { 
+                    detail: uploadedURL
+                }));
+            })
+            .catch(error => {
+                console.error(error);
+            })
         }
-        context.dispatchEvent(new CustomEvent("captureMode", { 
-            detail: { "captureMode": context.reset }
-        }));
+    }
+
+    _reset(reset, oldValue) {
+        var context = this;
+        if (!(reset && oldValue) && reset) {
+            context.resetCamera(context.reset);
+        }
+    }
+
+    resetCamera(fromResetProp) {
+        var context = this;
+        if (context.reset || !fromResetProp) {
+            context.snap = false;
+            context.reset = true;
+            context.dispatchEvent(new CustomEvent("captureMode", { 
+                detail: { "captureMode": context.reset }
+            }));
+        }
     }
 }
 
