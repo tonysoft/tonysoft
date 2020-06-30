@@ -61,9 +61,6 @@ class SnapImage extends PolymerElement {
         remixRawImage: {
             type: Boolean
         },
-        upload: {
-            type: Boolean
-        },
         uploadserver: {
             type: String
         }
@@ -76,7 +73,6 @@ class SnapImage extends PolymerElement {
       this.height = 240;
       this.snap = false;
       this.reset = true;
-      this.upload = false;
       this.uploadserver = "";
       this.stop = false;
       this.remixRawImage = false;
@@ -145,7 +141,7 @@ class SnapImage extends PolymerElement {
             context.context.drawImage(context.video, 0, 0, context.width, context.height);
             context.reset = false;
             var dataUri = (context.remixRawImage ? "image-" : "") + context.canvas.toDataURL();
-            if (context.upload) {
+            if (context.uploadserver) {
                 context.uploadToRemix(dataUri);
             } else {
                 context.dispatchEvent(new CustomEvent("imageSnapped", { 
