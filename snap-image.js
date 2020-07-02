@@ -18,7 +18,7 @@ class SnapImage extends PolymerElement {
             }
             .main {
                 position: relative;
-                overflowx: hidden;
+                overflow: hidden;
             }
             .mediaElement {
                 position: absolute;
@@ -36,14 +36,14 @@ class SnapImage extends PolymerElement {
             #scaleImg {
                 position: absolute;
                 pointer-events: none;
-                opacity: 0.5;
-                left: 400px;
+                opacity: 0;
+                left: 0px;
             }
         </style>
-        <img id="scaleImg"></img> 
         <div class="main noSelect" style="width: [[width]]px; height: [[height]]px;">
             <canvas id="canvas" class="mediaElement" width="[[width]]" height="[[height]]" style=""></canvas>
             <video id="video" class="mediaElement" style="display:[[captureMode(reset)]];" width="[[width]]" height="[[height]]" autoplay></video>
+            <img id="scaleImg"></img> 
         </div>
         `;
     }
