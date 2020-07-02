@@ -41,9 +41,9 @@ class SnapImage extends PolymerElement {
             }
         </style>
         <img id="scaleImg"></img> 
-        <div class="main noSelect" style="width: [[width]]px; height: [[height]]px; transform: scale(.5); transform-origin: 0% 0%;">
+        <div class="main noSelect" style="width: [[width]]px; height: [[height]]px;">
             <canvas id="canvas" class="mediaElement" width="[[width]]" height="[[height]]" style=""></canvas>
-            <video id="video" class="mediaElement" style="display:[[captureMode(reset)]];" widthx="[[width]]" heightx="[[height]]" autoplay></video>
+            <video id="video" class="mediaElement" style="display:[[captureMode(reset)]];" width="[[width]]" height="[[height]]" autoplay></video>
         </div>
         `;
     }
