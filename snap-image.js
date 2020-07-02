@@ -18,12 +18,13 @@ class SnapImage extends PolymerElement {
             }
             .main {
                 position: relative;
+                overflowx: hidden;
             }
             .mediaElement {
                 position: absolute;
                 top: 0px;
                 left: 0px;
-                border: 1px solid black;
+                border: 0px solid black;
             }
             .isVisible: {
                 display: block !important;
@@ -31,10 +32,18 @@ class SnapImage extends PolymerElement {
             .isInvisible: {
                 display: none !important;
             }
+
+            #scaleImg {
+                position: absolute;
+                pointer-events: none;
+                opacity: 0.5;
+                left: 400px;
+            }
         </style>
-        <div class="main noSelect" style="width: [[width]]px; height: [[height]]px;">
-            <canvas id="canvas" class="mediaElement" width="[[width]]" height="[[height]]"></canvas>
-            <video id="video" class="mediaElement" style="display:[[captureMode(reset)]]; width="[[width]]" height="[[height]]" autoplay></video>
+        <img id="scaleImg"></img> 
+        <div class="main noSelect" style="width: [[width]]px; height: [[height]]px; transform: scale(.5); transform-origin: 0% 0%;">
+            <canvas id="canvas" class="mediaElement" width="[[width]]" height="[[height]]" style=""></canvas>
+            <video id="video" class="mediaElement" style="display:[[captureMode(reset)]];" widthx="[[width]]" heightx="[[height]]" autoplay></video>
         </div>
         `;
     }
@@ -44,6 +53,12 @@ class SnapImage extends PolymerElement {
             type: Number
         },
         height: {
+            type: Number
+        },
+        maxwidth: {
+            type: Number
+        },
+        maxheight: {
             type: Number
         },
         snap: {
@@ -71,6 +86,8 @@ class SnapImage extends PolymerElement {
       super();
       this.width = 320;
       this.height = 240;
+      this.maxwidth = 1440;
+      this.maxheight = 810;
       this.snap = false;
       this.reset = true;
       this.uploadserver = "";
@@ -86,6 +103,7 @@ class SnapImage extends PolymerElement {
 
     startCamera() {
         var context = this;
+        context.scaleImg = context.shadowRoot.querySelector("#scaleImg");
         context.video = context.shadowRoot.querySelector("#video");
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             // Not adding `{ audio: true }` since we only want video now
@@ -94,6 +112,11 @@ class SnapImage extends PolymerElement {
                 context.video.play();
             });
         }
+        setTimeout(function() {
+            console.log("video playing");
+            context.width = context.video.offsetWidth;
+            context.height = context.video.offsetHeight;
+        }, 1000)
         context.canvas = context.shadowRoot.querySelector("#canvas");
         context.context = context.canvas.getContext('2d');
     }
@@ -141,15 +164,31 @@ class SnapImage extends PolymerElement {
             context.context.drawImage(context.video, 0, 0, context.width, context.height);
             context.reset = false;
             var dataUri = (context.remixRawImage ? "image-" : "") + context.canvas.toDataURL();
+            if (context.maxwidth && context.maxheight) {
+                context.scaleImg.src = dataUri;
+                setTimeout(function() {
+                    var width = context.scaleImg.naturalWidth;
+                    var height = context.scaleImg.naturalHeight;
+                    console.log(width + ":" + height);
+                    dataUri = context.resizeCanvasImage(context.scaleImg, context.maxwidth, context.maxheight, dataUri);
+                    context.scaleImg.src = dataUri;
+                    finishUpload();
+                })
+            } else {
+                finishUpload()
+            }
             context.dispatchEvent(new CustomEvent("captureMode", { 
                 detail: { "captureMode": context.reset }
             }));
-            if (context.uploadserver) {
-                context.uploadToRemix(dataUri);
-            } else {
-                context.dispatchEvent(new CustomEvent("imageSnapped", { 
-                    detail: { "dataUri": dataUri, "width": context.width, "height": context.height }
-                }));
+
+            function finishUpload() {
+                if (context.uploadserver) {
+                    context.uploadToRemix(dataUri);
+                } else {
+                    context.dispatchEvent(new CustomEvent("imageSnapped", { 
+                        detail: { "dataUri": dataUri, "width": context.width, "height": context.height }
+                    }));
+                }
             }
         }        
     }
@@ -185,6 +224,66 @@ class SnapImage extends PolymerElement {
         }
     }
 
+    resizeCanvasImage(img, maxWidth, maxHeight, dataURL) {
+        var imgWidth = img.width, 
+            imgHeight = img.height;
+
+        var ratio = 1, ratio1 = 1, ratio2 = 1;
+        ratio1 = maxWidth / imgWidth;
+        ratio2 = maxHeight / imgHeight;
+
+        // Use the smallest ratio that the image best fit into the maxWidth x maxHeight box.
+        if (ratio1 < ratio2) {
+            ratio = ratio1;
+        }
+        else {
+            ratio = ratio2;
+        }
+
+        if (ratio < 1) {
+            // var canvasContext = canvas.getContext("2d");
+            var canvasCopy = document.createElement("canvas");
+            var copyContext = canvasCopy.getContext("2d");
+            var canvasCopy2 = document.createElement("canvas");
+            var copyContext2 = canvasCopy2.getContext("2d");
+            canvasCopy.width = imgWidth;
+            canvasCopy.height = imgHeight;  
+            copyContext.drawImage(img, 0, 0);
+
+            // init
+            canvasCopy2.width = imgWidth;
+            canvasCopy2.height = imgHeight;        
+            copyContext2.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvasCopy2.width, canvasCopy2.height);
+
+
+            var rounds = 2;
+            var roundRatio = ratio * rounds;
+            for (var i = 1; i <= rounds; i++) {
+                console.log("Step: "+i);
+
+                // tmp
+                canvasCopy.width = imgWidth * roundRatio / i;
+                canvasCopy.height = imgHeight * roundRatio / i;
+
+                copyContext.drawImage(canvasCopy2, 0, 0, canvasCopy2.width, canvasCopy2.height, 0, 0, canvasCopy.width, canvasCopy.height);
+
+                // copy back
+                canvasCopy2.width = imgWidth * roundRatio / i;
+                canvasCopy2.height = imgHeight * roundRatio / i;
+                copyContext2.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvasCopy2.width, canvasCopy2.height);
+
+            } // end for
+
+
+            // copy back to canvas
+            // canvas.width = imgWidth * roundRatio / rounds;
+            // canvas.height = imgHeight * roundRatio / rounds;
+            //canvasContext.drawImage(canvasCopy2, 0, 0, canvasCopy2.width, canvasCopy2.height, 0, 0, canvas.width, canvas.height);
+            return canvasCopy2.toDataURL(canvasCopy2);
+        } else {
+            return dataURL;
+        }
+    }
     _reset(reset, oldValue) {
         var context = this;
         if (!(reset && oldValue) && reset) {
@@ -202,6 +301,7 @@ class SnapImage extends PolymerElement {
             }));
         }
     }
+
 }
 
 window.customElements.define('snap-image', SnapImage);
