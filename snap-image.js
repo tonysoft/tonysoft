@@ -40,7 +40,7 @@ class SnapImage extends PolymerElement {
                 left: 0px;
             }
         </style>
-        <div class="main noSelect" style="width: [[width]]px; height: [[height]]px; transform: scale([[camerascale]]); transform-origin: 0% 0%;">
+        <div class="main noSelect" style="width: [[width]]px; height: [[height]]px; transform: scale([[appliedCamerascale]]); transform-origin: 0% 0%;">
             <canvas id="canvas" class="mediaElement" width="[[width]]" height="[[height]]" style=""></canvas>
             <video id="video" class="mediaElement" style="display:[[captureMode(reset)]];" width="[[width]]" height="[[height]]" autoplay></video>
             <img id="scaleImg"></img> 
@@ -70,6 +70,10 @@ class SnapImage extends PolymerElement {
             type: Number
         },
         camerascale: {
+            type: Number,
+            observer: "_camerascale"
+        },
+        appliedCamerascale: {
             type: Number
         },
         snap: {
@@ -100,6 +104,7 @@ class SnapImage extends PolymerElement {
       this.maxwidth = 1440;
       this.maxheight = 810;
       this.camerascale = 1;
+      this.appliedCamerascale = 1;
       this.snap = false;
       this.reset = true;
       this.uploadserver = "";
@@ -144,6 +149,11 @@ class SnapImage extends PolymerElement {
         if (!context.camerawidth) {
             context.camerawidth = newValue;
         }
+    }
+
+    _camerascale(newValue) {
+        var context = this;
+        context.appliedCamerascale = 1 / context.camerascale;
     }
 
     _height(newValue) {
