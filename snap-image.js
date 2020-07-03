@@ -200,7 +200,7 @@ class SnapImage extends PolymerElement {
             context.context.drawImage(context.video, 0, 0, context.width, context.height);
             context.reset = false;
             var dataUri = (context.remixRawImage ? "image-" : "") + context.canvas.toDataURL();
-            if (context.maxwidth && context.maxheight) {
+            if (context.maxwidth || context.maxheight) {
                 context.scaleImg.src = dataUri;
                 setTimeout(function() {
                     var width = context.scaleImg.naturalWidth;
@@ -265,8 +265,8 @@ class SnapImage extends PolymerElement {
             imgHeight = img.height;
 
         var ratio = 1, ratio1 = 1, ratio2 = 1;
-        ratio1 = maxWidth / imgWidth;
-        ratio2 = maxHeight / imgHeight;
+        ratio1 = (maxWidth || 100000) / imgWidth;
+        ratio2 = (maxHeight || 100000) / imgHeight;
 
         // Use the smallest ratio that the image best fit into the maxWidth x maxHeight box.
         if (ratio1 < ratio2) {
