@@ -40,7 +40,7 @@ class SnapImage extends PolymerElement {
                 left: 0px;
             }
         </style>
-        <div class="main noSelect" style="width: [[width]]px; height: [[height]]px;">
+        <div class="main noSelect" style="width: [[width]]px; height: [[height]]px; transform: scale([[camerascale]]); transform-origin: 0% 0%;">
             <canvas id="canvas" class="mediaElement" width="[[width]]" height="[[height]]" style=""></canvas>
             <video id="video" class="mediaElement" style="display:[[captureMode(reset)]];" width="[[width]]" height="[[height]]" autoplay></video>
             <img id="scaleImg"></img> 
@@ -50,15 +50,26 @@ class SnapImage extends PolymerElement {
     static get properties() {
       return {
         width: {
-            type: Number
+            type: Number,
+            observer: "_width"
         },
         height: {
-            type: Number
+            type: Number,
+            observer: "_height"
         },
         maxwidth: {
             type: Number
         },
         maxheight: {
+            type: Number
+        },
+        camerawidth: {
+            type: Number
+        },
+        cameraheight: {
+            type: Number
+        },
+        camerascale: {
             type: Number
         },
         snap: {
@@ -88,6 +99,7 @@ class SnapImage extends PolymerElement {
       this.height = 240;
       this.maxwidth = 1440;
       this.maxheight = 810;
+      this.camerascale = 1;
       this.snap = false;
       this.reset = true;
       this.uploadserver = "";
@@ -107,7 +119,7 @@ class SnapImage extends PolymerElement {
         context.video = context.shadowRoot.querySelector("#video");
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             // Not adding `{ audio: true }` since we only want video now
-            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            navigator.mediaDevices.getUserMedia({ video: { width: context.camerawidth || context.width, height: context.cameraheight || context.height } }).then(function(stream) {
                 context.video.srcObject = stream;
                 context.video.play();
             });
@@ -125,6 +137,20 @@ class SnapImage extends PolymerElement {
         var context = this;
         super.detached();
         context._stop();
+    }
+
+    _width(newValue) {
+        var context = this;
+        if (!context.camerawidth) {
+            context.camerawidth = newValue;
+        }
+    }
+
+    _height(newValue) {
+        var context = this;
+        if (!context.cameraheight) {
+            context.cameraheight = newValue;
+        }
     }
 
     _stop() {
