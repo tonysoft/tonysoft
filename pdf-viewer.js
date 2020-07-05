@@ -182,46 +182,51 @@ class PdfViewer extends PolymerElement {
 
     _nodeActionPackets(actionPackets) {
         var context = this;
-        if (context.nodeActionPackets.length > 0) {
-            var packetIndex = 0;
-            function processActionPacket(actionPacket, processNextActionPacket) {
-                if (actionPacket.target === context.componentId) {
-                    var actionDef = actionPacket.action;
-                    var commands = context.extractCommands(actionDef);
-                    var katoms = context.extractKatoms(actionDef);
-                    if (commands && (commands.length > 0)) {
-                        if (context.src !== commands[0]) {
-                            context.src = commands[0];
-                        }
-                        if (commands.length > 0) {
-                            var page = parseInt(commands[1]);
-                            if (!isNaN(page)) {
-                                setTimeout(function() {
-                                    context.page = page;
-                                })
+        setTimeout(function() {
+            if (context.nodeActionPackets.length > 0) {
+                var packetIndex = 0;
+                function processActionPacket(actionPacket, processNextActionPacket) {
+                    if (actionPacket.target === context.componentId) {
+                        var actionDef = actionPacket.action;
+                        var commands = context.extractCommands(actionDef);
+                        var katoms = context.extractKatoms(actionDef);
+                        if (commands && (commands.length > 0)) {
+                            if (context.src !== commands[0]) {
+                                context.src = commands[0];
+                            }
+                            if (commands.length > 0) {
+                                var page = parseInt(commands[1]);
+                                if (!isNaN(page)) {
+                                    setTimeout(function() {
+                                        context.page = page;
+                                    })
+                                }
                             }
                         }
+                        processNextActionPacket(katoms);
+                    } else {
+                        processNextActionPacket(katoms);
                     }
-                    if (katoms.length > 0) {
-                        setTimeout(function() {
-                            context.dispatchEvent(new CustomEvent("nodeActionKeys", { 
-                                detail: katoms
-                            }));
-                        }, 1000)
+                }
+                var accumulatedKatoms = [];
+                function nextActionPacket(katoms) {
+                    accumulatedKatoms = accumulatedKatoms.concat(katoms);
+                    packetIndex++;
+                    if (packetIndex < context.nodeActionPackets.length) {
+                        processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket);
+                    } else {
+                        if (accumulatedKatoms.length > 0) {
+                            setTimeout(function() {
+                                context.dispatchEvent(new CustomEvent("nodeActionKeys", { 
+                                    detail: accumulatedKatoms
+                                }));
+                            }, 250)
+                        }
                     }
-                    processNextActionPacket(katoms);
-                } else {
-                    processNextActionPacket(katoms);
                 }
+                processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket)
             }
-            function nextActionPacket(katoms) {
-                packetIndex++;
-                if (packetIndex < context.nodeActionPackets.length) {
-                    processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket);
-                }
-            }
-            processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket)
-        }
+        })
     }
 
     extractCommands(actionDef) {
