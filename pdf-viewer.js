@@ -207,7 +207,7 @@ class PdfViewer extends PolymerElement {
                             context.dispatchEvent(new CustomEvent("nodeActionKeys", { 
                                 detail: katoms
                             }));
-                        }, 250)
+                        }, 1000)
                     }
                     processNextActionPacket(katoms);
                 } else {
