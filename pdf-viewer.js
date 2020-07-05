@@ -186,7 +186,9 @@ class PdfViewer extends PolymerElement {
             var packetIndex = 0;
             function processActionPacket(actionPacket, processNextActionPacket) {
                 if (actionPacket.target === context.componentId) {
-                    var commands = actionPacket.action;
+                    var actionDef = actionPacket.action;
+                    var commands = context.extractCommands(actionDef);
+                    var katoms = context.extractKatoms(actionDef);
                     if (commands && (commands.length > 0)) {
                         if (context.src !== commands[0]) {
                             context.src = commands[0];
@@ -200,12 +202,19 @@ class PdfViewer extends PolymerElement {
                             }
                         }
                     }
-                    processNextActionPacket();
+                    if (katoms.length > 0) {
+                        setTimeout(function() {
+                            context.dispatchEvent(new CustomEvent("nodeActionKeys", { 
+                                detail: katoms
+                            }));
+                        }, 250)
+                    }
+                    processNextActionPacket(katoms);
                 } else {
-                    processNextActionPacket();
+                    processNextActionPacket(katoms);
                 }
             }
-            function nextActionPacket() {
+            function nextActionPacket(katoms) {
                 packetIndex++;
                 if (packetIndex < context.nodeActionPackets.length) {
                     processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket);
@@ -213,6 +222,28 @@ class PdfViewer extends PolymerElement {
             }
             processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket)
         }
+    }
+
+    extractCommands(actionDef) {
+        var commands = [];
+        actionDef.forEach(function(action) {
+            action = action.trim();
+            if (action.trim().indexOf(">>") < 0) {
+                commands.push(action);
+            }
+        })
+        return commands;
+    }
+
+    extractKatoms(actionDef) {
+        var katoms = [];
+        actionDef.forEach(function(action) {
+            action = action.trim();
+            if (action.indexOf(">>") === 0) {
+                katoms.push(action.trim().split(">>")[1].trim());
+            }
+        })
+        return katoms;
     }
 
     hasBorder(border) {
