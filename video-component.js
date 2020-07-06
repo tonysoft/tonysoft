@@ -238,6 +238,7 @@ class VideoComponent extends PolymerElement {
                                 var startPos = parseInt(commands[1]);
                                 if (!isNaN(startPos)) {
                                     setTimeout(function() {
+                                        context.playPosition = -1;
                                         context.playPosition = startPos;
                                     })
                                 }
@@ -245,6 +246,7 @@ class VideoComponent extends PolymerElement {
                                     var endPos = parseInt(commands[2]);
                                     if (!isNaN(endPos)) {
                                         setTimeout(function() {
+                                            context.pausePosition = -1;
                                             context.pausePosition = endPos;
                                         })
                                     }
