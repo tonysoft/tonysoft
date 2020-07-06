@@ -60,6 +60,13 @@ class VideoComponent extends PolymerElement {
         border: {
             type: Boolean
         },
+        componentId: {
+            type: String
+        },
+        nodeActionPackets: {
+            type: Array,
+            observer: "_nodeActionPackets"
+        },
         resumePlayPosition: {
             type: Number,
             observer: "_resumePlayPosition"
@@ -136,7 +143,8 @@ class VideoComponent extends PolymerElement {
         this.border = false;
         this.resumePlayPosition = -1;
         this.video = null;
-      }
+        this.componentId = "";
+    }
   
       ready() {
         var context = this;
@@ -210,6 +218,85 @@ class VideoComponent extends PolymerElement {
                 context.setSrc(newValue);
             }
         }
+    }
+
+    _nodeActionPackets(actionPackets) {
+        var context = this;
+        setTimeout(function() {
+            if (context.nodeActionPackets.length > 0) {
+                var packetIndex = 0;
+                function processActionPacket(actionPacket, processNextActionPacket) {
+                    if (actionPacket.target === context.componentId) {
+                        var actionDef = actionPacket.action;
+                        var commands = context.extractCommands(actionDef);
+                        var katoms = context.extractKatoms(actionDef);
+                        if (commands && (commands.length > 0)) {
+                            if (context.src !== commands[0]) {
+                                context.src = commands[0];
+                            }
+                            if (commands.length > 0) {
+                                var startPos = parseInt(commands[1]);
+                                if (!isNaN(startPos)) {
+                                    setTimeout(function() {
+                                        context.playPosition = startPos;
+                                    })
+                                }
+                                if (commands.length > 1) {
+                                    var endPos = parseInt(commands[2]);
+                                    if (!isNaN(endPos)) {
+                                        setTimeout(function() {
+                                            context.pausePosition = endPos;
+                                        })
+                                    }
+                                }
+                                }
+                        }
+                        processNextActionPacket(katoms);
+                    } else {
+                        processNextActionPacket(katoms);
+                    }
+                }
+                var accumulatedKatoms = [];
+                function nextActionPacket(katoms) {
+                    accumulatedKatoms = accumulatedKatoms.concat(katoms);
+                    packetIndex++;
+                    if (packetIndex < context.nodeActionPackets.length) {
+                        processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket);
+                    } else {
+                        if (accumulatedKatoms.length > 0) {
+                            setTimeout(function() {
+                                context.dispatchEvent(new CustomEvent("nodeActionKeys", { 
+                                    detail: accumulatedKatoms
+                                }));
+                            }, 250)
+                        }
+                    }
+                }
+                processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket)
+            }
+        })
+    }
+
+    extractCommands(actionDef) {
+        var commands = [];
+        actionDef.forEach(function(action) {
+            action = action.trim();
+            if (action.trim().indexOf(">>") < 0) {
+                commands.push(action);
+            }
+        })
+        return commands;
+    }
+
+    extractKatoms(actionDef) {
+        var katoms = [];
+        actionDef.forEach(function(action) {
+            action = action.trim();
+            if (action.indexOf(">>") === 0) {
+                katoms.push(action.trim().split(">>")[1].trim());
+            }
+        })
+        return katoms;
     }
 
     setSrc(newValue) {
