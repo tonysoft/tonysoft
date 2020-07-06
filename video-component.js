@@ -226,10 +226,10 @@ class VideoComponent extends PolymerElement {
             if (context.nodeActionPackets.length > 0) {
                 var packetIndex = 0;
                 function processActionPacket(actionPacket, processNextActionPacket) {
+                    var actionDef = actionPacket.action;
+                    var commands = context.extractCommands(actionDef);
+                    var katoms = context.extractKatoms(actionDef, actionPacket.target === context.componentId);
                     if (actionPacket.target === context.componentId) {
-                        var actionDef = actionPacket.action;
-                        var commands = context.extractCommands(actionDef);
-                        var katoms = context.extractKatoms(actionDef);
                         if (commands && (commands.length > 0)) {
                             if (context.src !== commands[0]) {
                                 context.src = commands[0];
@@ -288,14 +288,16 @@ class VideoComponent extends PolymerElement {
         return commands;
     }
 
-    extractKatoms(actionDef) {
+    extractKatoms(actionDef, targeted) {
         var katoms = [];
-        actionDef.forEach(function(action) {
-            action = action.trim();
-            if (action.indexOf(">>") === 0) {
-                katoms.push(action.trim().split(">>")[1].trim());
-            }
-        })
+        if (targeted) {
+            actionDef.forEach(function(action) {
+                action = action.trim();
+                if (action.indexOf(">>") === 0) {
+                    katoms.push(action.trim().split(">>")[1].trim());
+                }
+            })
+        }
         return katoms;
     }
 
