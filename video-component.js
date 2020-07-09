@@ -251,7 +251,12 @@ class VideoComponent extends PolymerElement {
                                         })
                                     }
                                 }
+                                if ((commands.length > 2) && (commands[3].toLowerCase() === "play")) {
+                                    setTimeout(function() {
+                                        context.play();
+                                    })
                                 }
+                            }
                         }
                         processNextActionPacket(katoms);
                     } else {
