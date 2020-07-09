@@ -238,6 +238,7 @@ class VideoComponent extends PolymerElement {
                                 var startPos = parseInt(commands[1]);
                                 if (!isNaN(startPos)) {
                                     setTimeout(function() {
+                                        context.playPositionSet = false;
                                         context.playPosition = -1;
                                         context.playPosition = startPos;
                                     })
@@ -252,9 +253,17 @@ class VideoComponent extends PolymerElement {
                                     }
                                 }
                                 if ((commands.length > 2) && (commands[3].toLowerCase() === "play")) {
-                                    setTimeout(function() {
-                                        context.play();
-                                    })
+                                    if (context.playPositionSetInterval) {
+                                        clearInterval(context.playPositionSetInterval);
+                                    }
+                                    context.playPositionSetInterval = setInterval(function() {
+                                        if (context.playPositionSet) {
+                                            clearInterval(context.playPositionSetInterval);
+                                            context.playPositionSetInterval = null;
+                                            context.playPositionSet = false;
+                                            context.play();
+                                        }
+                                    }, 1000)
                                 }
                             }
                         }
@@ -420,6 +429,7 @@ class VideoComponent extends PolymerElement {
                     var currentTime = video.currenttime;
                     if (currentTime === targetTime) {
                         clearInterval(context.playPositionReadyInterval);
+                        context.playPositionSet = true;
                         if (callback) {
                             callback();
                         }
