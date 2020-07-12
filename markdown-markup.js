@@ -44,6 +44,13 @@ class MarkdownMarkup extends PolymerElement {
         onReadyProps: {
             type: Object
         },
+        componentId: {
+            type: String
+        },
+        nodeActionPackets: {
+            type: Array,
+            observer: "_nodeActionPackets"
+        },
         hidden: {
             type: Boolean
         }
@@ -60,6 +67,8 @@ class MarkdownMarkup extends PolymerElement {
       this.hidden = false;
       this.onReadyProps = {};
       this.border = false;
+      this.componentId = "";
+      this.nodeActionPackets = {};
     }
 
     ready() {
@@ -82,6 +91,72 @@ class MarkdownMarkup extends PolymerElement {
         for (var prop in context.onReadyProps) {
             context[prop] = context.onReadyProps[prop];
         }
+    }
+
+    _nodeActionPackets(actionPackets) {
+        var context = this;
+        setTimeout(function() {
+            if (context.nodeActionPackets.length > 0) {
+                var packetIndex = 0;
+                function processActionPacket(actionPacket, processNextActionPacket) {
+                    var actionDef = actionPacket.action;
+                    var commands = context.extractCommands(actionDef);
+                    var katoms = context.extractKatoms(actionDef, actionPacket.target === context.componentId);
+                    if (actionPacket.target === context.componentId) {
+                        if (commands && (commands.length > 0)) {
+                            var markdown = commands.join("\n");
+                            setTimeout(function() {
+                                context.markdown = markdown;
+                            })
+                        }
+                        processNextActionPacket(katoms);
+                    } else {
+                        processNextActionPacket(katoms);
+                    }
+                }
+                var accumulatedKatoms = [];
+                function nextActionPacket(katoms) {
+                    accumulatedKatoms = accumulatedKatoms.concat(katoms);
+                    packetIndex++;
+                    if (packetIndex < context.nodeActionPackets.length) {
+                        processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket);
+                    } else {
+                        if (accumulatedKatoms.length > 0) {
+                            setTimeout(function() {
+                                context.dispatchEvent(new CustomEvent("nodeActionKeys", { 
+                                    detail: accumulatedKatoms
+                                }));
+                            }, 500)
+                        }
+                    }
+                }
+                processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket)
+            }
+        })
+    }
+
+    extractCommands(actionDef) {
+        var commands = [];
+        actionDef.forEach(function(action) {
+            action = action.trim();
+            if (action.trim().indexOf(">>") < 0) {
+                commands.push(action);
+            }
+        })
+        return commands;
+    }
+
+    extractKatoms(actionDef, targeted) {
+        var katoms = [];
+        if (targeted) {
+            actionDef.forEach(function(action) {
+                action = action.trim();
+                if (action.indexOf(">>") === 0) {
+                    katoms.push(action.trim().split(">>")[1].trim());
+                }
+            })
+        }
+        return katoms;
     }
 
     isHidden(hidden) {
