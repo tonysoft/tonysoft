@@ -194,7 +194,7 @@ class PdfViewer extends PolymerElement {
                             if (context.src !== commands[0]) {
                                 context.src = commands[0];
                             }
-                            if (commands.length > 0) {
+                            if (commands.length > 1) {
                                 var page = parseInt(commands[1]);
                                 if (!isNaN(page)) {
                                     setTimeout(function() {
