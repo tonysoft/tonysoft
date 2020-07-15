@@ -266,6 +266,10 @@ class VideoComponent extends PolymerElement {
                                             context.play();
                                         }
                                     }, 1000)
+                                    if (commands[4]) {
+                                        context.segmentCompleted = commands[4].replace(">>", "");
+                                        context.segmentCompleted = context.segmentCompleted.trim();
+                                    }
                                 }
                             }
                         }
@@ -538,6 +542,12 @@ class VideoComponent extends PolymerElement {
             video.pause();
             if (context.youTube) {
                 context.pausePosition = -1;
+                if (context.segmentCompleted) {
+                    context.dispatchEvent(new CustomEvent("segmentCompleted", { 
+                        detail: context.segmentCompleted
+                    }));
+                    context.segmentCompleted = "";
+                }
                 //video[currentTimeProperty] = context.playPosition;
             }
             playing = false;
