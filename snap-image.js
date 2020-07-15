@@ -233,7 +233,7 @@ class SnapImage extends PolymerElement {
         var context = this;
         var base64 = dataURI.split(',')[1];
         var _rmx_content_type = "image/png";
-        var uploadPayload = { "data": "{bin}" + base64, "_rmx_content_type": _rmx_content_type };
+        var uploadPayload = { "data": "{bin}" + base64, "entity": "file", "_rmx_content_type": _rmx_content_type };
         if (context.uploadserver) {
             fetch(context.uploadserver, {
                 method: 'POST',
