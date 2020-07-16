@@ -544,7 +544,7 @@ class VideoComponent extends PolymerElement {
                 context.pausePosition = -1;
                 if (context.segmentCompleted) {
                     context.dispatchEvent(new CustomEvent("segmentCompleted", { 
-                        detail: context.segmentCompleted
+                        detail: [context.segmentCompleted]
                     }));
                     context.segmentCompleted = "";
                 }
