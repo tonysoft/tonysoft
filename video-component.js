@@ -543,9 +543,11 @@ class VideoComponent extends PolymerElement {
             if (context.youTube) {
                 context.pausePosition = -1;
                 if (context.segmentCompleted) {
-                    context.dispatchEvent(new CustomEvent("segmentCompleted", { 
-                        detail: [context.segmentCompleted]
-                    }));
+                    setTimeout(function() {
+                        context.dispatchEvent(new CustomEvent("segmentCompleted", { 
+                            detail: [context.segmentCompleted]
+                        }));
+                    }, 500);
                     context.segmentCompleted = "";
                 }
                 //video[currentTimeProperty] = context.playPosition;
