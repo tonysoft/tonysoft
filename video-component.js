@@ -234,7 +234,7 @@ class VideoComponent extends PolymerElement {
                             if (context.src !== commands[0]) {
                                 context.src = commands[0];
                             }
-                            if (commands.length > 0) {
+                            if (commands.length > 1) {
                                 var startPos = parseInt(commands[1]);
                                 if (!isNaN(startPos)) {
                                     setTimeout(function() {
@@ -243,7 +243,7 @@ class VideoComponent extends PolymerElement {
                                         context.playPosition = startPos;
                                     })
                                 }
-                                if (commands.length > 1) {
+                                if (commands.length > 2) {
                                     var endPos = parseInt(commands[2]);
                                     if (!isNaN(endPos)) {
                                         setTimeout(function() {
@@ -252,8 +252,9 @@ class VideoComponent extends PolymerElement {
                                         })
                                     }
                                 }
-                                if ((commands.length > 2) && (commands[3].toLowerCase() === "play")) {
+                                if ((commands.length > 3) && (commands[3].toLowerCase() === "play")) {
                                     var tries = 0;
+                                    context.segmentCompleted = (commands[3].split(">>") > 1) ? commands[3].split(">>")[1].trim() : "";
                                     if (context.playPositionSetInterval) {
                                         clearInterval(context.playPositionSetInterval);
                                     }
@@ -266,10 +267,6 @@ class VideoComponent extends PolymerElement {
                                             context.play();
                                         }
                                     }, 1000)
-                                    if (commands[4]) {
-                                        context.segmentCompleted = commands[4].replace(">>", "");
-                                        context.segmentCompleted = context.segmentCompleted.trim();
-                                    }
                                 }
                             }
                         }
