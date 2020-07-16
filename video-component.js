@@ -547,8 +547,8 @@ class VideoComponent extends PolymerElement {
                         context.dispatchEvent(new CustomEvent("segmentCompleted", { 
                             detail: [context.segmentCompleted]
                         }));
+                        context.segmentCompleted = "";
                     }, 500);
-                    context.segmentCompleted = "";
                 }
                 //video[currentTimeProperty] = context.playPosition;
             }
