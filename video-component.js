@@ -300,7 +300,7 @@ class VideoComponent extends PolymerElement {
         var commands = [];
         actionDef.forEach(function(action) {
             action = action.trim();
-            if (action.trim().indexOf(">>") < 0) {
+            if (action.trim().indexOf(">>") !== 0) {
                 commands.push(action);
             }
         })
