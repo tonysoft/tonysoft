@@ -252,7 +252,7 @@ class VideoComponent extends PolymerElement {
                                         })
                                     }
                                 }
-                                if ((commands.length > 3) && (commands[3].toLowerCase() === "play")) {
+                                if ((commands.length > 3) && (commands[3].toLowerCase().indexOf("play") === 0)) {
                                     var tries = 0;
                                     context.segmentCompleted = (commands[3].split(">>") > 1) ? commands[3].split(">>")[1].trim() : "";
                                     if (context.playPositionSetInterval) {
@@ -450,6 +450,7 @@ class VideoComponent extends PolymerElement {
                         callback();
                     }
                     video.currentTime = targetTime;
+                    context.playPositionSet = true;
                     context.playPosition = -1;
                 }
             }
@@ -537,7 +538,7 @@ class VideoComponent extends PolymerElement {
         }
         if ((context.pausePosition > context.playPosition) && (currentTime >= context.pausePosition)) {
             video.pause();
-            if (context.youTube) {
+            //if (context.youTube) {
                 context.pausePosition = -1;
                 if (context.segmentCompleted) {
                     setTimeout(function() {
@@ -547,8 +548,7 @@ class VideoComponent extends PolymerElement {
                         context.segmentCompleted = "";
                     }, 500);
                 }
-                //video[currentTimeProperty] = context.playPosition;
-            }
+            //}
             playing = false;
         }
         context.dispatchEvent(new CustomEvent("playState", { 
