@@ -254,7 +254,7 @@ class VideoComponent extends PolymerElement {
                                 }
                                 if ((commands.length > 3) && (commands[3].toLowerCase().indexOf("play") === 0)) {
                                     var tries = 0;
-                                    context.segmentCompleted = (commands[3].split(">>") > 1) ? commands[3].split(">>")[1].trim() : "";
+                                    context.segmentCompleted = (commands[3].split(">>").length > 1) ? commands[3].split(">>")[1].trim() : "";
                                     if (context.playPositionSetInterval) {
                                         clearInterval(context.playPositionSetInterval);
                                     }
