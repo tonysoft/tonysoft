@@ -197,6 +197,11 @@ class VideoComponent extends PolymerElement {
 
     setVideoType() {
         var context = this;
+        if (context.video) {
+            try {
+                context.video.pause();
+            } catch(e) {}
+        }
         if (context.youTube) {
             context.video = context.shadowRoot.querySelector(".youTube");
         } else {
