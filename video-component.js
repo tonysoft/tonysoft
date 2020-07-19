@@ -207,6 +207,7 @@ class VideoComponent extends PolymerElement {
         } else {
             context.video = context.shadowRoot.querySelector("video");
         }
+        context.showControlsBar(context.showControls);
     }
 
     _srcChanged(newValue) {
