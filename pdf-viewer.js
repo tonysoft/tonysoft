@@ -406,10 +406,10 @@ class PdfViewer extends PolymerElement {
                     contHeight = context.baseHeight; // - 2;
                     contWidth = parseInt(contHeight * canvas.width / canvas.height); // - context.margin;
                     canvas.style.top = "0px";
-                    canvas.style.left = Match.ceil(Math.max(((context.baseWidth - contWidth) / 2))) + "px";
+                    canvas.style.left = Math.ceil(Math.max(((context.baseWidth - contWidth) / 2))) + "px";
                 } else {
                     canvas.style.left = "0px";
-                    canvas.style.top = Match.ceil(Math.max(((context.baseHeight - contHeight) / 2), 0)) + "px";
+                    canvas.style.top = Math.ceil(Math.max(((context.baseHeight - contHeight) / 2), 0)) + "px";
                 }
                 canvas.style.width = contWidth + "px";
                 canvas.style.height = contHeight + "px";
@@ -420,10 +420,10 @@ class PdfViewer extends PolymerElement {
                     contWidth = context.baseWidth; // - 2;
                     contHeight = parseInt(contWidth * canvas.height / canvas.width); // - context.margin;
                     canvas.style.left = "0px";
-                    canvas.style.top = Match.ceil(Math.max(((context.baseHeight - contHeight) / 2), 0)) + "px";
+                    canvas.style.top = Math.ceil(Math.max(((context.baseHeight - contHeight) / 2), 0)) + "px";
                 } else {
                     canvas.style.top = "0px";
-                    canvas.style.left = Match.ceil(Math.max(((context.baseWidth - contWidth) / 2), 0)) + "px";
+                    canvas.style.left = Math.ceil(Math.max(((context.baseWidth - contWidth) / 2), 0)) + "px";
                 }
                 canvas.style.width = contWidth + "px";
                 canvas.style.height = contHeight + "px";
