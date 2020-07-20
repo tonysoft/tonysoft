@@ -206,10 +206,10 @@ class VideoComponent extends PolymerElement {
             context.video = context.shadowRoot.querySelector(".youTube");
         } else {
             if (context.shadowRoot.querySelector.querySelector("video").offsetHeight > context.shadowRoot.querySelector(".main").offsetHeight) {
-                document.querySelector("video-component").root.querySelector("video").style.height = document.querySelector("video-component").offsetHeight + "px";
+                context.shadowRoot.querySelector("video").style.height = document.querySelector("video-component").offsetHeight + "px";
             }
             if (context.shadowRoot.querySelector.querySelector("video").offsetWidth > context.shadowRoot.querySelector(".main").offsetWidth) {
-                document.querySelector("video-component").root.querySelector("video").style.width = document.querySelector("video-component").offsetWidth + "px";
+                context.shadowRoot.querySelector("video").style.width = context.shadowRoot.querySelector(".main").offsetWidth + "px";
             }
             context.video = context.shadowRoot.querySelector("video");
         }
