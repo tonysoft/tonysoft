@@ -205,6 +205,12 @@ class VideoComponent extends PolymerElement {
         if (context.youTube) {
             context.video = context.shadowRoot.querySelector(".youTube");
         } else {
+            if (document.querySelector("video-component").root.querySelector("video").offsetHeight > document.querySelector("video-component").offsetHeight) {
+                document.querySelector("video-component").root.querySelector("video").style.height = document.querySelector("video-component").offsetHeight + "px";
+            )
+            if (document.querySelector("video-component").root.querySelector("video").offsetWidth > document.querySelector("video-component").offsetWidth) {
+                document.querySelector("video-component").root.querySelector("video").style.width = document.querySelector("video-component").offsetWidth + "px";
+            )
             context.video = context.shadowRoot.querySelector("video");
         }
         context.showControlsBar(context.showControls);
