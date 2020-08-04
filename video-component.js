@@ -302,7 +302,7 @@ class VideoComponent extends PolymerElement {
                 var packetIndex = 0;
                 function processActionPacket(actionPacket, processNextActionPacket) {
                     if (actionPacket.target === context.componentId) {
-                        if (actionPacket.src && (context.src !== actionPacket.src) {
+                        if (actionPacket.src && (context.src !== actionPacket.src)) {
                             context.src = actionPacket.src;
                         }
                         if (actionPacket.startPos) {
