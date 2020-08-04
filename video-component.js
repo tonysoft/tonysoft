@@ -234,6 +234,7 @@ class VideoComponent extends PolymerElement {
 
     _nodeActionPackets(actionPackets) {
         var context = this;
+        var packetsToProcess = [];
         setTimeout(function() {
             if (context.nodeActionPackets.length > 0) {
                 var packetIndex = 0;
@@ -242,43 +243,25 @@ class VideoComponent extends PolymerElement {
                     var commands = context.extractCommands(actionDef);
                     var katoms = context.extractKatoms(actionDef, actionPacket.target === context.componentId);
                     if (actionPacket.target === context.componentId) {
+                        var packet = { type: "video", target: context.componentId};
+                        packetsToProcess.push(packet);
                         if (commands && (commands.length > 0)) {
-                            if (context.src !== commands[0]) {
-                                context.src = commands[0];
-                            }
+                            packet.src = commands[0];
                             if (commands.length > 1) {
                                 var startPos = parseInt(commands[1]);
                                 if (!isNaN(startPos)) {
-                                    setTimeout(function() {
-                                        context.playPositionSet = false;
-                                        context.playPosition = -1;
-                                        context.playPosition = startPos;
-                                    })
+                                    packet.startPos = startPos;
                                 }
                                 if (commands.length > 2) {
                                     var endPos = parseInt(commands[2]);
                                     if (!isNaN(endPos)) {
-                                        setTimeout(function() {
-                                            context.pausePosition = -1;
-                                            context.pausePosition = endPos;
-                                        })
+                                        packet.endPos = endPos;
                                     }
                                 }
                                 if ((commands.length > 3) && (commands[3].toLowerCase().indexOf("play") === 0)) {
+                                    packet.play = true;
                                     var tries = 0;
-                                    context.segmentCompleted = (commands[3].split(">>").length > 1) ? commands[3].split(">>")[1].trim() : "";
-                                    if (context.playPositionSetInterval) {
-                                        clearInterval(context.playPositionSetInterval);
-                                    }
-                                    context.playPositionSetInterval = setInterval(function() {
-                                        tries++;
-                                        if ((context.playPositionSet) || (tries > 3)) {
-                                            clearInterval(context.playPositionSetInterval);
-                                            context.playPositionSetInterval = null;
-                                            context.playPositionSet = false;
-                                            context.play();
-                                        }
-                                    }, 1000)
+                                    packet.segmentCompleted = (commands[3].split(">>").length > 1) ? commands[3].split(">>")[1].trim() : "";
                                 }
                             }
                         }
@@ -294,7 +277,9 @@ class VideoComponent extends PolymerElement {
                     if (packetIndex < context.nodeActionPackets.length) {
                         processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket);
                     } else {
+                        var targetedPackage = { packetsToProcess: packetsToProcess, katomsOnComplete: accumulatedKatoms };
                         if (accumulatedKatoms.length > 0) {
+
                             setTimeout(function() {
                                 context.dispatchEvent(new CustomEvent("nodeActionKeys", { 
                                     detail: accumulatedKatoms
@@ -304,6 +289,78 @@ class VideoComponent extends PolymerElement {
                     }
                 }
                 processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket)
+            }
+        })
+    }
+
+    processNodeActionPackets(targetedPackage) {
+        var packetsToProcess = targetedPackage.packetsToProcess;
+        var katomsOnComplete = targetedPackage.katomsOnComplete;
+        var context = this;
+        setTimeout(function() {
+            if (packetsToProcess.length > 0) {
+                var packetIndex = 0;
+                function processActionPacket(actionPacket, processNextActionPacket) {
+                    if (actionPacket.target === context.componentId) {
+                        if (actionPacket.src && (context.src !== actionPacket.src) {
+                            context.src = actionPacket.src;
+                        }
+                        if (actionPacket.startPos) {
+                            var startPos = parseInt(actionPacket.startPos);
+                            if (!isNaN(startPos)) {
+                                setTimeout(function() {
+                                    context.playPositionSet = false;
+                                    context.playPosition = -1;
+                                    context.playPosition = startPos;
+                                })
+                            }
+                            if (actionPacket.endPos) {
+                                var endPos = parseInt(actionPacket.endPos);
+                                if (!isNaN(endPos)) {
+                                    setTimeout(function() {
+                                        context.pausePosition = -1;
+                                        context.pausePosition = endPos;
+                                    })
+                                }
+                            }
+                            if (actionPacket.play) {
+                                var tries = 0;
+                                context.segmentCompleted = actionPacket.segmentCompleted;
+                                if (context.playPositionSetInterval) {
+                                    clearInterval(context.playPositionSetInterval);
+                                }
+                                context.playPositionSetInterval = setInterval(function() {
+                                    tries++;
+                                    if ((context.playPositionSet) || (tries > 3)) {
+                                        clearInterval(context.playPositionSetInterval);
+                                        context.playPositionSetInterval = null;
+                                        context.playPositionSet = false;
+                                        context.play();
+                                    }
+                                }, 1000)
+                            }
+                        }
+                        processNextActionPacket();
+                    } else {
+                        processNextActionPacket();
+                    }
+                }
+                var accumulatedKatoms = [];
+                function nextActionPacket() {
+                    packetIndex++;
+                    if (packetIndex < packetsToProcess.length) {
+                        processActionPacket(packetsToProcess[packetIndex], nextActionPacket);
+                    } else {
+                        if (katomsOnComplete.length > 0) {
+                            setTimeout(function() {
+                                context.dispatchEvent(new CustomEvent("nodeActionKeys", { 
+                                    detail: katomsOnComplete
+                                }));
+                            }, 500)
+                        }
+                    }
+                }
+                processActionPacket(packetsToProcess[packetIndex], nextActionPacket)
             }
         })
     }
