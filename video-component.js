@@ -243,7 +243,7 @@ class VideoComponent extends PolymerElement {
                     var commands = context.extractCommands(actionDef);
                     var katoms = context.extractKatoms(actionDef, actionPacket.target === context.componentId);
                     if (actionPacket.target === context.componentId) {
-                        var packet = { type: "video", target: context.componentId};
+                        var packet = { type: "video", target: context.componentId, cascadingKatoms: katoms};
                         packetsToProcess.push(packet);
                         if (commands && (commands.length > 0)) {
                             packet.src = commands[0];
@@ -270,14 +270,13 @@ class VideoComponent extends PolymerElement {
                         processNextActionPacket(katoms);
                     }
                 }
-                var accumulatedKatoms = [];
                 function nextActionPacket(katoms) {
                     accumulatedKatoms = accumulatedKatoms.concat(katoms);
                     packetIndex++;
                     if (packetIndex < context.nodeActionPackets.length) {
                         processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket);
                     } else {
-                        var targetedPackage = { packetsToProcess: packetsToProcess, katomsOnComplete: accumulatedKatoms };
+                        var targetedPackage = { packetsToProcess: packetsToProcess };
                         context.processNodeActionPackets(targetedPackage);
                     }
                 }
@@ -288,13 +287,13 @@ class VideoComponent extends PolymerElement {
 
     processNodeActionPackets(targetedPackage) {
         var packetsToProcess = targetedPackage.packetsToProcess;
-        var katomsOnComplete = targetedPackage.katomsOnComplete;
         var context = this;
         setTimeout(function() {
             if (packetsToProcess.length > 0) {
                 var packetIndex = 0;
                 function processActionPacket(actionPacket, processNextActionPacket) {
                     if (actionPacket.target === context.componentId) {
+                        accumulatedKatoms = accumulatedKatoms.concat(actionPacket.cascadingKatoms);
                         if (actionPacket.src && (context.src !== actionPacket.src)) {
                             context.src = actionPacket.src;
                         }
@@ -344,10 +343,10 @@ class VideoComponent extends PolymerElement {
                     if (packetIndex < packetsToProcess.length) {
                         processActionPacket(packetsToProcess[packetIndex], nextActionPacket);
                     } else {
-                        if (katomsOnComplete.length > 0) {
+                        if (accumulatedKatoms.length > 0) {
                             setTimeout(function() {
                                 context.dispatchEvent(new CustomEvent("nodeActionKeys", { 
-                                    detail: katomsOnComplete
+                                    detail: accumulatedKatoms
                                 }));
                             }, 500)
                         }
