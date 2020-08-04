@@ -278,14 +278,7 @@ class VideoComponent extends PolymerElement {
                         processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket);
                     } else {
                         var targetedPackage = { packetsToProcess: packetsToProcess, katomsOnComplete: accumulatedKatoms };
-                        if (accumulatedKatoms.length > 0) {
-
-                            setTimeout(function() {
-                                context.dispatchEvent(new CustomEvent("nodeActionKeys", { 
-                                    detail: accumulatedKatoms
-                                }));
-                            }, 500)
-                        }
+                        context.processNodeActionPackets(targetedPackage);
                     }
                 }
                 processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket)
