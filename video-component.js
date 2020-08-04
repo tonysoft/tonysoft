@@ -338,7 +338,6 @@ class VideoComponent extends PolymerElement {
                 }
                 var accumulatedKatoms = [];
                 function nextActionPacket() {
-                    accumulatedKatoms = accumulatedKatoms.concat(katoms);
                     packetIndex++;
                     if (packetIndex < packetsToProcess.length) {
                         processActionPacket(packetsToProcess[packetIndex], nextActionPacket);
