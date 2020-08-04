@@ -271,7 +271,6 @@ class VideoComponent extends PolymerElement {
                     }
                 }
                 function nextActionPacket(katoms) {
-                    accumulatedKatoms = accumulatedKatoms.concat(katoms);
                     packetIndex++;
                     if (packetIndex < context.nodeActionPackets.length) {
                         processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket);
@@ -339,6 +338,7 @@ class VideoComponent extends PolymerElement {
                 }
                 var accumulatedKatoms = [];
                 function nextActionPacket() {
+                    accumulatedKatoms = accumulatedKatoms.concat(katoms);
                     packetIndex++;
                     if (packetIndex < packetsToProcess.length) {
                         processActionPacket(packetsToProcess[packetIndex], nextActionPacket);
