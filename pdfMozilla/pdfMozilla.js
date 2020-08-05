@@ -22578,7 +22578,7 @@ function createFetchOptions(headers, withCredentials, abortController) {
     method: 'GET',
     headers: headers,
     signal: abortController && abortController.signal,
-    mode: 'cors',
+    mode: 'no-cors',
     credentials: withCredentials ? 'include' : 'same-origin',
     redirect: 'follow'
   };
