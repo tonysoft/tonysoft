@@ -9970,7 +9970,7 @@ function setPDFNetworkStreamFactory(pdfNetworkStreamFactory) {
   createPDFNetworkStream = pdfNetworkStreamFactory;
 }
 
-function getDocument(src) {
+function getDocument(src, cors) {
   var task = new PDFDocumentLoadingTask();
   var source;
 
@@ -9997,6 +9997,8 @@ function getDocument(src) {
 
     source = src;
   }
+
+  source.cors = cors;
 
   var params = Object.create(null);
   var rangeTransport = null,
@@ -22573,12 +22575,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function createFetchOptions(headers, withCredentials, abortController) {
+function createFetchOptions(headers, withCredentials, abortController, cors) {
   return {
     method: 'GET',
     headers: headers,
     signal: abortController && abortController.signal,
-    mode: 'no-cors',
+    mode: cors ? cors : "cors",
     credentials: withCredentials ? 'include' : 'same-origin',
     redirect: 'follow'
   };
@@ -22675,7 +22677,7 @@ function () {
     }
 
     var url = source.url;
-    fetch(url, createFetchOptions(this._headers, this._withCredentials, this._abortController)).then(function (response) {
+    fetch(url, createFetchOptions(this._headers, this._withCredentials, this._abortController, source.cors)).then(function (response) {
       if (!(0, _network_utils.validateResponseStatus)(response.status)) {
         throw (0, _network_utils.createResponseStatusError)(response.status, url);
       }
@@ -22850,7 +22852,7 @@ function () {
     this._headers.append('Range', 'bytes=' + rangeStr);
 
     var url = source.url;
-    fetch(url, createFetchOptions(this._headers, this._withCredentials, this._abortController)).then(function (response) {
+    fetch(url, createFetchOptions(this._headers, this._withCredentials, this._abortController, source.cors)).then(function (response) {
       if (!(0, _network_utils.validateResponseStatus)(response.status)) {
         throw (0, _network_utils.createResponseStatusError)(response.status, url);
       }

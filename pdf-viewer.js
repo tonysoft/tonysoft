@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import 'https://unpkg.com/tonysoft@1.56.75/pdfMozilla/pdfMozilla.js';
+import 'https://unpkg.com/tonysoft@1.56.67/pdfMozilla/pdfMozilla.js';
 
 
 /**
@@ -52,6 +52,9 @@ class PdfViewer extends PolymerElement {
         src: {
             type: String,
             observer: "_src"
+        },
+        cors: {
+            type: Boolean
         },
         maxWidth: {
             type: Number
@@ -110,6 +113,7 @@ class PdfViewer extends PolymerElement {
       this.onReadyProps = {};
       this.componentId = "";
       this.nodeActionPackets = {};
+      this.cors = true;
     }
 
     ready() {
@@ -340,7 +344,7 @@ class PdfViewer extends PolymerElement {
         }
         var pageFromUrl = context.getPageFromUrl(src);
         context.page = pageFromUrl ? pageFromUrl : context.page;
-        context.loadingTask = context.pdfjsLib.getDocument(src);
+        context.loadingTask = context.pdfjsLib.getDocument(src, context.cors ? "cors" : "no-cors");
         context.loadingTask.promise.then(function(pdf) {
             console.log('PDF loaded');
             context.currentPdf = pdf;
