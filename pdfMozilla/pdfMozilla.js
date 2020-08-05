@@ -10106,6 +10106,8 @@ function getDocument(src, cors) {
       } else if (!params.data) {
         networkStream = createPDFNetworkStream({
           url: params.url,
+          cors: params.cors,
+          url: params.url,
           length: params.length,
           httpHeaders: params.httpHeaders,
           withCredentials: params.withCredentials,
