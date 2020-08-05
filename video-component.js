@@ -239,44 +239,51 @@ class VideoComponent extends PolymerElement {
             if (context.nodeActionPackets.length > 0) {
                 var packetIndex = 0;
                 function processActionPacket(actionPacket, processNextActionPacket) {
-                    var actionDef = actionPacket.action;
-                    var commands = context.extractCommands(actionDef);
-                    var katoms = context.extractKatoms(actionDef, actionPacket.target === context.componentId);
-                    if (actionPacket.target === context.componentId) {
-                        var packet = { type: "video", target: context.componentId, cascadingKatoms: katoms};
-                        packetsToProcess.push(packet);
-                        if (commands && (commands.length > 0)) {
-                            packet.src = commands[0];
-                            if (commands.length > 1) {
-                                var startPos = parseInt(commands[1]);
-                                if (!isNaN(startPos)) {
-                                    packet.startPos = startPos;
-                                }
-                                if (commands.length > 2) {
-                                    var endPos = parseInt(commands[2]);
-                                    if (!isNaN(endPos)) {
-                                        packet.endPos = endPos;
+                    if (actionPacket.src) {
+                        if (actionPacket.target === context.componentId) {
+                            packetsToProcess.push(actionPacket);
+                        }
+                        processNextActionPacket();
+                    }
+                    else {
+                        var actionDef = actionPacket.action;
+                        var commands = context.extractCommands(actionDef);
+                        var katoms = context.extractKatoms(actionDef, actionPacket.target === context.componentId);
+                        if (actionPacket.target === context.componentId) {
+                            var packet = { type: "video", target: context.componentId, cascadingKatoms: katoms};
+                            packetsToProcess.push(packet);
+                            if (commands && (commands.length > 0)) {
+                                packet.src = commands[0];
+                                if (commands.length > 1) {
+                                    var startPos = parseInt(commands[1]);
+                                    if (!isNaN(startPos)) {
+                                        packet.startPos = startPos;
+                                    }
+                                    if (commands.length > 2) {
+                                        var endPos = parseInt(commands[2]);
+                                        if (!isNaN(endPos)) {
+                                            packet.endPos = endPos;
+                                        }
+                                    }
+                                    if ((commands.length > 3) && (commands[3].toLowerCase().indexOf("play") === 0)) {
+                                        packet.play = true;
+                                        var tries = 0;
+                                        packet.segmentCompleted = (commands[3].split(">>").length > 1) ? commands[3].split(">>")[1].trim() : "";
                                     }
                                 }
-                                if ((commands.length > 3) && (commands[3].toLowerCase().indexOf("play") === 0)) {
-                                    packet.play = true;
-                                    var tries = 0;
-                                    packet.segmentCompleted = (commands[3].split(">>").length > 1) ? commands[3].split(">>")[1].trim() : "";
-                                }
                             }
+                            processNextActionPacket();
+                        } else {
+                            processNextActionPacket();
                         }
-                        processNextActionPacket(katoms);
-                    } else {
-                        processNextActionPacket(katoms);
                     }
                 }
-                function nextActionPacket(katoms) {
+                function nextActionPacket() {
                     packetIndex++;
                     if (packetIndex < context.nodeActionPackets.length) {
                         processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket);
                     } else {
-                        var targetedPackage = { packetsToProcess: packetsToProcess };
-                        context.processNodeActionPackets(targetedPackage);
+                        context.processNodeActionPackets(packetsToProcess);
                     }
                 }
                 processActionPacket(context.nodeActionPackets[packetIndex], nextActionPacket)
@@ -284,8 +291,7 @@ class VideoComponent extends PolymerElement {
         })
     }
 
-    processNodeActionPackets(targetedPackage) {
-        var packetsToProcess = targetedPackage.packetsToProcess;
+    processNodeActionPackets(packetsToProcess) {
         var context = this;
         setTimeout(function() {
             if (packetsToProcess.length > 0) {
