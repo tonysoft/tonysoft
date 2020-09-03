@@ -398,7 +398,7 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                 );
                 
                 context.style.display = display;
-                context._target.scrollIntoView(false);
+                context._target.scrollIntoViewIfNeeded(false);
                 context._target = null;
             }
         });
