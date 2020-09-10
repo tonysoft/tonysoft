@@ -53,6 +53,14 @@ class PdfViewer extends PolymerElement {
             type: String,
             observer: "_src"
         },
+        data: {
+            type: String,
+            observer: "_data"
+        },
+        request: {
+            type: Object,
+            observer: "_request"
+        },
         cors: {
             type: String
         },
@@ -305,7 +313,7 @@ class PdfViewer extends PolymerElement {
         }
     }
 
-    initView(src) {
+    initView(src, bString) {
         var context = this;
         if (context.loadingTask) {
             context.loadingTask.destroy();
@@ -316,7 +324,7 @@ class PdfViewer extends PolymerElement {
             return;
         }
         context.canvas.style.display = "block";
-        context.loadDocument(src);
+        context.loadDocument(src, bString);
     }
 
     getPageFromUrl(src) {
@@ -336,13 +344,13 @@ class PdfViewer extends PolymerElement {
         return page;
     }
 
-    loadDocument(src) {
+    loadDocument(src, bString) {
         var context = this;
         if (context.loadingTask) {
             context.loadingTask.destroy();
             context.numPages = 0;
         }
-        var pageFromUrl = context.getPageFromUrl(src);
+        var pageFromUrl = bString ? context.getPageFromUrl(src) : 0;
         context.page = pageFromUrl ? pageFromUrl : context.page;
         context.loadingTask = context.pdfjsLib.getDocument(src, context.cors === "cors" ? context.cors : "no-cors");
         context.loadingTask.promise.then(function(pdf) {
@@ -461,7 +469,21 @@ class PdfViewer extends PolymerElement {
     _src(src) {
         var context = this;
         if (context.checkIsReady("src", src, null)) {
-            context.initView(src);
+            context.initView(src, true);
+        }
+    }
+
+    _data(src) {
+        var context = this;
+        if (context.checkIsReady("data", src, null)) {
+            context.initView(src, false);
+        }
+    }
+
+    _request(src) {
+        var context = this;
+        if (context.checkIsReady("request", src, null)) {
+            context.initView(src, false);
         }
     }
 
