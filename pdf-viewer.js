@@ -22,7 +22,7 @@ class PdfViewer extends PolymerElement {
             }
             .border {
                 border: 1.5px solid #888888 !important;
-                border-radius: 5px;
+                border-radiusx: 5px;
             }
             #preview {
                 padding: 10px;
