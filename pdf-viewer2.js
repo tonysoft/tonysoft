@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import 'https://unpkg.com/tonysoft@1.56.80/pdfMozilla/pdfMozilla.js';
+import 'https://unpkg.com/tonysoft@1.56.93/pdfMozilla/pdfMozilla.js';
 
 
 /**
