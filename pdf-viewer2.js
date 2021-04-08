@@ -65,7 +65,16 @@ class PdfViewer extends PolymerElement {
             type: String
         },
         scale: {
-            type: Number
+            type: Number,
+            observer: "_scale"
+        },
+        offsetX: {
+            type: Number,
+            observer: "_offsetX"
+        },
+        offsetY: {
+            type: Number,
+            observer: "_offsetY"
         },
         maxWidth: {
             type: Number
@@ -114,7 +123,9 @@ class PdfViewer extends PolymerElement {
       this.src = "";
       this.maxWidth = 0;
       this.sizing = true;
-      this.scale = 1.5;
+      this.scale = 1.0;
+      this.offsetX = 0;
+      this.offsetY = 0;
       this.height = 0;
       this.width = 0;
       this.getMarkdown = false;
@@ -410,8 +421,7 @@ class PdfViewer extends PolymerElement {
             context.page = context.pageNumber = pageNumber;
             context.conditionalPrevPageNavigation = (context.pageNavigation && (context.numPages > 1) && (context.pageNumber > 1)) ? "block" : "none";
             context.conditionalNextPageNavigation = (context.pageNavigation && (context.numPages > 1) && (context.pageNumber < context.numPages)) ? "block" : "none";
-            var scale = context.scale;
-            var viewport = page.getViewport({scale: scale});
+            var viewport = page.getViewport({scale: context.scale, offsetX: context.offsetX, offsetY: context.offsetY});
 
             var canvas = context.canvas;
             // Prepare canvas using PDF page dimensions
@@ -497,6 +507,27 @@ class PdfViewer extends PolymerElement {
         var context = this;
         if (context.checkIsReady("request", src, null)) {
             context.initView(src, false);
+        }
+    }
+
+    _scale(offset) {
+        var context = this;
+        if (context.sizing === false) {
+            context.loadPage(context.page);
+        }
+    }
+
+    _offsetX(offset) {
+        var context = this;
+        if (context.sizing === false) {
+            context.loadPage(context.page);
+        }
+    }
+
+    _offsetY(offset) {
+        var context = this;
+        if (context.sizing === false) {
+            context.loadPage(context.page);
         }
     }
 
