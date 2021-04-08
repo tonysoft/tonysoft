@@ -7462,7 +7462,8 @@ class MessageHandler {
       const action = this.actionHandler[data.action];
 
       if (!action) {
-        throw new Error(`Unknown action from worker: ${data.action}`);
+        return;
+        //throw new Error(`Unknown action from worker: ${data.action}`);
       }
 
       if (data.callbackId) {
