@@ -21,7 +21,7 @@ class PdfViewer extends PolymerElement {
                 position: relative;
             }
             .border {
-                border: 1.5px solid #888888 !important;
+                borderx: 1.5px solid #888888 !important;
                 border-radiusx: 5px;
             }
             #preview {
