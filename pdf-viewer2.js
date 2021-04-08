@@ -99,6 +99,9 @@ class PdfViewer extends PolymerElement {
         browserLink: {
             type: Boolean
         },
+        sizing: {
+            type: Boolean
+        },
         pageNavigation: {
             type: Boolean,
             observer: "_pageNavigation"
@@ -110,6 +113,7 @@ class PdfViewer extends PolymerElement {
       super();
       this.src = "";
       this.maxWidth = 0;
+      this.sizing = true;
       this.scale = 1.5;
       this.height = 0;
       this.width = 0;
@@ -415,7 +419,7 @@ class PdfViewer extends PolymerElement {
             canvas.height = viewport.height;
             canvas.width = viewport.width;
 
-            if (false) {
+            if (context.sizing) {
                 if (canvas.width > canvas.height) {
                     var contWidth = context.baseWidth; // - context.margin;
                     var contHeight = parseInt(context.baseWidth * canvas.height / canvas.width);// - context.margin;
