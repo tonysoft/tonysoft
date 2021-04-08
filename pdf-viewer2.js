@@ -108,9 +108,6 @@ class PdfViewer extends PolymerElement {
         browserLink: {
             type: Boolean
         },
-        sizing: {
-            type: Boolean
-        },
         pageNavigation: {
             type: Boolean,
             observer: "_pageNavigation"
@@ -122,7 +119,6 @@ class PdfViewer extends PolymerElement {
       super();
       this.src = "";
       this.maxWidth = 0;
-      this.sizing = true;
       this.scale = 1.0;
       this.offsetX = 0;
       this.offsetY = 0;
@@ -429,7 +425,7 @@ class PdfViewer extends PolymerElement {
             canvas.height = viewport.height;
             canvas.width = viewport.width;
 
-            if (context.sizing) {
+            if (context.scale === 1) {
                 if (canvas.width > canvas.height) {
                     var contWidth = context.baseWidth; // - context.margin;
                     var contHeight = parseInt(context.baseWidth * canvas.height / canvas.width);// - context.margin;
@@ -512,21 +508,21 @@ class PdfViewer extends PolymerElement {
 
     _scale(offset) {
         var context = this;
-        if (context.sizing === false) {
+        if (context.scale !== 1) {
             context.loadPage(context.page);
         }
     }
 
     _offsetX(offset) {
         var context = this;
-        if (context.sizing === false) {
+        if (context.scale !== 1) {
             context.loadPage(context.page);
         }
     }
 
     _offsetY(offset) {
         var context = this;
-        if (context.sizing === false) {
+        if (context.scale !== 1) {
             context.loadPage(context.page);
         }
     }
