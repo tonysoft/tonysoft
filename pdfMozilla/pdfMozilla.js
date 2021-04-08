@@ -10502,6 +10502,8 @@ function () {
     value: function getViewport() {
       var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
           scale = _ref.scale,
+          xOffset = _ref.xOffset,
+          yOffset = _ref.yOffset,
           _ref$rotation = _ref.rotation,
           rotation = _ref$rotation === void 0 ? this.rotate : _ref$rotation,
           _ref$dontFlip = _ref.dontFlip,
@@ -10517,6 +10519,8 @@ function () {
       return new _dom_utils.PageViewport({
         viewBox: this.view,
         scale: scale,
+        xOffset: xOffset,
+        yOffset: yOffset,
         rotation: rotation,
         dontFlip: dontFlip
       });
