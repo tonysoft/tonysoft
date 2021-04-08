@@ -456,8 +456,8 @@ class PdfViewer extends PolymerElement {
                     canvas.style.height = contHeight + "px";
                 }
             } else {
-                //canvas.style.width = canvas.width + "px";
-                //canvas.style.height = canvas.height + "px";
+                canvas.style.width = canvas.width + "px";
+                canvas.style.height = canvas.height + "px";
             }
 
             // Render PDF page into canvas context
