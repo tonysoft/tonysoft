@@ -21,6 +21,9 @@
  */
 
 (function webpackUniversalModuleDefinition(root, factory) {
+    if (!root) {
+        root = window;
+    }
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
