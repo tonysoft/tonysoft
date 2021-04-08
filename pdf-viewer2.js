@@ -1,9 +1,9 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import 'https://unpkg.com/tonysoft@1.57.12/pdfMozilla/pdf.js';
+import 'https://unpkg.com/tonysoft@1.57.10/pdfMozilla/pdfMozilla.js';
 
 
 /**
- * `pdf-viewer`
+ * `pdf-viewer2`
  * Connect to Bluetooth Device, Service, and Characteristics and Send and Receive Data.
  *
  * @customElement
@@ -165,7 +165,7 @@ class PdfViewer extends PolymerElement {
         });
         context.container = context.shadowRoot.querySelector('.main'); 
         if (!context.width || !context.height) {
-            var elements = document.querySelectorAll("pdf-viewer");
+            var elements = document.querySelectorAll("pdf-viewer2");
             elements.forEach(function(element) {
                 var parentNode = element.parentNode;
                 if (!element.style.width) {
@@ -556,5 +556,5 @@ class PdfViewer extends PolymerElement {
 
 }
 
-window.customElements.define('pdf-viewer', PdfViewer);
+window.customElements.define('pdf-viewer2', PdfViewer);
 export { PdfViewer }
