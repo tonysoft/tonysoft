@@ -508,21 +508,21 @@ class PdfViewer extends PolymerElement {
 
     _scale(offset) {
         var context = this;
-        if (context.scale !== 1) {
+        if (context.currentPdf) {
             context.loadPage(context.page);
         }
     }
 
     _offsetX(offset) {
         var context = this;
-        if (context.scale !== 1) {
+        if (context.currentPdf) {
             context.loadPage(context.page);
         }
     }
 
     _offsetY(offset) {
         var context = this;
-        if (context.scale !== 1) {
+        if (context.currentPdf) {
             context.loadPage(context.page);
         }
     }
