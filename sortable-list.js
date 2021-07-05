@@ -54,9 +54,15 @@ class SortableList extends GestureEventListeners(PolymerElement) {
                     height: 100%;
                 }
 
-                #slot {
+                #slotx {
                     display: flex;
                     flex-wrap: wrap;
+                }
+                #slot {
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    flex-shrink: 0;
                 }
             </style>
             <div id="main" style="height: 100%; overflow-y: auto; overflow-x: hidden;">
