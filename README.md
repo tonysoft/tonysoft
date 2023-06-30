@@ -1,14 +1,13 @@
-[Published on NPM](https://www.npmjs.com/package/tonysoft)
+**Step 1: Settings | Compile Mode | Wasm**
+ 
+ In your chosen Project, at L1, Edit Settings.
+ 
+<img src="https://storage.googleapis.com/rmx-static/techdoc/appclips/SettingsAtL1.png" width="160"></img><br/>
 
+Edit to see Settting at L2.
 
-## &lt;tonysoft&gt;
+<img src="https://storage.googleapis.com/rmx-static/techdoc/appclips/SettingsAtL2.png" width="450"></img><br/>
 
-These are just common components which might be used in other tonysoft demos. 
+Edit to change the Compile Mode.
 
-
-See: [Demo](https://tonysoft.github.io/digit-cell).
-
-## Usage
-
-You will see in the Demo referenced above that the generic-container component encapsulates the digit-cell
-
+<img src="https://storage.googleapis.com/rmx-static/techdoc/appclips/SettingsAtL3.png" width="850"></img><br/>
