@@ -11,7 +11,7 @@ Edit to change the Compile Mode.
 
 <img src="https://storage.googleapis.com/rmx-static/techdoc/appclips/SettingsAtL3.png" width="850"></img><br/><br/>
 
-## ### Step 2: At L1, set “Project Info” from “Tools and Settings”  
+## Step 2: At L1, set “Project Info” from “Tools and Settings”  
 Upper RIght Corner dropdown in Project at L1, select “Tools and Settings”
 
 <img src="https://storage.googleapis.com/rmx-static/techdoc/appclips/ToolsAndSettingsAtL1.png" width="260"></img><br/><br/>
@@ -25,7 +25,7 @@ Then select “Project Info” and fill in the appropriate data about your proje
 <img src="https://storage.googleapis.com/rmx-static/techdoc/appclips/SaveButton.png" width="460"></img><br/><br/>
 
 
-## ### Step 3: For any “Flow” (Screen) you wish to be a potential “Start Screen”
+## Step 3: For any “Flow” (Screen) you wish to be a potential “Start Screen”
 
 <img src="https://storage.googleapis.com/rmx-static/techdoc/appclips/PotentialStartScreens.png" width="660"></img><br/><br/>
 
